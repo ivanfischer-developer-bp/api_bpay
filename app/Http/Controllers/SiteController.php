@@ -110,7 +110,7 @@ class SiteController extends Controller
                 'data' => null,
                 'params' => null,
                 'logged_user' => null,
-                'extras' => $xtras
+                'extras' => $extras
             ]);
         }
     }
