@@ -1,0 +1,67 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // 1
+        User::create([
+            'email' => 'ivanfischer76@gmail.com',
+            'name' => 'Iván Fischer',
+            'company_name' => NULL,
+            'id_prestador' => 453,
+            'password' => Hash::make('abcd1234'),
+        ]);
+        // 2
+        User::create([
+            'email' => 'pablo.rojas.paulazzo@gmail.com',
+            'name' => 'Pablo Rojas Paulazzo',
+            'company_name' => NULL,
+            'id_prestador' => 453,
+            'password' => Hash::make('abcd1234'),
+        ]);
+        // 3
+        User::create([
+            'email' => 'servega@gmail.com',
+            'name' => 'Sergio Vega',
+            'company_name' => NULL,
+            'id_prestador' => 453,
+            'password' => Hash::make('abcd1234'),
+        ]);
+        // 4
+        User::create([
+            'email' => 'test1@email.com',
+            'name' => 'Tester 1',
+            'company_name' => NULL,
+            'id_prestador' => 453,
+            'password' => Hash::make('abcd1234'),
+        ]);
+        // 5
+        User::create([
+            'email' => 'test2@email.com',
+            'name' => 'Tester 2',
+            'company_name' => NULL,
+            'id_prestador' => NULL,
+            'password' => Hash::make('abcd1234'),
+        ]);
+        // 6
+        User::create([
+            'company_name' => 'casa asistencial',
+            'email' => 'silvioq@gmail.com',
+            'id_prestador' => NULL,
+            'name' => 'Silvio Quadri',
+            'password' => 'aP_casa2022!'
+        ]);
+    }
+}
