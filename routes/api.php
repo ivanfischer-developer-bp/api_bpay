@@ -768,7 +768,7 @@ Route::group(['prefix' => 'int'],
                         );
                         Route::group(['prefix' => 'formularios'],
                             function(){
-                                Route::post('exportar-formulario-cronicos-vacio', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos_vacio']); // int/consultorio/formularios/exportar-formulario-310-vacio  1.1.701-20260226
+                                Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/consultorio/formularios/exportar-formulario-310-vacio  1.1.701-20260226
                                 Route::post('exportar-recetario-tratamientos-cronicos-vacio', [ExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos_vacio']); // int/consultorio/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
                             }
                         );

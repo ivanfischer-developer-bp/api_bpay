@@ -22,12 +22,13 @@ class ExportarFormulariosCronicosController extends ConexionSpController
      * @param Request $request
      * @return Response $response
      */
-    public function exportar_formulario_cronicos_vacio(Request $request)
+    public function exportar_formulario_cronicos(Request $request)
     {
         $extras = [
             'api_software_version' => config('site.software_version'),
             'ambiente' => config('site.ambiente'),
-            'url' => '/int/consultorio/formularios/exportar-formulario-cronicos-vacio',
+            'url' => '/int/consultorio/formularios/exportar-formulario-cronicos',
+
             'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
             'function' => __FUNCTION__,
             'sps' => [],
@@ -47,8 +48,11 @@ class ExportarFormulariosCronicosController extends ConexionSpController
 
             $accion = request('accion') !== null ? request('accion') : 'mostrar';
             $params = [
-                'accion' => $accion
+                'accion' => $accion,
+                'paciente' => request('paciente_cronico') !== null ? request('paciente_cronico') : null
             ];
+
+            // return response()->json(['params' => $params, 'extras' => $extras], 200);
 
             if($user->hasPermissionTo('exportar datos')){
                 $pdf = new Fpdi('portrait', 'mm', 'A4');
@@ -65,25 +69,33 @@ class ExportarFormulariosCronicosController extends ConexionSpController
 
                 $pdf->Cell(180, 7, '', 0, 1); // espacio en blanco entre textos
 
+                $apellido_y_nombre = $params['paciente'] != null ? $params['paciente']['apellido_y_nombre'] : '';
+                $nro_afiliado = $params['paciente'] != null ? $params['paciente']['nro_afiliado'] : '';
+                $edad = $params['paciente'] != null ? $params['paciente']['edad'] : '';
+                $telefono = $params['paciente'] != null ? $params['paciente']['telefono'] : '';
+                $domicilio = $params['paciente'] != null ? $params['paciente']['domicilio'] : '';
+                $email = $params['paciente'] != null ? $params['paciente']['email'] : '';
                 $pdf->SetFont($font, '', 10);
-                $pdf->Cell(180, 7, utf8_decode('Apellido y Nombre: '), 1, 2); // apellido y nombre del paciente
-                $pdf->Cell(75, 7, utf8_decode('Nro Afiliado: '), 1, 0); // número de afiliado del paciente
-                $pdf->Cell(30, 7, utf8_decode('Edad: '), 1, 0); // número de afiliado del paciente
-                $pdf->Cell(75, 7, utf8_decode('Teléfono: '), 1, 1); // telefono del paciente
-                $pdf->Cell(90, 7, utf8_decode('Domicilio: '), 1, 0); // domicilio del paciente
-                $pdf->Cell(90, 7, utf8_decode('Email: '), 1, 1); // email del paciente
+                $pdf->Cell(180, 7, utf8_decode('Apellido y Nombre: '.$apellido_y_nombre), 1, 2); // apellido y nombre del paciente
+                $pdf->Cell(75, 7, utf8_decode('Nro Afiliado: '.$nro_afiliado), 1, 0); // número de afiliado del paciente
+                $pdf->Cell(30, 7, utf8_decode('Edad: '.$edad), 1, 0); // número de afiliado del paciente
+                $pdf->Cell(75, 7, utf8_decode('Teléfono: '.$telefono), 1, 1); // telefono del paciente
+                $pdf->Cell(90, 7, utf8_decode('Domicilio: '.$domicilio), 1, 0); // domicilio del paciente
+                $pdf->Cell(90, 7, utf8_decode('Email: '.$email), 1, 1); // email del paciente
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
                 $pdf->Rect($x, $y, 180, 30);
                 $pdf->SetXY($x, $y + 1);
-                $pdf->MultiCell(180, 5, utf8_decode('Breve resumen de historia clínica '), 0, 'L'); // resumen de hitoria clinica del paciente
+                $textoResumenHC = $params['paciente'] != null ? $params['paciente']['resumen_historia_clinica'] : 'Breve resumen de historia clínica ';
+                $pdf->MultiCell(180, 5, utf8_decode($textoResumenHC), 0, 'L'); // resumen de hitoria clinica del paciente
                 $pdf->SetXY($x, $y + 30);
                 $pdf->SetFont($font, '', 9);
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
                 $pdf->Rect($x, $y, 180, 30);
                 $pdf->SetXY($x, $y + 1);
-                $pdf->MultiCell(180, 5, utf8_decode('Descripción del cuadro que justifica el uso de la/s droga/s solicitada/s (incluyendo limitaciones al uso de otra/s droga/s) '), 0, 'L'); // justificacion de la medicación solicitada
+                $cuadroJustificativo = $params['paciente'] != null ? $params['paciente']['cuadro_justificativo'] : 'Descripción del cuadro que justifica el uso de la/s droga/s solicitada/s (incluyendo limitaciones al uso de otra/s droga/s) ';
+                $pdf->MultiCell(180, 5, utf8_decode($cuadroJustificativo), 0, 'L'); // justificacion de la medicación solicitada
                 $pdf->SetXY($x, $y + 30);
 
                 $pdf->Cell(180, 2, '', 0, 2); // espacio en blanco entre textos
@@ -105,41 +117,53 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->MultiCell(52, 3, utf8_decode('Contenido de envase prescripto(Nro. de unidades) '), 0, 'L'); // contenido del envase del medicamento solicitado
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                $pdf->Cell(36, 5, '', 1, 0); // fila 1
-                $pdf->Cell(36, 5, '', 1, 0); // fila 1
-                $pdf->Cell(36, 5, '', 1, 0); // fila 1
-                $pdf->Cell(20, 5, '', 1, 0); // fila 1
-                $pdf->Cell(52, 5, '', 1, 1); // fila 1
-                $pdf->Cell(36, 5, '', 1, 0); // fila 2
-                $pdf->Cell(36, 5, '', 1, 0); // fila 2
-                $pdf->Cell(36, 5, '', 1, 0); // fila 2
-                $pdf->Cell(20, 5, '', 1, 0); // fila 2
-                $pdf->Cell(52, 5, '', 1, 1); // fila 2
-                $pdf->Cell(36, 5, '', 1, 0); // fila 3
-                $pdf->Cell(36, 5, '', 1, 0); // fila 3
-                $pdf->Cell(36, 5, '', 1, 0); // fila 3
-                $pdf->Cell(20, 5, '', 1, 0); // fila 3
-                $pdf->Cell(52, 5, '', 1, 1); // fila 3
-                $pdf->Cell(36, 5, '', 1, 0); // fila 4
-                $pdf->Cell(36, 5, '', 1, 0); // fila 4
-                $pdf->Cell(36, 5, '', 1, 0); // fila 4
-                $pdf->Cell(20, 5, '', 1, 0); // fila 4
-                $pdf->Cell(52, 5, '', 1, 1); // fila 4
-                $pdf->Cell(36, 5, '', 1, 0); // fila 5
-                $pdf->Cell(36, 5, '', 1, 0); // fila 5
-                $pdf->Cell(36, 5, '', 1, 0); // fila 5
-                $pdf->Cell(20, 5, '', 1, 0); // fila 5
-                $pdf->Cell(52, 5, '', 1, 1); // fila 5
-                $pdf->Cell(36, 5, '', 1, 0); // fila 6
-                $pdf->Cell(36, 5, '', 1, 0); // fila 6
-                $pdf->Cell(36, 5, '', 1, 0); // fila 6
-                $pdf->Cell(20, 5, '', 1, 0); // fila 6
-                $pdf->Cell(52, 5, '', 1, 1); // fila 6
-                $pdf->Cell(36, 5, '', 1, 0); // fila 7
-                $pdf->Cell(36, 5, '', 1, 0); // fila 7
-                $pdf->Cell(36, 5, '', 1, 0); // fila 7
-                $pdf->Cell(20, 5, '', 1, 0); // fila 7
-                $pdf->Cell(52, 5, '', 1, 1); // fila 7
+                if($params['paciente'] != null){
+                    $medicamentos = $params['paciente']['medicamentos'];
+                    // return response()->json(['params' => $params, 'medicamentos' => $medicamentos, 'extras' => $extras], 200);
+                    foreach($medicamentos as $medicamento){
+                        $pdf->Cell(36, 5, utf8_decode($medicamento['principio_activo']), 1, 0); // principio activo del medicamento solicitado
+                        $pdf->Cell(36, 5, utf8_decode($medicamento['marca_comercial']), 1, 0); // marca comercial del medicamento solicitado
+                        $pdf->Cell(36, 5, utf8_decode($medicamento['unidad_posologica']), 1, 0); // unidad posológica del medicamento solicitado
+                        $pdf->Cell(20, 5, utf8_decode($medicamento['comprimidos_x_dia']), 1, 0); // comprimidos por día del medicamento solicitado
+                        $pdf->Cell(52, 5, utf8_decode($medicamento['contenido_envase']), 1, 1); // contenido del envase del medicamento solicitado
+                    }
+                }else{
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 1
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 2
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 3
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 4
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 5
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 6
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(36, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(20, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(52, 5, '', 1, 1); // fila 7
+                }
 
                 $pdf->Cell(180, 2, '', 0, 2); // espacio entre textos
                 // fuente en 12
@@ -149,21 +173,75 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->SetFont($font, '', 10);
                 $pdf->Cell(180, 2, '', 0, 2); // espacio entre textos
 
+                // Obtener diagnósticos del paciente como array de strings
+                $diagnosticos_paciente = [];
+                if($params['paciente'] != null) {
+                    if(isset($params['paciente']['diagnosticos']) && is_array($params['paciente']['diagnosticos'])) {
+                        $diagnosticos_paciente = $params['paciente']['diagnosticos'];
+                    }
+                }
+                
+                // Debug: guardar los diagnósticos en extras
+                $extras['diagnosticos_debug'] = [
+                    'array_completo' => $diagnosticos_paciente,
+                    'es_array' => is_array($diagnosticos_paciente),
+                    'cantidad' => count($diagnosticos_paciente),
+                    'contenido_json' => json_encode($diagnosticos_paciente)
+                ];
+
+                // Función helper para dibujar checkbox marcado con check dibujado
+                $dibujar_checkbox = function($pdf, $x, $y, $checked = false) {
+                    // Guardar la posición actual para no disrumpir el flujo del documento
+                    $current_x = $pdf->GetX();
+                    $current_y = $pdf->GetY();
+                    
+                    // Dibujar el rectángulo del checkbox (4x4mm)
+                    $pdf->SetDrawColor(0, 0, 0);
+                    $pdf->SetLineWidth(0.3);
+                    $pdf->Rect($x, $y, 4, 4);
+                    
+                    if($checked) {
+                        // Establecer un ancho de línea grueso para que el check se vea claro
+                        $pdf->SetLineWidth(0.8);
+                        
+                        // Dibujar un check (tick mark) proporcional al tamaño 4x4
+                        // Primera línea: diagonal inferior (parte corta del check)
+                        $pdf->Line($x + 0.7, $y + 2, $x + 1.7, $y + 3.1);
+                        
+                        // Segunda línea: diagonal superior (parte larga del check)  
+                        $pdf->Line($x + 1.7, $y + 3.1, $x + 3.7, $y + 0.5);
+                        
+                        // Restaurar el ancho de línea a normal
+                        $pdf->SetLineWidth(0.3);
+                    }
+                    
+                    // Restaurar la posición original del PDF (sin cambios en la alineación)
+                    $pdf->SetXY($current_x, $current_y);
+                };
+
+                // Función para buscar si un diagnóstico está en el array
+                $tiene_diagnostico = function($diagnostico_texto, $diagnosticos_array) {
+                    return in_array($diagnostico_texto, $diagnosticos_array);
+                };
+
                 $pdf->Cell(50, 3, utf8_decode('Hipertención arterial (I10)'), 0, 0); // diagnostico 1
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Hipertención arterial (I10)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(50, 3, utf8_decode('Anticoagulación (D68.3)'), 0, 0); // diagnostico 2
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Anticoagulación (D68.3)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->SetFont($font, '', 9);
                 $pdf->Cell(55, 3, utf8_decode('Medicación anticonvulsivante (G40)'), 0, 0); // diagnostico 3
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Medicación anticonvulsivante (G40)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(0, 5, '', 0, 1); // retorno de carro
                 $pdf->Cell(180, 1, '', 0, 1); // espacio
@@ -173,17 +251,20 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->Cell(50, 3, utf8_decode('Gota (M10)'), 0, 0); // diagnostico 4
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Gota (M10)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(50, 3, utf8_decode('Dislipemia (E78)'), 0, 0); // diagnostico 5
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Dislipemia (E78)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(55, 3, utf8_decode('Artritis reumatoidea (M05)'), 0, 0); // diagnostico 6
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Artritis reumatoidea (M05)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(0, 5, '', 0, 1); // retorno de carro
                 $pdf->Cell(180, 1, '', 0, 1); // espacio
@@ -193,17 +274,20 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->Cell(50, 3, utf8_decode('Enfermedad coronaria (I20)'), 0, 0); // diagnostico 7
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Enfermedad coronaria (I20)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(50, 3, utf8_decode('Hipo/Hipertiroidismo (E03)'), 0, 0); // diagnostico 8
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Hipo/Hipertiroidismo (E03)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(55, 3, utf8_decode('Asma o EPOC (J45)'), 0, 0); // diagnostico 9
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Asma o EPOC (J45)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(0, 5, '', 0, 1); // retorno de carro
                 $pdf->Cell(180, 1, '', 0, 1); // espacio
@@ -213,17 +297,20 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->Cell(50, 3, utf8_decode('Insuficiencia Cardíaca (I50)'), 0, 0); // diagnostico 10
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Insuficiencia Cardíaca (I50)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(50, 3, utf8_decode('Colitis ulcerosa (K50)'), 0, 0); // diagnostico 11
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Colitis ulcerosa (K50)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(55, 3, utf8_decode('Glaucoma (H40)'), 0, 0); // diagnostico 12
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Glaucoma (H40)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(0, 5, '', 0, 1); // retorno de carro
                 $pdf->Cell(180, 1, '', 0, 1); // espacio
@@ -233,19 +320,22 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->Cell(50, 3, utf8_decode('Arritmia crónica (I49)'), 0, 0); // diagnostico 13
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Arritmia crónica (I49)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->SetFont($font, '', 9);
                 $pdf->Cell(50, 3, utf8_decode('Enfermedad extrapiramidal (G20)'), 0, 0); // diagnostico 14
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Enfermedad extrapiramidal (G20)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->SetFont($font, '', 10);
                 $pdf->Cell(55, 3, utf8_decode('Modificadores de conducta (F29)'), 0, 0); // diagnostico 15
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                 $pdf->Rect($x, $y, 4, 4);
+                $checked = $tiene_diagnostico('Modificadores de conducta (F29)', $diagnosticos_paciente);
+                $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(0, 5, '', 0, 1); // retorno de carro
                 
@@ -257,13 +347,19 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->SetFont($font, '', 10);
                 $pdf->Cell(180, 2, '', 0, 2); // espacio entre textos
 
-                $pdf->Cell(180, 7, utf8_decode('Nombre y Apellido: '), 1, 2); // nombre y apellido del médico prescriptor
-                $pdf->Cell(130, 7, utf8_decode('Especialidad: '), 1, 0); // especialidad del médico prescriptor
-                $pdf->Cell(50, 7, utf8_decode('Matrícula: '), 1, 1); // matrícula del médico prescriptor
-                $pdf->Cell(60, 7, utf8_decode('Teléfono: '), 1, 0); // teléfono del médico prescriptor
-                $pdf->Cell(120, 7, utf8_decode('Institución: '), 1, 1); // institución del médico prescriptor
+                $apellido_y_nombre_medico = $params['paciente'] != null ? $params['paciente']['medico_prescriptor']['nombre_y_apellido'] : ''; // nombre y apellido del médico prescriptor
+                $especialidad_medico = $params['paciente'] != null ? $params['paciente']['medico_prescriptor']['especialidad'] : ''; // especialidad del médico prescriptor
+                $matricula_medico = $params['paciente'] != null ? $params['paciente']['medico_prescriptor']['matricula'] : ''; // matrícula del médico prescriptor
+                $telefono_medico = $params['paciente'] != null ? $params['paciente']['medico_prescriptor']['telefono'] : ''; // teléfono del médico prescriptor
+                $institucion = $params['paciente'] != null ? $params['paciente']['institucion'] : ''; // institución del médico prescriptor
+                $fecha = $params['paciente'] != null ? $params['paciente']['fecha_emision'] : 'Fecha:     /     /      '; // fecha de emisión del formulario
+                $pdf->Cell(180, 7, utf8_decode('Nombre y Apellido: '.$apellido_y_nombre_medico), 1, 2); // nombre y apellido del médico prescriptor
+                $pdf->Cell(130, 7, utf8_decode('Especialidad: '.$especialidad_medico), 1, 0); // especialidad del médico prescriptor
+                $pdf->Cell(50, 7, utf8_decode('Matrícula: '.$matricula_medico), 1, 1); // matrícula del médico prescriptor
+                $pdf->Cell(60, 7, utf8_decode('Teléfono: '.$telefono_medico), 1, 0); // teléfono del médico prescriptor
+                $pdf->Cell(120, 7, utf8_decode('Institución: '.$institucion), 1, 1); // institución del médico prescriptor
                 $pdf->Cell(140, 10, utf8_decode('Firma y sello del médico: '), 0, 0); // firma y sello del médico prescriptor
-                $pdf->Cell(40, 10, utf8_decode('Fecha:     /     /      '), 0, 1); // fecha
+                $pdf->Cell(40, 10, utf8_decode('Fecha: ' . $fecha), 0, 1); // fecha
 
                 $pdf->Cell(180, 7, '', 0, 1); // espacio en blanco para ubicar el texto
                 $pdf->SetFont($font, 'B', 8);
