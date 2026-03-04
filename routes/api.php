@@ -121,6 +121,7 @@ use App\Http\Controllers\Internos\Listados\ABMPromotorController;
 use App\Http\Controllers\Internos\Listados\ABMRangoEdadController;
 use App\Http\Controllers\Internos\Listados\ABMTipoBajaController;
 use App\Http\Controllers\Internos\Listados\ABMTipoConceptoController;
+use App\Http\Controllers\Internos\Listados\ABMTipoContactoController;
 use App\Http\Controllers\Internos\Listados\ABMTipoDomicilioController;
 use App\Http\Controllers\Internos\Listados\ABMTipoFacturaController;
 use App\Http\Controllers\Internos\Listados\ListadosController;
@@ -1034,14 +1035,7 @@ Route::group(['prefix' => 'int'],
                                 Route::post('agregar-rango-edad', [ABMRangoEdadController::class, 'agregar_rango_edad']); // int/listados/rango-edad/agregar-rango-edad  1.1.538-20250724  
                             }
                         );
-                        // tipos de factura
-                        Route::group(['prefix' => 'tipos-factura'], 
-                            function() {
-                                Route::get('listar-tipos-factura', [ABMTipoFacturaController::class, 'listar_tipos_factura']); // int/listados/tipo-factura/listar-tipos-factura  1.1.536-20250717
-                                Route::post('actualizar-tipo-factura', [ABMTipoFacturaController::class, 'actualizar_tipo_factura']); // int/listados/tipo-factura/actualizar-tipo-factura  1.1.536-20250718
-                                Route::post('agregar-tipo-factura', [ABMTipoFacturaController::class, 'agregar_tipo_factura']); // int/listados/tipo-factura/agregar-tipo-factura  1.1.536-20250718
-                            }
-                        );
+                        
                         // tipos de baja
                         Route::group(['prefix' => 'tipos-baja'], 
                             function() {
@@ -1059,12 +1053,28 @@ Route::group(['prefix' => 'int'],
                                 Route::post('agregar-tipo-concepto', [ABMTipoConceptoController::class, 'agregar_tipo_concepto']); // int/listados/tipo-concepto/agregar-tipo-concepto  1.1.531-20250717 
                             }
                         );
+                        // tipos de contactos
+                        Route::group(['prefix' => 'tipo-contacto'], 
+                            function() {
+                                Route::get('listar-tipos-contactos', [ABMTipoContactoController::class, 'listar_tipos_contactos']); // int/listados/tipo-contacto/listar-tipos-contactos  1.1.707-20260304
+                                Route::post('actualizar-tipo-contacto', [ABMTipoContactoController::class, 'actualizar_tipo_contacto']); // int/listados/tipo-contacto/actualizar-tipo-contacto  1.1.707-20260304
+                                Route::post('agregar-tipo-contacto', [ABMTipoContactoController::class, 'agregar_tipo_contacto']); // int/listados/tipo-contacto/agregar-tipo-contacto  1.1.707-20260304
+                            }
+                        );
                         // tipos de domicilios
                         Route::group(['prefix' => 'tipo-domicilio'], 
                             function() {
                                 Route::get('listar-tipos-domicilios', [ABMTipoDomicilioController::class, 'listar_tipos_domicilios']); // int/listados/tipo-domicilio/listar-tipos-domicilios  1.1.680-20260114
                                 Route::post('actualizar-tipo-domicilio', [ABMTipoDomicilioController::class, 'actualizar_tipo_domicilio']); // int/listados/tipo-domicilio/actualizar-tipo-domicilio  1.1.680-20260114
                                 Route::post('agregar-tipo-domicilio', [ABMTipoDomicilioController::class, 'agregar_tipo_domicilio']); // int/listados/tipo-domicilio/agregar-tipo-domicilio  1.1.680-20260114 
+                            }
+                        );
+                        // tipos de factura
+                        Route::group(['prefix' => 'tipos-factura'], 
+                            function() {
+                                Route::get('listar-tipos-factura', [ABMTipoFacturaController::class, 'listar_tipos_factura']); // int/listados/tipo-factura/listar-tipos-factura  1.1.536-20250717
+                                Route::post('actualizar-tipo-factura', [ABMTipoFacturaController::class, 'actualizar_tipo_factura']); // int/listados/tipo-factura/actualizar-tipo-factura  1.1.536-20250718
+                                Route::post('agregar-tipo-factura', [ABMTipoFacturaController::class, 'agregar_tipo_factura']); // int/listados/tipo-factura/agregar-tipo-factura  1.1.536-20250718
                             }
                         );
                     }

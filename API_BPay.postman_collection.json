@@ -13132,6 +13132,168 @@
 											"response": []
 										}
 									]
+								},
+								{
+									"name": "Tipo Contacto",
+									"item": [
+										{
+											"name": "Consultar Tipos Contactos",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"url": {
+													"raw": "{{url}}/api/int/listados/tipos-contactos",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"listados",
+														"tipos-contactos"
+													]
+												},
+												"description": "Retorna un listado de tipos de contactos\n\nSe deja por retrocompatibilidad, el endpoint /listados/tipo-contacto/listar-tipos-contactos retorn lo mismo que este y es más consistente semanticamente"
+											},
+											"response": []
+										},
+										{
+											"name": "Listar Tipos de Contactos",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"url": {
+													"raw": "{{url}}/api/int/listados/tipo-contacto/listar-tipos-contactos",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"listados",
+														"tipo-contacto",
+														"listar-tipos-contactos"
+													]
+												},
+												"description": "Retorna un listado de tipos de contacto"
+											},
+											"response": []
+										},
+										{
+											"name": "Agregar Tipo de Contacto",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"n_tipo_contacto\": \"nuevo tipo\",\n    \"defecto\": 0\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/int/listados/tipo-contacto/agregar-tipo-contacto",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"listados",
+														"tipo-contacto",
+														"agregar-tipo-contacto"
+													]
+												},
+												"description": "Agrega un nuevo tipo de contacto en el sistema"
+											},
+											"response": []
+										},
+										{
+											"name": "Actualizar Tipo de Contacto",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"id_tipo_contacto\": 8,\n    \"n_tipo_contacto\": \"whatsapp\",\n    \"defecto\": 0\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/int/listados/tipo-contacto/actualizar-tipo-contacto",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"listados",
+														"tipo-contacto",
+														"actualizar-tipo-contacto"
+													]
+												},
+												"description": "Actualiza los datos de un tipo de contacto"
+											},
+											"response": []
+										}
+									]
 								}
 							]
 						},
@@ -13672,40 +13834,6 @@
 									]
 								},
 								"description": "Obtiene un listado de los tipos de bajas"
-							},
-							"response": []
-						},
-						{
-							"name": "Listar Tipos Contactos",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-Requested-With",
-										"value": "XMLHttpRequest"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{intAccessToken}}"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/api/int/listados/tipos-contactos",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"int",
-										"listados",
-										"tipos-contactos"
-									]
-								},
-								"description": "Retorna un listado de tipos de contactos"
 							},
 							"response": []
 						},
