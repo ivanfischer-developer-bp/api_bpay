@@ -691,6 +691,7 @@ class ABMPatologiaController extends ConexionSpController
         $this->tipo_id_usuario = ''; // id, usuario, email, param
         $this->param_usuario = '';
         $this->params = [
+            'cod_certificado' => request('cod_certificado'),
             'fec_vto' => request('fec_vto'),
             'id_patologia_cie10' => request('id_patologia_cie10'),
             'id_persona' => request('id_persona'),
@@ -707,7 +708,8 @@ class ABMPatologiaController extends ConexionSpController
             'p_permanente' => $this->params['permanente'],
             'p_prevalente' => $this->params['prevalente'],
             'p_porcentaje' => $this->params['porcentaje'],
-            'p_importe_recargo' => $this->params['importe_recargo']
+            'p_importe_recargo' => $this->params['importe_recargo'],
+            'p_cod_certificado' => $this->params['cod_certificado']
         ];
         if(request('id_persona_patologia') == null){
             $this->param_id_usuario = 'p_id_usuario';
