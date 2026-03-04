@@ -620,6 +620,7 @@ Route::group(['prefix' => 'int'],
                                 Route::post('cambiar-numero', [AfiliadoController::class, 'cambiar_numero']);  // int/afiliaciones/afiliado/cambiar-numero  // AB-103   
                                 Route::post('cambiar-password-afiliado-mobile', [AfiliadoController::class, 'cambiar_password_afiliado_mobile']);  // int/afiliaciones/afiliado/cambiar-password-afiliado-mobile  // 1.1.630-20251128   
                                 Route::post('cambiar-plan-afiliado', [PlanController::class, 'cambiar_plan_afiliado']);  // int/afiliaciones/afiliado/cambiar-plan-afiliado  // AB-115     
+                                Route::get('prueba-osef', [AfiliadoController::class, 'prueba_osef']); // int/afiliaciones/afiliado/prueba-osef  // 1.1.708-20260304 sólo para pruebas
                             }
                         );
                         // grupo familiar

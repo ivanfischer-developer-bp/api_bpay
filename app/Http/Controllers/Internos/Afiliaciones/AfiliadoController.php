@@ -1301,6 +1301,233 @@ class AfiliadoController extends ConexionSpController
         }
     }
 
+    /**
+     * Función de prueba para invocar el servicio SOAP de OSEF
+     * 
+     * Parámetros esperados:
+     * - usuario_osef: Usuario para autenticación en OSEF
+     * - password_osef: Password para autenticación en OSEF
+     * - tipo_consulta: 'autorizacion' | 'afiliado' (default: autorizacion)
+     * - numero_autorizacion: Para consulta de autorización
+     * - numero_afiliado: Para consulta de afiliado
+     * - delegacion: Delegación (default: 0)
+     * - plan: Plan (optional, default: 0)
+     * - gravamen: Gravamen (optional, default: 0)
+     * 
+     * Ejemplos de invocación:
+     * POST /int/afiliaciones/afiliado/prueba-osef
+     * {
+     *   "usuario_osef": "USUARIO",
+     *   "password_osef": "PASSWORD",
+     *   "tipo_consulta": "autorizacion",
+     *   "numero_autorizacion": 123456,
+     *   "delegacion": 0
+     * }
+     * 
+     * o
+     * 
+     * {
+     *   "usuario_osef": "USUARIO",
+     *   "password_osef": "PASSWORD",
+     *   "tipo_consulta": "afiliado",
+     *   "numero_afiliado": "001234567"
+     * }
+     */
+    public function prueba_osef(Request $request)
+    {
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => '/int/afiliaciones/afiliado/prueba-osef',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+        ];
+        
+        $status = 'fail';
+        $message = '';
+        $count = -1;
+        $data = null;
+        $errors = [];
+        $params = [];
+
+        try {
+            // Obtiene usuario de la petición
+            $user = User::with('roles', 'permissions')->find($request->user()->id);
+            $logged_user = $this->get_logged_user($user);
+
+            // Valida que tenga permiso de administración o de gestión de afiliados
+            if (!$user->hasPermissionTo('gestionar afiliados') && !$user->hasRole('admin')) {
+                return response()->json([
+                    'status' => 'unauthorized',
+                    'count' => -1,
+                    'errors' => ['Error de permisos'],
+                    'message' => 'No puede acceder a esta ruta. Se requiere permiso para GESTIONAR AFILIADOS',
+                    'line' => null,
+                    'code' => -1,
+                    'data' => null,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]);
+            }
+
+            // Obtiene parámetros
+            $usuario_osef = request('usuario_osef');
+            $password_osef = request('password_osef');
+            $tipo_consulta = request('tipo_consulta', 'autorizacion'); // Default: autorizacion
+            $numero_autorizacion = request('numero_autorizacion');
+            $numero_afiliado = request('numero_afiliado');
+            $delegacion = request('delegacion', 0);
+            $plan = request('plan', 0);
+            $gravamen = request('gravamen', 0);
+
+            $params = [
+                'usuario_osef' => !empty($usuario_osef) ? '***' : null,
+                'password_osef' => !empty($password_osef) ? '***' : null,
+                'tipo_consulta' => $tipo_consulta,
+                'numero_autorizacion' => $numero_autorizacion,
+                'numero_afiliado' => $numero_afiliado,
+                'delegacion' => $delegacion,
+                'plan' => $plan,
+                'gravamen' => $gravamen,
+            ];
+
+            // Valida parámetros obligatorios
+            if (empty($usuario_osef) || empty($password_osef)) {
+                return response()->json([
+                    'status' => 'fail',
+                    'count' => -1,
+                    'errors' => ['usuario_osef y password_osef son obligatorios'],
+                    'message' => 'Parámetros insuficientes',
+                    'line' => null,
+                    'code' => -2,
+                    'data' => null,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]);
+            }
+
+            // Usa el helper WsOsef para realizar la consulta
+            require_once base_path('app/Http/Helpers/wsosef.php');
+            
+            $resultado_soap = null;
+
+            if ($tipo_consulta === 'autorizacion') {
+                // Valida número de autorización
+                if (empty($numero_autorizacion)) {
+                    return response()->json([
+                        'status' => 'fail',
+                        'count' => -1,
+                        'errors' => ['Para tipo_consulta=autorizacion, numero_autorizacion es obligatorio'],
+                        'message' => 'Parámetro numero_autorizacion requerido',
+                        'line' => null,
+                        'code' => -3,
+                        'data' => null,
+                        'params' => $params,
+                        'extras' => $extras,
+                        'logged_user' => $logged_user,
+                    ]);
+                }
+
+                // Consulta autorización en OSEF
+                $resultado_soap = \App\Http\Helpers\WsOsef::consultarAutorizacion(
+                    $usuario_osef,
+                    $password_osef,
+                    intval($numero_autorizacion),
+                    intval($delegacion),
+                    $numero_afiliado ?? ''
+                );
+
+            } else if ($tipo_consulta === 'afiliado') {
+                // Valida número de afiliado
+                if (empty($numero_afiliado)) {
+                    return response()->json([
+                        'status' => 'fail',
+                        'count' => -1,
+                        'errors' => ['Para tipo_consulta=afiliado, numero_afiliado es obligatorio'],
+                        'message' => 'Parámetro numero_afiliado requerido',
+                        'line' => null,
+                        'code' => -4,
+                        'data' => null,
+                        'params' => $params,
+                        'extras' => $extras,
+                        'logged_user' => $logged_user,
+                    ]);
+                }
+
+                // Consulta afiliado en OSEF
+                $resultado_soap = \App\Http\Helpers\WsOsef::consultarAfiliado(
+                    $usuario_osef,
+                    $password_osef,
+                    $numero_afiliado,
+                    intval($plan),
+                    intval($gravamen)
+                );
+
+            } else {
+                return response()->json([
+                    'status' => 'fail',
+                    'count' => -1,
+                    'errors' => ['tipo_consulta inválido. Use: autorizacion | afiliado'],
+                    'message' => 'Parámetro tipo_consulta inválido',
+                    'line' => null,
+                    'code' => -5,
+                    'data' => null,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]);
+            }
+
+            // Formatea y retorna la respuesta SOAP
+            if ($resultado_soap['success']) {
+                $data = \App\Http\Helpers\WsOsef::formatearRespuesta($resultado_soap);
+                $status = 'ok';
+                $count = 1;
+                $message = 'Consulta realizada exitosamente';
+            } else {
+                $data = [
+                    'error' => $resultado_soap['error'],
+                    'soap_request' => $resultado_soap['soap_request'],
+                    'soap_response' => $resultado_soap['soap_response'],
+                ];
+                $status = 'fail';
+                $count = 0;
+                $message = 'Error en la consulta a OSEF: ' . $resultado_soap['error'];
+                array_push($errors, $resultado_soap['error']);
+            }
+
+            return response()->json([
+                'status' => $status,
+                'count' => $count,
+                'errors' => $errors,
+                'message' => $message,
+                'line' => null,
+                'code' => null,
+                'data' => $data,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => $logged_user,
+            ]);
+
+        } catch (\Throwable $th) {
+            $errors = ['Line: ' . $th->getLine() . ' - Error: ' . $th->getMessage()];
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => $logged_user,
+            ]);
+        }
+    }
+
 }
 
 
