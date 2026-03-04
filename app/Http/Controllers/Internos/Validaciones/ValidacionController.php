@@ -739,7 +739,7 @@ class ValidacionController extends ConexionSpController
             if (count($usuarios_notificar) > 0) {
                 $id_usuarios = [];
                 try {
-                    $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                    $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                 } catch (PusherException $e) {
                     Log::channel('pusher')->warning("Validaciones::emitir-> Error al instanciar pusher: " . $e->getMessage());
                     return $e;

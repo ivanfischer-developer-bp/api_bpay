@@ -104,9 +104,9 @@ class MensajeController extends Controller
                 $title = $mensaje['asunto'];
                 $destinatarios = request('destinatarios');
                 try {
-                    $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                    $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                 } catch (PusherException $e) {
-                    Log::warning("Error al instanciar pusher: " . $e->getMessage());
+                    Log::channel('pusher')->warning("Mensaje::Error al instanciar pusher: " . $e->getMessage());
                     array_push($errors, $e->getMessage());
                 }
                 

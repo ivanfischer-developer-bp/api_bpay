@@ -73,7 +73,7 @@ class SistemaController extends ConexionSpController
                 ];  // message
 
                 try {
-                    $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                    $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                 } catch (PusherException $e) {
                     Log::channel('pusher')->warning("1.- informar_nueva_version_front - Error al instanciar pusher: " . $e->getMessage());
                     array_push($errors, $e->getMessage());
@@ -280,7 +280,7 @@ class SistemaController extends ConexionSpController
                         'emitido' => false,
                     ];
                     try {
-                        $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                        $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                     } catch (PusherException $e) {
                         Log::channel('pusher')->warning("1.- forzar_reload_usuario - Error al instanciar pusher: " . $e->getMessage());
                         array_push($errors, $e->getMessage());
@@ -515,7 +515,7 @@ class SistemaController extends ConexionSpController
                     $msg['id_usuarios'] = $id_usuarios;
                     // emitir pusher
                     try {
-                        $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                        $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                         $status = 'ok';
                         $message = 'Recarga forzada por el administrador';
                         $code = 1;
@@ -733,7 +733,7 @@ class SistemaController extends ConexionSpController
                         'emitido' => false,
                     ];
                     try {
-                        $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                        $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                     } catch (PusherException $e) {
                         Log::channel('pusher')->warning("1.- forzar_logout_usuario - Error al instanciar pusher: " . $e->getMessage());
                         array_push($errors, $e->getMessage());
@@ -968,7 +968,7 @@ class SistemaController extends ConexionSpController
                         'emitido' => false,
                     ];
                     try {
-                        $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                        $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                     } catch (PusherException $e) {
                         Log::channel('pusher')->warning("1.- forzar_logout_masivo - Error al instanciar pusher: " . $e->getMessage());
                         array_push($errors, $e->getMessage());
@@ -1208,7 +1208,7 @@ class SistemaController extends ConexionSpController
 
                         // emitir pusher
                         try {
-                            $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                            $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                         } catch (PusherException $e) {
                             Log::channel('pusher')->warning("1.- desconectar_usuario - Error al instanciar pusher: " . $e->getMessage());
                             array_push($errors, $e->getMessage());

@@ -126,9 +126,9 @@ class PruebasController extends ConexionSpController
         // ];
 
         try {
-            $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+            $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
         } catch (PusherException $e) {
-            Log::warning("Error al instanciar pusher: " . $e->getMessage());
+            Log::channel('pusher')->warning("Pruebas::Error al instanciar pusher: " . $e->getMessage());
             return $e;
         }
 
@@ -166,9 +166,9 @@ class PruebasController extends ConexionSpController
         ];  // message
 
         try {
-            $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+            $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
         } catch (PusherException $e) {
-            Log::warning("Error al instanciar pusher: " . $e->getMessage());
+            Log::channel('pusher')->warning("Pruebas::Error al instanciar pusher: " . $e->getMessage());
             // array_push($errors, $e->getMessage());
             return $e;
         }
@@ -199,9 +199,9 @@ class PruebasController extends ConexionSpController
         $destinatarios = request('destinatarios');  // puede ser reemplazado por usuarios_a_notificar
 
         try {
-            $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+            $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
         } catch (PusherException $e) {
-            Log::warning("Error al instanciar pusher: " . $e->getMessage());
+            Log::channel('pusher')->warning("Pruebas:: Error al instanciar pusher: " . $e->getMessage());
             // array_push($errors, $e->getMessage());
         }
         

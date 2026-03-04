@@ -406,9 +406,9 @@ class AfiliacionController extends ConexionSpController
                             }
                             // notificar con pusher
                             try {
-                                $clientePusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
+                                $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                             } catch (PusherException $e) {
-                                Log::warning("Error al instanciar pusher: " . $e->getMessage());
+                                Log::channel('pusher')->warning("Afiliacion::Error al instanciar pusher: " . $e->getMessage());
                                 return $e;
                             }
 
