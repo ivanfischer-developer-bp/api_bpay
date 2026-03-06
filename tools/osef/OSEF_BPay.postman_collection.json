@@ -1,0 +1,236 @@
+{
+  "info": {
+    "_postman_id": "569d5c6e-1234-5678-abcd-ef0123456789",
+    "name": "OSEF BPay API",
+    "description": "Colección para probar consultas a OSEF desde BPay API\n\nImporta esta colección en Postman y configura:\n1. Environment variable: {{api_url}}\n2. Environment variable: {{jwt_token}}\n3. Environment variable: {{usuario_osef}}\n4. Environment variable: {{password_osef}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.token) {",
+                  "        pm.environment.set('jwt_token', jsonData.token);",
+                  "        pm.environment.set('token_timestamp', new Date().getTime());",
+                  "        console.log('Token guardado: ' + jsonData.token.substring(0, 20) + '...');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usuario@ejemplo.com\",\n  \"password\": \"su_password\"\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/login",
+              "host": ["{{api_url}}"],
+              "path": ["login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OSEF - Consultas",
+      "item": [
+        {
+          "name": "Consultar Autorización",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Valida que los parámetros estén configurados",
+                  "const required = ['api_url', 'jwt_token', 'usuario_osef', 'password_osef'];",
+                  "required.forEach(param => {",
+                  "    if (!pm.environment.get(param)) {",
+                  "        throw new Error('Variable de entorno no configurada: ' + param);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Análisis de respuesta",
+                  "pm.test('Status es 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contiene status', function() {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "});",
+                  "",
+                  "// Si es exitosa, extrae datos principales",
+                  "var data = pm.response.json();",
+                  "if (data.status === 'ok') {",
+                  "    var afiliado = data.data.datos_afiliado;",
+                  "    var autorizacion = data.data.datos_autorizacion;",
+                  "    var errores = data.data.errores_cabecera;",
+                  "    ",
+                  "    pm.test('Datos de afiliado presentes', function() {",
+                  "        pm.expect(afiliado).to.exist;",
+                  "    });",
+                  "    ",
+                  "    if (errores && errores.length > 0) {",
+                  "        pm.test('Contiene errores', function() {",
+                  "            errores.forEach(err => {",
+                  "                console.log('Error OSEF: ' + err.descripcion);",
+                  "            });",
+                  "            pm.expect(errores.length).to.be.greaterThan(0);",
+                  "        });",
+                  "    } else {",
+                  "        pm.test('Sin errores en cabecera', function() {",
+                  "            pm.expect(errores).to.be.empty;",
+                  "        });",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario_osef\": \"{{usuario_osef}}\",\n  \"password_osef\": \"{{password_osef}}\",\n  \"tipo_consulta\": \"autorizacion\",\n  \"numero_autorizacion\": 123456,\n  \"numero_afiliado\": \"001234567\",\n  \"delegacion\": 0\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/int/afiliaciones/afiliado/prueba-osef",
+              "host": ["{{api_url}}"],
+              "path": ["int", "afiliaciones", "afiliado", "prueba-osef"]
+            }
+          }
+        },
+        {
+          "name": "Consultar Afiliado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status es 200', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "var data = pm.response.json();",
+                  "if (data.status === 'ok') {",
+                  "    var afiliado = data.data.datos_afiliado;",
+                  "    console.log('Afiliado: ' + afiliado.nombre_apellido);",
+                  "    console.log('Plan: ' + afiliado.descripcion_plan);",
+                  "    console.log('Estado: ' + afiliado.descripcion_estado);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario_osef\": \"{{usuario_osef}}\",\n  \"password_osef\": \"{{password_osef}}\",\n  \"tipo_consulta\": \"afiliado\",\n  \"numero_afiliado\": \"001234567\",\n  \"plan\": 10,\n  \"gravamen\": 0\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/int/afiliaciones/afiliado/prueba-osef",
+              "host": ["{{api_url}}"],
+              "path": ["int", "afiliaciones", "afiliado", "prueba-osef"]
+            }
+          }
+        },
+        {
+          "name": "Consultar Autorización (Sin Afiliado)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario_osef\": \"{{usuario_osef}}\",\n  \"password_osef\": \"{{password_osef}}\",\n  \"tipo_consulta\": \"autorizacion\",\n  \"numero_autorizacion\": 123456,\n  \"delegacion\": 0\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/int/afiliaciones/afiliado/prueba-osef",
+              "host": ["{{api_url}}"],
+              "path": ["int", "afiliaciones", "afiliado", "prueba-osef"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "api_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "usuario_osef",
+      "value": "TU_USUARIO_OSEF",
+      "type": "string"
+    },
+    {
+      "key": "password_osef",
+      "value": "TU_PASSWORD_OSEF",
+      "type": "string"
+    }
+  ]
+}

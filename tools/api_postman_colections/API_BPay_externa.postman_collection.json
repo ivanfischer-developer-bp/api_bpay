@@ -1,0 +1,903 @@
+{
+	"info": {
+		"_postman_id": "bbfce0f6-ca4b-424c-985b-0cac09444556",
+		"name": "API_BPay_externa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14198728"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Acceso externo: Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = JSON.parse(pm.response.text());",
+									"",
+									" pm.environment.set('extAccessToken', res.token_type+' '+res.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"usuario\": \"matias@osceara.com.ar\",\n    \"password\": \"md2026\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/ext/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ext",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Permite el login desde una app externa sólo en la base de datos de mysql. En este endpoint no se verifica el usuario en bpay-health ni se registra si no existe."
+					},
+					"response": []
+				},
+				{
+					"name": "Acceso externo: logout",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{extAccessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/ext/auth/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ext",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Permite el cierre de sesión desde una app externa."
+					},
+					"response": []
+				},
+				{
+					"name": "Acceso externo: Cambiar password de usuario logueado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{extAccessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"new_password\": \"aP_casa2022!\",\n    \"password_confirm\": \"aP_casa2022!\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/ext/auth/password-change",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ext",
+								"auth",
+								"password-change"
+							]
+						},
+						"description": "Este endpoint permite a una app externa cambiar el password del usuario logueado. Diseñado para usarse en bpay-health para sincronizar el cambio de contraseña en ambas bases de datos, api_bpay de mysql y oh_admin_prd de sqlserver. Este endpoint solo cambia el password en la base de datos de mysql, no en la de sqlserver"
+					},
+					"response": []
+				},
+				{
+					"name": "Acceso externo: Actualizar Usuario Logueado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{extAccessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"id\": 32,\n        \"id_usuario_sqlserver\": null,\n        \"name\": \"Guido Costa\",\n        \"email\": \"gcosta@icba.com.ar\",\n        \"usuario\": \"gcosta@icba.com.ar\",\n        \"id_prestador\": null,\n        \"company_name\": \"ICBA\",\n        \"tipo_doc\": null,\n        \"nro_doc\": null,\n        \"perfil_completo\": 1,\n        \"apellido\": \"Costa\",\n        \"nombre\": \"Guido\",\n        \"roles\": {\n            \"id\": 4,\n            \"name\": \"prestador\"\n        },\n        \"permisos\": [\n            {\n                \"id\": 3,\n                \"name\": \"cambiar password\"\n            },\n            {\n                \"id\": 17,\n                \"name\": \"anular validaciones\"\n            },\n            {\n                \"id\": 18,\n                \"name\": \"crear validacion ambulatorio\"\n            },\n            {\n                \"id\": 19,\n                \"name\": \"crear validacion internacion\"\n            },\n            {\n                \"id\": 20,\n                \"name\": \"consultar elegibilidad afiliaciones\"\n            },\n            {\n                \"id\": 21,\n                \"name\": \"listar diagnosticos\"\n            },\n            {\n                \"id\": 23,\n                \"name\": \"consultar validaciones\"\n            },\n            {\n                \"id\": 24,\n                \"name\": \"consultar estado validaciones\"\n            }\n        ],\n        \"can\": [\n            \"anular validaciones\",\n            \"cambiar password\",\n            \"consultar elegibilidad afiliaciones\",\n            \"consultar estado validaciones\",\n            \"consultar validaciones\",\n            \"crear validacion ambulatorio\",\n            \"crear validacion internacion\",\n            \"listar diagnosticos\"\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/ext/auth/update-user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ext",
+								"auth",
+								"update-user"
+							]
+						},
+						"description": "Endpoint para actualizar los datos del usuario logueado desde una app externa"
+					},
+					"response": []
+				},
+				{
+					"name": "Acceso externo Obtener Usuario logueado",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{extAccessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/ext/auth/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"ext",
+								"auth",
+								"user"
+							]
+						},
+						"description": "Endpoint externo que permite obtener el usuario logueado como un objeto json"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para el login y logout de usuarios de apps externas. También se exponene rutas para el cambio de contraseña de usuario logueado como también para la actualización de datos del usuario logueado.\n\nEl endpoint de registro sólo es para registrarse como afiliado desde un sistema mobile o app externa"
+		},
+		{
+			"name": "Salud",
+			"item": [
+				{
+					"name": "Afiliaciones",
+					"item": [
+						{
+							"name": "Elegibilidad de un afiliado",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/afiliaciones/elegibilidad?nro_afiliado=80696700",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"afiliaciones",
+										"elegibilidad"
+									],
+									"query": [
+										{
+											"key": "p_tipo_doc",
+											"value": "dni",
+											"disabled": true
+										},
+										{
+											"key": "p_nro_doc",
+											"value": "31743589",
+											"disabled": true
+										},
+										{
+											"key": "nro_afiliado",
+											"value": "80696700"
+										}
+									]
+								},
+								"description": "Consulta si un afiliado está activo y puede ser elegido para una validación.\nEndpoint externo"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Validaciones",
+					"item": [
+						{
+							"name": "Validacion de Ambulatorio Externo",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"p_tipo_doc\": \"dni\",\n    \"p_nro_doc\": \"31743589\",\n    \"p_fecha_realizacion\": \"2023-11-03 10:31:42\",\n    \"p_prestador\": 453,\n    \"p_diagnostico\": null,\n    \"p_json_prestaciones\": [\n        {\n            \"codigo\": \"420101\",\n            \"cantidad\": 1\n        },\n        {\n            \"codigo\": \"170101\",\n            \"cantidad\": 1\n        }\n    ],\n    \"p_autoriza_en_guardia\": 0,\n    \"p_observaciones\": null,\n    \"n_token\": \"\",\n    \"p_n_afiliado\": null\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/validaciones/ambulatorio",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"validaciones",
+										"ambulatorio"
+									]
+								},
+								"description": "Endpoint externo para realizar una validacion de ambulatorio"
+							},
+							"response": []
+						},
+						{
+							"name": "Validacion de Internacion Externa",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"p_prestador\": 453,\n    \"p_tipo_doc\": \"DNI\",\n    \"p_nro_doc\": 24040639,\n    \"p_fecha_realizacion\": \"20231103\",\n    \"p_diagnostico\": \"R10\",\n    \"p_json_prestaciones\":  [\n        {\n            \"codigo\":\"135285\",\n            \"cantidad\":\"1\"\n        },\n        {\n            \"codigo\":\"341011\",\n            \"cantidad\":\"1\"\n        }  \n    ], \n    \"autoriza_en_guardia\": 0, \n    \"p_observaciones\": \"\",\n    \"codigo_internacion\": \"\",\n    \"id_tipo_accion\": 1,\n    \"id_tipo_internacion\": 34,\n    \"fecha_ingreso\": \"20231107\",\n    \"fecha_egreso\": null,\n    \"fpe\": \"20221231\", \n    \"codigo_diagnostico_egreso\": \"R10\",\n    \"id_tipo_alta_internacion\": null,\n    \"prioridad\": \"PROGRAMADA \",\n    \"pediatrica\": 0\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/validaciones/internacion",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"validaciones",
+										"internacion"
+									]
+								},
+								"description": "Endpoint externo para realizar una validación de internación"
+							},
+							"response": []
+						},
+						{
+							"name": "Anular Validacion ",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"p_numero\": 7,\n    \"p_sucursal\": 9,\n    \"motivo\": \"Prueba de anulación\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/validaciones/anular",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"validaciones",
+										"anular"
+									]
+								},
+								"description": "Endpoint externo para anular una validación"
+							},
+							"response": []
+						},
+						{
+							"name": "Consultar Validacion",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/validaciones/consultar?p_prestador=&p_fd=&p_fh=&p_id_estado=&p_afiliado=80831400",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"validaciones",
+										"consultar"
+									],
+									"query": [
+										{
+											"key": "p_prestador",
+											"value": "",
+											"description": "Integer"
+										},
+										{
+											"key": "p_fd",
+											"value": "",
+											"description": "fecha desde"
+										},
+										{
+											"key": "p_fh",
+											"value": "",
+											"description": "fecha hasta"
+										},
+										{
+											"key": "p_id_estado",
+											"value": "",
+											"description": "Integer"
+										},
+										{
+											"key": "p_afiliado",
+											"value": "80831400",
+											"description": "String, Requerido, núemro de afiliado"
+										}
+									]
+								},
+								"description": "Endpoint externo para buscar validaciones por fechas y numero de afiliado"
+							},
+							"response": []
+						},
+						{
+							"name": "Diagnosticos consultar",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/diagnosticos/consultar?p_cod_cie_item=r10.1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"diagnosticos",
+										"consultar"
+									],
+									"query": [
+										{
+											"key": "p_cod_cie_item",
+											"value": "r10.1",
+											"description": "String"
+										}
+									]
+								},
+								"description": "Endpoint externo para buscar diagnosticos"
+							},
+							"response": []
+						},
+						{
+							"name": "Validaciones: Consultar cobertura",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"p_prestador\": 453,\n    \"p_tipo_doc\": \"dni\",\n    \"p_nro_doc\": \"31743589\",\n    \"p_fecha_realizacion\": \"2023-11-02 10:31:42\",\n    \"p_diagnostico\": null,\n    \"p_json_prestaciones\": [\n        {\n            \"codigo\": \"420101\",\n            \"cantidad\": 1\n        },\n        {\n            \"codigo\": \"170101\",\n            \"cantidad\": 1\n        }\n    ],\n    \"p_consulta_cobertura\": 1,\n    \"p_n_afiliado\": null\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/validaciones/consultar-cobertura",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"validaciones",
+										"consultar-cobertura"
+									]
+								},
+								"description": "consulta la cobertura para un afiliado de las prestaciones solicitadas"
+							},
+							"response": []
+						}
+					],
+					"description": "endpoints de validaciones en bpay-health expuestos para apps externas"
+				},
+				{
+					"name": "Coberturas Especiales",
+					"item": [
+						{
+							"name": "Coberturas Especiales: Buscar cobertura especial",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/coberturas-especiales/consultar?p_tipo_doc=dni&p_nro_doc=41556797",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"coberturas-especiales",
+										"consultar"
+									],
+									"query": [
+										{
+											"key": "p_tipo_doc",
+											"value": "dni",
+											"description": "El tipo de documento del afiliado"
+										},
+										{
+											"key": "p_nro_doc",
+											"value": "41556797",
+											"description": "El número de documento del afiliado"
+										}
+									]
+								},
+								"description": "Consulta las coberturas especiales de un afiliado"
+							},
+							"response": []
+						},
+						{
+							"name": "Coberturas Especiales: Consultar medicamentos",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/coberturas-especiales/consultar-medicamentos?p_tipo_doc=dni&p_nro_doc=240406399&p_vigentes=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"coberturas-especiales",
+										"consultar-medicamentos"
+									],
+									"query": [
+										{
+											"key": "p_tipo_doc",
+											"value": "dni"
+										},
+										{
+											"key": "p_nro_doc",
+											"value": "240406399"
+										},
+										{
+											"key": "p_vigentes",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Consulta los medicamentos emitidos en las coberturas especiales de un afiliado para la red de farmacias."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Listados",
+					"item": [
+						{
+							"name": "Listar tipos de documentos",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/listados/tipos-documentos",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"listados",
+										"tipos-documentos"
+									]
+								},
+								"description": "Permite consultar los tipos de documentos de identidad válidos en el sistema. Éstos tipos son usados como parámetros de entrada en otras consultas."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auditorias",
+					"item": [
+						{
+							"name": "Auditoria en Terreno: actualizar",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"codigo_diagnostico\": \"@716.95\",\n    \"codigo_internacion\": \"A85E0496-54EE-4F04-8791-CE79627F9651\",\n    \"confirmada\": 0,\n    \"descripcion_diagnostico\": \"ARTROPATIA PELVIS - CADERA\",\n    \"edad_afiliado\": 79,\n    \"email_auditor\": \"igfischer@hotmail.com\",\n    \"email_solicitante\": \"ivanfischer76@gmail.com\",\n    \"fecha_actual\": \"2024-03-15 00:00:00.000\",\n    \"habitacion\": 107,\n    \"id_requerimiento\": 39,\n    \"lugar\": \"CORPORACION MEDICA GRAL. SAN MARTIN\",\n    \"nacimiento_afiliado\": \"30/09/1944\",\n    \"nombre_afiliado\": \"RAMIREZ, ANA MARIA\",\n    \"nombre_auditor\": \"Fischer, Iván\",\n    \"numero_afiliado\": \"102745301\",\n    \"numero_dodumento\": \"4971079\",\n    \"numero_internacion\": \"6802\",\n    \"observaciones\": \"el paciente necesita más días de internación\",\n    \"piso\": 1,\n    \"progreso\": \"100\",\n    \"proxima_auditoria\": \"2024-03-21 00:00:00.000\",\n    \"sector\": \"PISO\",\n    \"sexo\": \"F\",\n    \"tipo_documento\": \"LC\",\n    \"tipo_internacion\": \"INTERNACION QUIRURGICA (7d)\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/auditorias/terreno/actualizar",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"auditorias",
+										"terreno",
+										"actualizar"
+									]
+								},
+								"description": "Informa sobre una auditoria en terreno realizada. Consume: pyxis"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Internaciones",
+					"item": [
+						{
+							"name": "Internación: generar egreso",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"codigo_internacion\": \"D9468487-E6C1-4B71-816A-52E8FF9CD5A4\",\n    \"observaciones\": \"\",\n    \"observaciones_validacion\": \"\",\n    \"observaciones_afiliado\": \"\",\n    \"observaciones_efector\": \"\",\n    \"adjunto\": \"\",\n    \"id_tipo_alta_internacion\": 1,\n    \"fecha_egreso\": \"2024-03-20 00:00:00.000\",\n    \"codigo_diagnostico_egreso\": \"@555.90\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/validaciones/internacion/generar-egreso",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"validaciones",
+										"internacion",
+										"generar-egreso"
+									]
+								},
+								"description": "genera el egreso de una internación"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Recetas",
+					"item": [
+						{
+							"name": "Buscar Diagnósticos",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/recetas/buscar-diagnosticos?texto=dolor",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"recetas",
+										"buscar-diagnosticos"
+									],
+									"query": [
+										{
+											"key": "texto",
+											"value": "dolor"
+										}
+									]
+								},
+								"description": "Obtiene un listado de diagnósticos válidos para realizar recetas"
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar Medicamentos",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/ext/salud/recetas/buscar-medicamentos?medicamento=ibuprofeno",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"recetas",
+										"buscar-medicamentos"
+									],
+									"query": [
+										{
+											"key": "medicamento",
+											"value": "ibuprofeno"
+										},
+										{
+											"key": "numeroPagina",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Obtiene un listado paginado de medicamentos válidos para realizar una receta electrónica"
+							},
+							"response": []
+						},
+						{
+							"name": "Generar Receta",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{extAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id_medico\": 13,\n    \"receta\": {\n        \"paciente\": {\n            \"apellido\": \"ROCCO\",\n            \"nombre\": \"MARIA GUILLERMINA\",\n            \"tipoDoc\": \"DNI\",\n            \"nroDoc\": \"31743589\",\n            \"pais\": \"AR\",\n            \"sexo\": \"F\",\n            \"fechaNacimiento\": \"1999-12-20T00:00:00\",\n            \"cobertura\": {\n                \"nroFinanciador\": \"20056\",\n                \"plan\": \"PLAN BAS\",\n                \"numero\": \"80696700\",\n                \"privado\": true\n            }\n        },\n        \"medico\": {\n            \"apellido\": \"Tester\",\n            \"nombre\": \"Medico\",\n            \"tipoDoc\": \"DNI\",\n            \"nroDoc\": \"00000000\",\n            \"especialidad\": \"Sin Especialidad\",\n            \"sexo\": \"M\",\n            \"fechaNacimiento\": \"2023-04-10T13:12:53.498Z\",\n            \"email\": \"test_medico@email.com\",\n            \"telefono\": \"000 0000000\",\n            \"pais\": \"AR\",\n            \"firmalink\": \"\",\n            \"matricula\": {\n                \"tipo\": \"MN\",\n                \"numero\": \"0000\",\n                \"provincia\": \"SIN ESPECIFICAR\"\n            }\n        },\n    \"medicamentos\": [\n        {\n            \"nombreProducto\": \"ACTRON\",\n            \"nombreDroga\": \"ibuprofeno\",\n            \"presentacion\": \"caps.gelat.blanda x 10\",\n            \"cantidad\": 2,\n            \"permiteSustitucion\": \"N\",\n            \"regNo\": \"30127\",\n            \"tratamiento\": 0,\n            \"diagnostico\": \"DOLOR EN EL PECHO AL RESPIRAR\",\n            \"observaciones\": \"TEST OBSERVACIONES EN MEDICAMENTOS\"\n        }\n    ],\n    \"recetasPostadatas\": {\n        \"cantidad\": 2,\n        \"diasAPosdatar\": 30\n    },\n    \"diagnostico\": \"\",\n    \"horario\": \"08:00 a 17:00hs\",\n    \"diasAtencion\": \"Lunes a Viernes\",\n    \"datosContacto\": \"1545678310\",\n    \"nombreConsultorio\": \"Consultorio Privado del doctor 162\",\n    \"direccionConsultorio\": \"Sarmiento 1234 4\",\n    \"email\": \"info@consultorio.com.ar\",\n    \"informacionAdicional\": \"Informacion adicional\",\n    \"clienteAppId\": \"317\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/ext/salud/recetas/generar-receta",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"ext",
+										"salud",
+										"recetas",
+										"generar-receta"
+									]
+								},
+								"description": "Genera una receta electrónica que estará disponible en las farmacias adheridas."
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Endpoints externos relacionados a la app bpay-helath. Estos endpoints utilizan en su mayoría ws's en vez de sp's. Devuelven datos de la manera como lo solicitan las apps externas"
+		}
+	]
+}

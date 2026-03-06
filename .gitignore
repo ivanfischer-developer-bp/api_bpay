@@ -23,8 +23,6 @@ app/Models/Modelo.php
 *.old
 .env.msgraph.client-credentials.example
 
-/tools
-
 /resources/views/emails/auditorias/auditoria_en_terreno_actualizar.blade.php
 /resources/views/emails/auditorias/auditoria_en_terreno_solicitar.blade.php
 /resources/views/emails/common_cuenta_corriente.blade.php
