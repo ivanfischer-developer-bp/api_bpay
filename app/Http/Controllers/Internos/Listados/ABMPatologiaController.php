@@ -130,16 +130,18 @@ class ABMPatologiaController extends ConexionSpController
                         $resp_concepto = $this->ejecutar_sp_directo('afiliacion','sp_patologia_concepto_insert', $ps_sp);
                         array_push($extras['responses'], ['sp_patologia_concepto_insert' => $resp_concepto]);
                         // guardamos los regarcos
-                        $p_sp = [
-                            'p_id_patologia' => $response[0]->id,
-                            'p_importe' => request('importe_recargo'),
-                            'p_id_usuario' => $id_usuario,
-                            'p_fecha' => Carbon::now()->format('Ymd H:i:s')
-                        ];
-                        array_push($extras['sps'], ['sp_patologia_recargo_insert' => $p_sp]);
-                        array_push($extras['queries'], $this->get_query('afiliacion', 'sp_patologia_recargo_insert', $p_sp));
-                        $resp_importe = $this->ejecutar_sp_directo('afiliacion','sp_patologia_recargo_insert', $p_sp);
-                        array_push($extras['responses'], ['sp_patologia_recargo_insert' => $resp_importe]);
+                        $resp_importe = 'no se ejecutó el store procedure.';
+                        // comentado porque no está funcionando bien el sp, duplica las entradas
+                        // $p_sp = [
+                        //     'p_id_patologia' => $response[0]->id,
+                        //     'p_importe' => request('importe_recargo'),
+                        //     'p_id_usuario' => $id_usuario,
+                        //     'p_fecha' => Carbon::now()->format('Ymd H:i:s')
+                        // ];
+                        // array_push($extras['sps'], ['sp_patologia_recargo_insert' => $p_sp]);
+                        // array_push($extras['queries'], $this->get_query('afiliacion', 'sp_patologia_recargo_insert', $p_sp));
+                        // $resp_importe = $this->ejecutar_sp_directo('afiliacion','sp_patologia_recargo_insert', $p_sp);
+                        // array_push($extras['responses'], ['sp_patologia_recargo_insert' => $resp_importe]);
                         
                         $status = 'ok';
                         $message = 'Transacción realizada con éxito.';
@@ -287,16 +289,18 @@ class ABMPatologiaController extends ConexionSpController
                         $data = null;
                         $code = -3;
                     }else{
-                        $p_sp = [
-                            'p_id_patologia' => request('id_patologia'),
-                            'p_importe' => request('importe_recargo'),
-                            'p_id_usuario' => $id_usuario,
-                            'p_fecha' => Carbon::now()->format('Ymd H:i:s')
-                        ];
-                        array_push($extras['sps'], ['sp_patologia_recargo_insert' => $p_sp]);
-                        array_push($extras['queries'], $this->get_query('afiliacion', 'sp_patologia_recargo_insert', $p_sp));
-                        $resp_importe = $this->ejecutar_sp_directo('afiliacion','sp_patologia_recargo_insert', $p_sp);
-                        array_push($extras['responses'], ['sp_patologia_recargo_insert' => $resp_importe]);
+                        $resp_importe = 'no se ejecutó el store procedure.';
+                        // comentado porque no está funcionando bien el sp, duplica las entradas
+                        // $p_sp = [
+                        //     'p_id_patologia' => request('id_patologia'),
+                        //     'p_importe' => request('importe_recargo'),
+                        //     'p_id_usuario' => $id_usuario,
+                        //     'p_fecha' => Carbon::now()->format('Ymd H:i:s')
+                        // ];
+                        // array_push($extras['sps'], ['sp_patologia_recargo_insert' => $p_sp]);
+                        // array_push($extras['queries'], $this->get_query('afiliacion', 'sp_patologia_recargo_insert', $p_sp));
+                        // $resp_importe = $this->ejecutar_sp_directo('afiliacion','sp_patologia_recargo_insert', $p_sp);
+                        // array_push($extras['responses'], ['sp_patologia_recargo_insert' => $resp_importe]);
                        
                         $resp_diagnosticos = [];
                         if(is_array(request('diagnosticos')) && sizeof(request('diagnosticos')) > 0){
@@ -648,10 +652,12 @@ class ABMPatologiaController extends ConexionSpController
             $this->params_sp['p_id_persona'] = request('id_persona');
         }
         // necesitamos modificar los valores devueltos
-        $ret = $this->ejecutar_sp_simple();
+        $ret = $this->ejecutar_sp_simple(); 
+        // return $ret;
         // return $ret;
         $r = (array) json_decode(json_encode($ret));
         $d = $r['original']->data;
+        // return $r;
         // formateamos los valores
         if(is_array($d) && sizeof($d) > 0){
             foreach ( $d as $item ){
@@ -711,7 +717,7 @@ class ABMPatologiaController extends ConexionSpController
             'p_importe_recargo' => $this->params['importe_recargo'],
             'p_cod_certificado' => $this->params['cod_certificado']
         ];
-        if(request('id_persona_patologia') == null){
+        if($this->params['id_persona_patologia'] == null){
             $this->param_id_usuario = 'p_id_usuario';
             $this->tipo_id_usuario = 'id'; // id, usuario, email, param
             $this->params_sp['p_fecha'] = Carbon::now()->format('Ymd');
