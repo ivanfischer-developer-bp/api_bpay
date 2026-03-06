@@ -340,11 +340,17 @@ class ProfileDoctorController extends ConexionSpController
                             $asunto = 'Verificación de email';
                         }
 
+                        $email = '';
+                        if($user_logueado->hasRole(['medico', 'medico supervisor', 'medico administrador', 'medico auditor', 'medico auditor externo', 'super administrador'])){
+                            $email = strtolower($medico['email']);
+                        }else{
+                            $email = $user_logueado->email;
+                        }
                         // es redundante porque tiene un fallback interno solo demuestra la configuración del .env
                         if(env('MAIL_USE_MICROSOFT_GRAPH', false)){
                             $mailable = new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion);
                             // Envía automáticamente con fallback
-                            $resultado = $this->sendEmail($trimemails, $mailable);
+                            $resultado = $this->sendEmail($email, $mailable);
                             array_push($extras['responses'], ['microsoft_graph_result' => $resultado]);
                             if ($resultado) {
                                 $message = 'Email enviado con Microsoft Graph. ';
@@ -358,11 +364,11 @@ class ProfileDoctorController extends ConexionSpController
                                 $code = -3;
                             }
                         }else{
-                            Mail::to($user_logueado->email)->send(new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion));
+                            Mail::to($email)->send(new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion));
                             if(Mail::failures()){
                                 array_push($extras['responses'], ['smtp_result' => false]);
                                 Log::channel('email')->error('Email fallido por SMTP', [
-                                    'email' => $user_logueado->email,
+                                    'email' => $email,
                                     'asunto' => $asunto,
                                     'datos_notificacion' => $datos_notificacion
                                 ]);
@@ -373,7 +379,7 @@ class ProfileDoctorController extends ConexionSpController
                             }else{
                                 array_push($extras['responses'], ['smtp_result' => true]);
                                 Log::channel('email')->info('Email enviado exitosamente a través de SMTP', [
-                                    'email' => $user_logueado->email,
+                                    'email' => $email,
                                     'asunto' => $asunto,
                                     'datos_notificacion' => $datos_notificacion
                                 ]);

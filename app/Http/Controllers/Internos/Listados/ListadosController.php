@@ -1381,6 +1381,8 @@ class ListadosController extends ConexionSpController
 
     // documentacion de afiliados se llevó a su propio controlador ABMDocumentacionAfiliadoController
 
+    // documentacion patologia se llevó al controlador ABMPatologiaController
+
     /**
      * Retorna un listado de estados de los afiliados.
      */
