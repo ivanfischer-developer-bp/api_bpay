@@ -30,6 +30,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Mobile\MobileAfiliadoController;
 use App\Http\Controllers\Mobile\MobileAuthController;
 use App\Http\Controllers\Mobile\MobileConsultasController;
+use App\Http\Controllers\Mobile\MobileExportarFormulariosCronicosController;
 use App\Http\Controllers\Mobile\MobileFileController;
 use App\Http\Controllers\Mobile\MobileGrupoFamiliarController;
 use App\Http\Controllers\Mobile\MobilePreautorizacionesController;
@@ -392,6 +393,12 @@ Route::group(['prefix' => 'mobile'],
                         // certificados medicos
                         Route::post('generar-receta-certificado', [MobileRecetaCertificadoController::class, 'generar_receta_certificado']); // mobile/recetas/generar-receta-certificado  1.1.612-20251113
                         Route::get('listar-recetas-certificados-emitidos', [MobileRecetaCertificadoController::class, 'listar_recetas_certificados_emitidos']); // mobile/recetas/listar-recetas-certificados-emitidos  1.1.612-20251113
+                    }
+                );
+                Route::group(['prefix' => 'formularios'],
+                    function(){
+                        Route::post('exportar-formulario-cronicos', [MobileExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // mobile/formularios/exportar-formulario-310-vacio  1.1.713-20260309
+                        Route::post('exportar-recetario-tratamientos-cronicos', [MobileExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos']); // mobile/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
                     }
                 );
             }
@@ -770,7 +777,7 @@ Route::group(['prefix' => 'int'],
                         Route::group(['prefix' => 'formularios'],
                             function(){
                                 Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/consultorio/formularios/exportar-formulario-310-vacio  1.1.701-20260226
-                                Route::post('exportar-recetario-tratamientos-cronicos-vacio', [ExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos_vacio']); // int/consultorio/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
+                                Route::post('exportar-recetario-tratamientos-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos']); // int/consultorio/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
                             }
                         );
                     }

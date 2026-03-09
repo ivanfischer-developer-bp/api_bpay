@@ -4795,7 +4795,8 @@
 											"query": [
 												{
 													"key": "id_persona",
-													"value": "7413"
+													"value": "7413",
+													"description": "7413, 9830"
 												}
 											]
 										}
@@ -7724,7 +7725,7 @@
 									}
 								},
 								"url": {
-									"raw": "https://sisa.msal.gov.ar/sisa/services/rest/profesional/buscar?usuario=slvega&clave=Bpay2024!&nrodoc=17736066",
+									"raw": "https://sisa.msal.gov.ar/sisa/services/rest/profesional/buscar?usuario=slvega&clave=Bpay2024!&nrodoc=4377743",
 									"protocol": "https",
 									"host": [
 										"sisa",
@@ -7760,7 +7761,7 @@
 										},
 										{
 											"key": "nrodoc",
-											"value": "17736066"
+											"value": "4377743"
 										},
 										{
 											"key": "matricula",
@@ -8184,7 +8185,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"accion\": \"mostrar\",\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"ROCCO, MARIA GUILLERMINA\",\n        \"cuadro_justificativo\": \"una breve justificacion de porque se recetan esos medicamentos y no otros\",\n        \"diagnosticos\": [\n            \"Hipertención arterial (I10)\",\n            \"Hipo/Hipertiroidismo (E03)\",\n            \"Glaucoma (H40)\"\n        ],\n        \"domicilio\": \"Las rosas 1354\",\n        \"edad\": 40,\n        \"email\": \"mrocco@cajaabogados.org.ar\",\n        \"fecha_emision\": \"03/03/2026\",\n        \"institucion\": null,\n        \"medicamentos\": [\n            {\n                \"comprimidos_x_dia\": \"1\",\n                \"contenido_envase\": \"10\",\n                \"marca_comercial\": \"ACLOXIGENAC\",\n                \"principio_activo\": \"diclofenac sódico\",\n                \"regNo\": \"55690\",\n                \"unidad_posologica\": \"50 mg comp.rec.x 10\"\n            }\n        ],\n        \"medico_prescriptor\": {\n            \"especialidad\": \"MEDICO CLINICO\",\n            \"id_medico\": 1,\n            \"institucion\": null,\n            \"matricula\": \"MN 143032\",\n            \"nombre_y_apellido\": \"BARANDIARAN MARIANO\",\n            \"telefono\": \"1156405114\"\n        },\n        \"nro_afiliado\": \"80696700\",\n        \"resumen_historia_clinica\": \"un breve resume de historia clinica\",\n        \"telefono\": \"123-456-7895\",\n        \"user_id\": 1\n    }\n}",
+											"raw": "{\n    \"accion\": \"mostrar\",\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"ROCCO, MARIA GUILLERMINA\",\n        \"cuadro_justificativo\": \"una breve justificacion de porque se recetan esos medicamentos y no otros\",\n        \"diagnosticos\": [\n            \"Hipertención arterial (I10)\",\n            \"Hipo/Hipertiroidismo (E03)\",\n            \"Glaucoma (H40)\"\n        ],\n        \"domicilio\": \"Las rosas 1354\",\n        \"edad\": 40,\n        \"email\": \"mrocco@cajaabogados.org.ar\",\n        \"fecha_emision\": \"03/03/2026\",\n        \"institucion\": null,\n        \"medicamentos\": [\n            {\n                \"comprimidos_x_dia\": \"1\",\n                \"contenido_envase\": \"10\",\n                \"marca_comercial\": \"ACLOXIGENAC\",\n                \"principio_activo\": \"diclofenac sódico\",\n                \"regNo\": \"55690\",\n                \"unidad_posologica\": \"50 mg comp.rec.x 10\"\n            }\n        ],\n        \"medico_prescriptor\": {\n            \"especialidad\": \"MEDICO CLINICO\",\n            \"id_medico\": 1,\n            \"matricula\": \"MN 143032\",\n            \"nombre_y_apellido\": \"BARANDIARAN MARIANO\",\n            \"nro_doc\": \"29898069\",\n            \"telefono\": \"1156405114\"\n        },\n        \"nro_afiliado\": \"80696700\",\n        \"resumen_historia_clinica\": \"un breve resume de historia clinica\",\n        \"telefono\": \"123-456-7895\",\n        \"user_id\": 1\n    }\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -8236,7 +8237,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{url}}/api/int/consultorio/formularios/exportar-recetario-tratamientos-cronicos-vacio",
+											"raw": "{{url}}/api/int/consultorio/formularios/exportar-recetario-tratamientos-cronicos",
 											"host": [
 												"{{url}}"
 											],
@@ -8245,7 +8246,7 @@
 												"int",
 												"consultorio",
 												"formularios",
-												"exportar-recetario-tratamientos-cronicos-vacio"
+												"exportar-recetario-tratamientos-cronicos"
 											]
 										},
 										"description": "Retorna un pdf de recetario para medicamentos crónicos para ser completado manualmente por el médico"
@@ -17479,7 +17480,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"usuario\": \"marcelo.aquino\",\n    \"password\": \"Osc2026\"\n}",
+									"raw": "{\n    \"usuario\": \"eduardo.rocco\",\n    \"password\": \"\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -19306,6 +19307,97 @@
 									]
 								},
 								"description": "Obtiene un listado de los financiadores de INNOVAMED"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Formularios",
+					"item": [
+						{
+							"name": "Exportar Formulario Pacientes Crónicos",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{mobileAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"accion\": \"mostrar\",\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"ROCCO, EDUARDO GUILLERMO\",\n        \"cuadro_justificativo\": null,\n        \"diagnosticos\": [],\n        \"domicilio\": \"Las rosas 1354\",\n        \"edad\": 81,\n        \"email\": \"ser.vega@eme.com\",\n        \"fecha_emision\": \"03/03/2026\",\n        \"institucion\": null,\n        \"medicamentos\": [],\n        \"medico_prescriptor\": null,\n        \"nro_afiliado\": \"105378200\",\n        \"resumen_historia_clinica\": null,\n        \"telefono\": \"123-456-7895\",\n        \"user_id\": 91\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/mobile/formularios/exportar-formulario-cronicos",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"mobile",
+										"formularios",
+										"exportar-formulario-cronicos"
+									]
+								},
+								"description": "Exporta a pdf un formulario 301 para pacientes crónicos con los datos del paciente listo para ser completado por el médico."
+							},
+							"response": []
+						},
+						{
+							"name": "Exportar Recetario Tratamientos Crónicos",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{mobileAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"accion\": \"mostrar\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/mobile/formularios/exportar-recetario-tratamientos-cronicos",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"mobile",
+										"formularios",
+										"exportar-recetario-tratamientos-cronicos"
+									]
+								},
+								"description": "Exporta a pdf un recetario para tratamientos de pacientes crónicos para ser completado por el médico"
 							},
 							"response": []
 						}

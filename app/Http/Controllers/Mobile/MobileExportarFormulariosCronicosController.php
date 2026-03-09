@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Internos\Exportaciones;
+namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,7 +16,7 @@ use Storage;
 use Carbon\Carbon;
 use setasign\Fpdi\Fpdi;
 
-class ExportarFormulariosCronicosController extends ConexionSpController
+class MobileExportarFormulariosCronicosController extends ConexionSpController
 {
     /**
      * Crea un pdf vacío de solicitud de medicamentos Resolución 310 para pacientes crónicos para ser impreso y llenado por el médico
@@ -28,7 +28,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
         $extras = [
             'api_software_version' => config('site.software_version'),
             'ambiente' => config('site.ambiente'),
-            'url' => '/int/consultorio/formularios/exportar-formulario-cronicos',
+            'url' => '/mobile/formularios/exportar-formulario-cronicos',
             'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
             'function' => __FUNCTION__,
             'sps' => [],
@@ -37,6 +37,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
             'verificado' => [],
             'path' => ''
         ];
+
         try {
             $user = User::with('roles', 'permissions')->find($request->user()->id);
             $logged_user = $this->get_logged_user($user);
@@ -552,7 +553,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
         $extras = [
             'api_software_version' => config('site.software_version'),
             'ambiente' => config('site.ambiente'),
-            'url' => '/int/consultorio/formularios/exportar-recetario-tratamientos-cronicos',
+            'url' => '/mobile/formularios/exportar-recetario-tratamientos-cronicos',
             'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
             'function' => __FUNCTION__,
             'sps' => [],
