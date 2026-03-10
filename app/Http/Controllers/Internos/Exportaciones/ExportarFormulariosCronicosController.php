@@ -86,7 +86,8 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $y = $pdf->GetY();
                 $pdf->Rect($x, $y, 180, 30);
                 $pdf->SetXY($x, $y + 1);
-                $textoResumenHC = $params['paciente'] != null && $params['paciente']['resumen_historia_clinica'] != '' ? $params['paciente']['resumen_historia_clinica'] : 'Breve resumen de historia clínica ';
+                $textoResumenHC = $params['paciente'] != null && $params['paciente']['resumen_historia_clinica'] != '' ? $params['paciente']['resumen_historia_clinica'] : '';
+                $pdf->Cell(180, 5, utf8_decode('Breve resumen de historia clínica '), 0, 1, 'L'); // resumen de hitoria clinica del paciente
                 $pdf->MultiCell(180, 5, utf8_decode($textoResumenHC), 0, 'L'); // resumen de hitoria clinica del paciente
                 $pdf->SetXY($x, $y + 30);
                 $pdf->SetFont($font, '', 9);
@@ -94,75 +95,76 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $y = $pdf->GetY();
                 $pdf->Rect($x, $y, 180, 30);
                 $pdf->SetXY($x, $y + 1);
-                $cuadroJustificativo = $params['paciente'] != null && $params['paciente']['cuadro_justificativo'] != '' ? $params['paciente']['cuadro_justificativo'] : 'Descripción del cuadro que justifica el uso de la/s droga/s solicitada/s (incluyendo limitaciones al uso de otra/s droga/s) ';
+                $cuadroJustificativo = $params['paciente'] != null && $params['paciente']['cuadro_justificativo'] != '' ? $params['paciente']['cuadro_justificativo'] : '';
+                $pdf->Cell(180, 5, utf8_decode('Descripción del cuadro que justifica el uso de la/s droga/s solicitada/s (incluyendo limitaciones al uso de otra/s droga/s) '), 0, 1, 'L'); // justificacion de la medicación solicitada
                 $pdf->MultiCell(180, 5, utf8_decode($cuadroJustificativo), 0, 'L'); // justificacion de la medicación solicitada
                 $pdf->SetXY($x, $y + 30);
 
                 $pdf->Cell(180, 2, '', 0, 2); // espacio en blanco entre textos
 
                 $pdf->SetFont($font, '', 8);
-                $pdf->Cell(36, 7, utf8_decode('Principio activo '), 1, 0); // principio activo del medicamento solicitado
-                $pdf->Cell(36, 7, utf8_decode('Marca Comercial '), 1, 0); // marca comercial del medicamento solicitado
-                $pdf->Cell(36, 7, utf8_decode('Unidad Posológica '), 1, 0); // unidad posológica del medicamento solicitado
+                $pdf->Cell(51, 7, utf8_decode('Principio activo '), 1, 0); // principio activo del medicamento solicitado
+                $pdf->Cell(53, 7, utf8_decode('Marca Comercial '), 1, 0); // marca comercial del medicamento solicitado
+                $pdf->Cell(51, 7, utf8_decode('Unidad Posológica '), 1, 0); // unidad posológica del medicamento solicitado
                 // $pdf->Cell(36, 10, utf8_decode('Comprimidos por día '), 1, 0); // comprimidos por día del medicamento solicitado
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                $pdf->Rect($x, $y, 20, 7);
+                $pdf->Rect($x, $y, 10, 7);
                 $pdf->SetXY($x, $y + 1);
-                $pdf->MultiCell(20, 3, utf8_decode('Comprimidos por día '), 0, 'L'); // comprimidos por día del medicamento solicitado
+                $pdf->MultiCell(10, 3, utf8_decode('Dosis diaria'), 0, 'L'); // dosis diaria del medicamento solicitado
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                $pdf->Rect($x + 128, $y -7, 52, 7);
-                $pdf->SetXY($x + 128, $y - 6);
-                $pdf->MultiCell(52, 3, utf8_decode('Contenido de envase prescripto (Nro. de unidades) '), 0, 'L'); // contenido del envase del medicamento solicitado
+                $pdf->Rect($x + 165, $y -7, 15, 7);
+                $pdf->SetXY($x + 165, $y - 6);
+                $pdf->MultiCell(15, 3, utf8_decode('Número. unidades '), 0, 'L'); // contenido del envase del medicamento solicitado
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
                 if($params['paciente'] != null && isset($params['paciente']['medicamentos']) && is_array($params['paciente']['medicamentos']) && count($params['paciente']['medicamentos']) > 0) {
                     $medicamentos = $params['paciente']['medicamentos'];
                     // return response()->json(['params' => $params, 'medicamentos' => $medicamentos, 'extras' => $extras], 200);
                     foreach($medicamentos as $medicamento){
-                        $pdf->Cell(36, 5, utf8_decode($medicamento['principio_activo']), 1, 0); // principio activo del medicamento solicitado
-                        $pdf->Cell(36, 5, utf8_decode($medicamento['marca_comercial']), 1, 0); // marca comercial del medicamento solicitado
-                        $pdf->Cell(36, 5, utf8_decode($medicamento['unidad_posologica']), 1, 0); // unidad posológica del medicamento solicitado
-                        $pdf->Cell(20, 5, utf8_decode($medicamento['comprimidos_x_dia']), 1, 0, 'R'); // comprimidos por día del medicamento solicitado
-                        $pdf->Cell(52, 5, utf8_decode($medicamento['contenido_envase']), 1, 1, 'R'); // contenido del envase del medicamento solicitado
+                        $pdf->Cell(51, 5, utf8_decode($medicamento['principio_activo']), 1, 0); // principio activo del medicamento solicitado
+                        $pdf->Cell(53, 5, utf8_decode($medicamento['marca_comercial']), 1, 0); // marca comercial del medicamento solicitado
+                        $pdf->Cell(51, 5, utf8_decode($medicamento['unidad_posologica']), 1, 0); // unidad posológica del medicamento solicitado
+                        $pdf->Cell(10, 5, utf8_decode($medicamento['comprimidos_x_dia']), 1, 0, 'R'); // dosis diaria del medicamento solicitado
+                        $pdf->Cell(15, 5, utf8_decode($medicamento['contenido_envase']), 1, 1, 'R'); // contenido del envase del medicamento solicitado
                     }
                 }else{
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 1
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 1
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 1
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 1
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 1
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 2
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 2
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 2
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 2
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 2
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 3
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 3
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 3
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 3
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 3
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 4
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 4
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 4
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 4
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 4
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 5
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 5
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 5
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 5
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 5
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 6
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 6
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 6
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 6
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 6
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 7
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 7
-                    $pdf->Cell(36, 5, '', 1, 0); // fila 7
-                    $pdf->Cell(20, 5, '', 1, 0); // fila 7
-                    $pdf->Cell(52, 5, '', 1, 1); // fila 7
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 1
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 1
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 2
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 2
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 3
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 3
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 4
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 4
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 5
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 5
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 6
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 6
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(53, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(51, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(10, 5, '', 1, 0); // fila 7
+                    $pdf->Cell(15, 5, '', 1, 1); // fila 7
                 }
 
                 $pdf->Cell(180, 2, '', 0, 2); // espacio entre textos
@@ -224,10 +226,10 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                     return in_array($diagnostico_texto, $diagnosticos_array);
                 };
 
-                $pdf->Cell(50, 3, utf8_decode('Hipertención arterial (I10)'), 0, 0); // diagnostico 1
+                $pdf->Cell(50, 3, utf8_decode('Hipertensión arterial (I10)'), 0, 0); // diagnostico 1
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
-                $checked = $tiene_diagnostico('Hipertención arterial (I10)', $diagnosticos_paciente);
+                $checked = $tiene_diagnostico('Hipertensión arterial (I10)', $diagnosticos_paciente);
                 $dibujar_checkbox($pdf, $x, $y, $checked);
                 $pdf->setX($pdf->GetX() + 10);
                 $pdf->Cell(50, 3, utf8_decode('Anticoagulación (D68.3)'), 0, 0); // diagnostico 2
@@ -394,10 +396,6 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->MultiCell(180, 3, utf8_decode($texto2), 0, 'L'); 
                 
 
-
-
-
-
                 //  -------------------
                 $pdf->AddPage('portrait');
                 $pdf->SetMargins(10, 15);
@@ -467,6 +465,60 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->SetXY($x, $y);
                 $texto4 = 'Para cualquier información adicional, podrás consultar la página web de la Superintendencia de Servicios de Salud: www.sssalud.gob.ar';
                 $pdf->MultiCell(180, 10, utf8_decode($texto4), 0, 'L'); 
+
+                if($params['paciente'] != null && $params['paciente']['nro_doc'] != null && $params['paciente']['tipo_doc'] != null){
+
+                    // guardar en historia clinica el pdf
+                    $upload_path_externo = env('UPLOADS_PATH_EXTERNO');
+                    if(!File::exists($upload_path_externo)){
+                        File::makeDirectory($upload_path_externo, 0777, true);
+                    }
+                    $archivo_historia = md5(date('YmdHis') . $user->id . uniqid()) . '.pdf';
+                    $ruta_archivo_historia = $upload_path_externo.$archivo_historia;
+                    $pdf->Output($ruta_archivo_historia, "F");
+
+                    $params = [
+                        'tipo_documento' => $params['paciente']['tipo_doc'],
+                        'numero_documento' => $params['paciente']['nro_doc'],
+                        'usuario' => $logged_user['usuario'],
+                        'id_medico' => $params['paciente']['medico_prescriptor']['id_medico'],
+                        'hoja' => 'Formulario de Habilitación de Medicamentos para Enfermedades Crónicas - Resolución 310/04',
+                        'archivo' => $archivo_historia,
+                        'Talla' => null,
+                        'Peso' => null,
+                        'BMI' => null,
+                        'TA' => null,
+                        'FC' => null,
+                        'RM' => null,
+                        'Antecedentes_Gin' => null,
+                        'Anticonceptivo' => null,
+                        'Mamas' => null,
+                        'Genitales_Externos' => null,
+                        'Menarca' => null,
+                        'FUM' => null,
+                        'Ultimo_Control' => null,
+                        'Piel' => null,
+                        'Usa_Lentes' => null,
+                        'Odoscopia_Normal' => null,
+                        'Dentadura' => null,
+                        'Pulmones' => null,
+                        'Corazon' => null,
+                        'Abdomen' => null,
+                        'OD_Agudeza_Visual' => null,
+                        'OI_Agudeza_Visual' => null,
+                        'OD_Agudeza_Audio' => null,
+                        'OI_Agudeza_Audio' => null,
+                        'Datos_Adicionales' => null,
+                        'Hallazgos_Anormales' => null,
+                    ];
+                    // $extras['params_sp'] = $params;
+
+                    //  devuelve las hojas de la historia clinica
+                    array_push($extras['queries'], $this->get_query('validacion', 'AWEB_AgregarHojaHistoriaClinica', $params));
+                    $response = $this->ejecutar_sp_directo('validacion', 'AWEB_AgregarHojaHistoriaClinica', $params);
+                    array_push($extras['responses'], ['AWEB_AgregarHojaHistoriaClinica' => $response]);
+                    return $extras;
+                }
 
                 //  -------------------
                 if ($accion == 'enviar') {
@@ -584,9 +636,9 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->SetMargins(10, 15);
                 $pdf->Cell(180, 0, '', 0, 1); // espacio en blanco para ubicar el texto
                 // logo 
-                $pdf->Image(env('IMAGE_PATH').'/'.env('LOGO'), 10, 5, 15, 0, 'PNG');
+                $pdf->Image(env('IMAGE_PATH').'/'.env('LOGO'), 10, 5, 20, 0, 'PNG');
 
-                $pdf->SetTextColor(50, 50, 158); // letra en color azul
+                $pdf->SetTextColor(0, 0, 0); //(50, 50, 158); // letra en color azul
 
                 $pdf->SetFont($font, 'B', 16);
                 $pdf->Cell(180, 7, utf8_decode('Recetario de medicamentos para tratamientos crónicos'), 0, 2, 'C');
