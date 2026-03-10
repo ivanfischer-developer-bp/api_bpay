@@ -517,7 +517,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                     array_push($extras['queries'], $this->get_query('validacion', 'AWEB_AgregarHojaHistoriaClinica', $params));
                     $response = $this->ejecutar_sp_directo('validacion', 'AWEB_AgregarHojaHistoriaClinica', $params);
                     array_push($extras['responses'], ['AWEB_AgregarHojaHistoriaClinica' => $response]);
-                    return $extras;
+                    // return $extras;
                 }
 
                 //  -------------------
@@ -532,7 +532,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                     $filename = 'formulario-310.pdf';
                     $file = $file_path.$filename;
                     $pdf->Output($file, "F");
-                    $extas['path'] = $file;
+                    $extras['path'] = $file;
                     return response()->json([
                         'status' => 'ok',
                         'count' => 1,
