@@ -1366,9 +1366,19 @@ class AuthController extends ConexionSpController {
                     array_push($extras['queries'], $this->get_query('admin', 'sp_usuario_update', $p));
                     $tokenResult = $this->ejecutar_sp_directo('admin', 'sp_usuario_update', $p);
                     array_push($extras['responses'], ['sp_usuario_update' => $tokenResult]);
+                    if(
+                        !is_array($tokenResult)
+                        || empty($tokenResult)
+                        || !isset($tokenResult[0])
+                        || !isset($tokenResult[0]->token)
+                        || $tokenResult[0]->token === null
+                        || $tokenResult[0]->token === ''
+                    ){
+                        throw new \Exception('sp_usuario_update no devolvió token válido');
+                    }
                     $token = $tokenResult[0]->token;
                     
-                    // Actualizar clave en MySQL
+                    // Actualizar clave en Api_bpay
                     if($user != null){
                         $oldPassword = $user->password;
                         $user->password = Hash::make($token);
@@ -1590,7 +1600,7 @@ class AuthController extends ConexionSpController {
             ]); 
             
         } catch (\Throwable $th) {
-            Log::channel('cambios')->error('4.- Error en funcion enviar_token_reseteo_password - '.$th->getMessage());
+            Log::channel('cambios')->error('4.- Error en funcion enviar_token_reseteo_password - Line: '.$th->getLine().' Error: '.$th->getMessage());
             array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
             return response()->json([
                 'status' => 'fail',
@@ -2517,6 +2527,16 @@ class AuthController extends ConexionSpController {
                     array_push($extras['queries'], $this->get_query('admin', 'sp_usuario_update', $p));
                     $tokenResult = $this->ejecutar_sp_directo('admin', 'sp_usuario_update', $p);
                     array_push($extras['responses'], ['sp_usuario_update' => $tokenResult]);
+                    if(
+                        !is_array($tokenResult)
+                        || empty($tokenResult)
+                        || !isset($tokenResult[0])
+                        || !isset($tokenResult[0]->token)
+                        || $tokenResult[0]->token === null
+                        || $tokenResult[0]->token === ''
+                    ){
+                        throw new \Exception('sp_usuario_update no devolvió token válido');
+                    }
                     $token = $tokenResult[0]->token;
                     
                     // Actualizar clave en MySQL

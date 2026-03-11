@@ -247,6 +247,8 @@ class ConexionSpController extends Controller
         $db = $db == null ? $this->db : $db;
         $sp = $sp == null ? $this->sp : $sp;
         $params = $params == null ? $this->params : $params;
+        $this->resultado = null;
+        $this->error = null;
         try {
             $conexion = new Conexion($db);
             $this->resultado = $conexion->ejecutar_sp($sp, $params);
