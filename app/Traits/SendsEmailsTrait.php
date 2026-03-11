@@ -43,6 +43,19 @@ trait SendsEmailsTrait
         $this->initializeEmailService();
 
         try {
+            $controllerClass = class_basename($this);
+            $esControllerEmails = str_starts_with($controllerClass, 'Emails') && str_ends_with($controllerClass, 'Controller');
+            $excluirReplyTo = $controllerClass === 'EmailsSolicitudSoporteController';
+
+            if ($esControllerEmails && !$excluirReplyTo && empty($mailable->replyTo)) {
+                $replyToAddress = config('mail.reply_to.address', config('mail.from.address'));
+                $replyToName = config('mail.reply_to.name', config('mail.from.name', 'BPay'));
+
+                if (!empty($replyToAddress)) {
+                    $mailable->replyTo($replyToAddress, $replyToName);
+                }
+            }
+
             $useGraph = config('mail.use_microsoft_graph', false);
             \Illuminate\Support\Facades\Log::channel('email')->info('sendEmail: Iniciando envío de email', [
                 'use_microsoft_graph' => $useGraph,

@@ -225,11 +225,20 @@ class MicrosoftGraphService
                         'address' => $recipient,
                     ]
                 ];
-            } elseif (is_array($recipient) && isset($recipient['email'])) {
+            } elseif (is_array($recipient) && (isset($recipient['email']) || isset($recipient['address']))) {
+                $address = $recipient['email'] ?? $recipient['address'];
+                $name = $recipient['name'] ?? '';
                 $formatted[] = [
                     'emailAddress' => [
-                        'address' => $recipient['email'],
-                        'name' => $recipient['name'] ?? '',
+                        'address' => $address,
+                        'name' => $name,
+                    ]
+                ];
+            } elseif (is_object($recipient) && isset($recipient->address)) {
+                $formatted[] = [
+                    'emailAddress' => [
+                        'address' => $recipient->address,
+                        'name' => $recipient->name ?? '',
                     ]
                 ];
             }

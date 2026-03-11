@@ -173,6 +173,7 @@ class FormularioCronicosOscearaGeneratorPdf
         $pdf->Cell(70, 7, utf8_decode($telefono2), 0, 0, 'L'); // telefono2
         $pdf->Cell(60, 7, utf8_decode($celular2), 0, 1, 'L'); // celular2
 
+        // diagnosticos por órganos / sistemas
         $pdf->Rect($x, $y + 42, 200, 21);
         $pdf->SetXY($x, $y + 42);
         $pdf->Cell(80, 7, utf8_decode('2.- DIAGNÓSTICOS POR ÓRGANOS/SISTEMAS'), 0, 0, 'L'); // diagnóstico
@@ -180,14 +181,141 @@ class FormularioCronicosOscearaGeneratorPdf
         $pdf->Cell(120, 7, utf8_decode('(campo obligatorio)'), 0, 1, 'L'); // diagnóstico
         $pdf->SetTextColor(0, 0, 0); 
 
+        $diagnosticos_x_organos = [
+            'CARDIOVASCULARES',
+            'NEUROLÓGICAS',
+            'REUMÁTICAS',
+            'ENDÓCRINAS',
+            'TRAT. OBESIDAD',
+            'RESPIRATORIAS',
+            'PSIQUIÁTRICAS',
+            'OFTALMOLOGICOS',
+            'INFLAMATORIAS INTESTINALES'
+        ];
 
+        $diagnosticos_paciente = [];
+        if ($params['paciente'] != null && isset($params['paciente']['diagnosticos_x_organos'])) {
+            if (is_array($params['paciente']['diagnosticos_x_organos'])) {
+                $diagnosticos_paciente = $params['paciente']['diagnosticos_x_organos'];
+            } elseif (is_string($params['paciente']['diagnosticos_x_organos'])) {
+                $diagnosticos_paciente = array_map('trim', explode(',', $params['paciente']['diagnosticos_x_organos']));
+            }
+        }
 
+        $normalizar_texto = function ($texto) {
+            $texto = mb_strtoupper(trim((string)$texto), 'UTF-8');
+            return strtr($texto, [
+                'Á' => 'A',
+                'É' => 'E',
+                'Í' => 'I',
+                'Ó' => 'O',
+                'Ú' => 'U',
+                'Ü' => 'U'
+            ]);
+        };
 
+        $diagnosticos_paciente_normalizados = array_map($normalizar_texto, $diagnosticos_paciente);
+        $tiene_diagnostico = function ($diagnostico) use ($diagnosticos_paciente_normalizados, $normalizar_texto) {
+            return in_array($normalizar_texto($diagnostico), $diagnosticos_paciente_normalizados, true);
+        };
 
+        $columnas = 5;
+        $ancho_columna = 40;
+        $alto_fila = 7;
+        $inicio_diagnosticos_x = $x;
+        $inicio_diagnosticos_y = $y + 49;
 
+        $pdf->SetFont($font, '', 8.5);
+        foreach ($diagnosticos_x_organos as $indice => $diagnostico) {
+            $columna = $indice % $columnas;
+            $fila = intdiv($indice, $columnas);
 
+            $celda_x = $inicio_diagnosticos_x + ($columna * $ancho_columna);
+            $celda_y = $inicio_diagnosticos_y + ($fila * $alto_fila);
 
+            $checked = $tiene_diagnostico($diagnostico);
+            $dibujar_checkbox($celda_x + 1, $celda_y + 1.5, $checked);
 
+            $pdf->SetXY($celda_x + 6, $celda_y + 1);
+            $pdf->Cell($ancho_columna - 7, 5, utf8_decode($diagnostico), 0, 0, 'L');
+        }
+
+        $pdf->SetFont($font, '', 10);
+
+        // diagnosticos según patología
+        $pdf->Rect($x, $y + 63, 200, 37);
+        $pdf->SetXY($x, $y + 63);
+        $pdf->Cell(80, 7, utf8_decode('2.- DIAGNÓSTICOS SEGÚN PATOLOGÍA'), 0, 0, 'L'); // diagnóstico
+        $pdf->SetTextColor(100, 100, 100); 
+        $pdf->Cell(120, 7, utf8_decode('(campo obligatorio)'), 0, 1, 'L'); // diagnóstico
+        $pdf->SetTextColor(0, 0, 0); 
+
+        $diagnosticos_x_patologias = [
+            'CARDIOPATÍA ISQUÉMICA',
+            'HIPERTENSIÓN ARTERIAL',
+            'PSICOSIS',
+            'HIPOTIROIDISMO',
+            'GOTA',
+            'ARRITMIA',
+            'ASMA',
+            'TRASTORNOS BIPOLAR',
+            'HIPERTIROIDISMO',
+            'IC',
+            'IAM',
+            'FIBROSIS PULMONAR',
+            'GLAUCOMA',
+            'COLITIS ULCEROSA',
+            'TERAPIA ANTICOAGULANTE',
+            'EPILEPSIA',
+            'OBESIDAD',
+            'ENF. CROHN',
+            'TERAPIA ANTIAGREGANTE',
+            'PARKINSON',
+            'DESLIPEMIAS',
+            'ARTRITIS REUMATOIDEA'
+        ];
+
+        $diagnosticos_patologias_paciente = [];
+        if ($params['paciente'] != null && isset($params['paciente']['diagnosticos_x_patologias'])) {
+            if (is_array($params['paciente']['diagnosticos_x_patologias'])) {
+                $diagnosticos_patologias_paciente = $params['paciente']['diagnosticos_x_patologias'];
+            } elseif (is_string($params['paciente']['diagnosticos_x_patologias'])) {
+                $diagnosticos_patologias_paciente = array_map('trim', explode(',', $params['paciente']['diagnosticos_x_patologias']));
+            }
+        }
+
+        $diagnosticos_patologias_normalizados = array_map($normalizar_texto, $diagnosticos_patologias_paciente);
+        $tiene_patologia = function ($diagnostico) use ($diagnosticos_patologias_normalizados, $normalizar_texto) {
+            return in_array($normalizar_texto($diagnostico), $diagnosticos_patologias_normalizados, true);
+        };
+
+        $ancho_columna_patologias = 40;
+        $alto_fila_patologias = 6;
+        $inicio_patologias_x = $x;
+        $inicio_patologias_y = $y + 70;
+
+        $pdf->SetFont($font, '', 7);
+        foreach ($diagnosticos_x_patologias as $indice => $diagnostico) {
+            if ($indice < 10) {
+                $fila = intdiv($indice, 5);
+                $columna = $indice % 5;
+            } else {
+                $indice_resto = $indice - 10;
+                $fila = 2 + intdiv($indice_resto, 4);
+                $columna = $indice_resto % 4;
+            }
+
+            $celda_x = $inicio_patologias_x + ($columna * $ancho_columna_patologias);
+            $celda_y = $inicio_patologias_y + ($fila * $alto_fila_patologias);
+
+            $checked = $tiene_patologia($diagnostico);
+            $dibujar_checkbox($celda_x + 1, $celda_y + 1.2, $checked);
+
+            $pdf->SetXY($celda_x + 6, $celda_y + 0.6);
+            $pdf->Cell($ancho_columna_patologias - 7, 5, utf8_decode($diagnostico), 0, 0, 'L');
+        }
+
+        $pdf->SetFont($font, '', 10);
 
         return $pdf;
     }
