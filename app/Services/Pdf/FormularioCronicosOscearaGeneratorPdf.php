@@ -283,9 +283,8 @@ class FormularioCronicosOscearaGeneratorPdf
                 $diagnosticos_patologias_paciente = array_map('trim', explode(',', $params['paciente']['diagnosticos_x_patologias']));
             }
         }
-
-        $diagnosticos_patologias_normalizados = array_map($normalizar_texto, $diagnosticos_patologias_paciente);
-        $tiene_patologia = function ($diagnostico) use ($diagnosticos_patologias_normalizados, $normalizar_texto) {
+            $diagnosticos_patologias_normalizados = array_map($normalizar_texto, $diagnosticos_patologias_paciente);
+            $tiene_patologia = function ($diagnostico) use ($diagnosticos_patologias_normalizados, $normalizar_texto) {
             return in_array($normalizar_texto($diagnostico), $diagnosticos_patologias_normalizados, true);
         };
 

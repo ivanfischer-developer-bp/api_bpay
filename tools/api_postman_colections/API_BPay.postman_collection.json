@@ -8166,7 +8166,7 @@
 							"name": "Formularios",
 							"item": [
 								{
-									"name": "Exportar Formulario Crónicos Vacío",
+									"name": "Exportar Formulario Crónicos",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -8185,7 +8185,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"accion\": \"mostrar\",\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"ROCCO, MARIA GUILLERMINA\",\n        \"cuadro_justificativo\": \"una breve justificacion de porque se recetan esos medicamentos y no otros\",\n        \"diagnosticos\": [\n            \"Hipertención arterial (I10)\",\n            \"Hipo/Hipertiroidismo (E03)\",\n            \"Glaucoma (H40)\"\n        ],\n        \"domicilio\": \"Las rosas 1354\",\n        \"edad\": 40,\n        \"email\": \"mrocco@cajaabogados.org.ar\",\n        \"fecha_emision\": \"03/03/2026\",\n        \"institucion\": null,\n        \"medicamentos\": [\n            {\n                \"comprimidos_x_dia\": \"1\",\n                \"contenido_envase\": \"10\",\n                \"marca_comercial\": \"ACLOXIGENAC\",\n                \"principio_activo\": \"diclofenac sódico\",\n                \"regNo\": \"55690\",\n                \"unidad_posologica\": \"50 mg comp.rec.x 10\"\n            }\n        ],\n        \"medico_prescriptor\": {\n            \"especialidad\": \"MEDICO CLINICO\",\n            \"id_medico\": 1,\n            \"matricula\": \"MN 143032\",\n            \"nombre_y_apellido\": \"BARANDIARAN MARIANO\",\n            \"nro_doc\": \"29898069\",\n            \"telefono\": \"1156405114\"\n        },\n        \"nro_afiliado\": \"80696700\",\n        \"resumen_historia_clinica\": \"un breve resume de historia clinica\",\n        \"telefono\": \"123-456-7895\",\n        \"user_id\": 1,\n        \"tipo_doc\": \"DNI\",\n        \"nro_doc\": \"31743589\"\n    }\n}",
+											"raw": "{\n    \"accion\": \"mostrar\",\n    \"guardar\": false,\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"Fischer, Iván Gustavo\",\n        \"tipo_doc\": \"DNI\",\n        \"nro_doc\": \"25329881\",\n        \"fec_nac\": \"1976-09-28\",\n        \"sexo\": \"Masculino\",\n        \"nro_afiliado\": \"2025329881001\",\n        \"edad\": 49,\n        \"telefono\": null,\n        \"email\": null,\n        \"domicilio\": \"\",\n        \"localidad\": \"\",\n        \"provincia\": null,\n        \"telefono2\": null,\n        \"email2\": null,\n        \"domicilio2\": \"\",\n        \"fecha_emision\": \"2026-03-11\"\n    }\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -8205,12 +8205,12 @@
 												"exportar-formulario-cronicos"
 											]
 										},
-										"description": "Crea un pdf del formulario 310 para pacientes crónicos vacío para ser impreso y llenado a mano por el médico.\n\nEl parametro accion puede ser mostrar o enviar, si se omite toma mostrar"
+										"description": "Crea un pdf del formulario 310 para pacientes crónicos vacío para ser impreso y llenado a mano por el médico.\n\nEl parametro accion puede ser mostrar o enviar, si se omite toma mostrar\n\nguardar undica si se va a guardar en la historia clinica, si no se enví se toma true. En false sirve para pruebas de pdf, esto evita llenar la base de datos de datos inútiles y repetidos.\n\n\"paciente_cronico\": { \"apellido_y_nombre\": \"ROCCO, MARIA GUILLERMINA\", \"cuadro_justificativo\": \"una breve justificacion de porque se recetan esos medicamentos y no otros\", \"diagnosticos\": \\[ \"Hipertención arterial (I10)\", \"Hipo/Hipertiroidismo (E03)\", \"Glaucoma (H40)\" \\], \"domicilio\": \"Las rosas 1354\", \"edad\": 40, \"email\": \"mrocco@cajaabogados.org.ar\", \"fecha_emision\": \"03/03/2026\", \"institucion\": null, \"medicamentos\": \\[ { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\" } \\], \"medico_prescriptor\": { \"especialidad\": \"MEDICO CLINICO\", \"id_medico\": 1, \"matricula\": \"MN 143032\", \"nombre_y_apellido\": \"BARANDIARAN MARIANO\", \"nro_doc\": \"29898069\", \"telefono\": \"1156405114\" }, \"nro_afiliado\": \"80696700\", \"resumen_historia_clinica\": \"un breve resume de historia clinica\", \"telefono\": \"123-456-7895\", \"user_id\": 1, \"tipo_doc\": \"DNI\", \"nro_doc\": \"31743589\" }"
 									},
 									"response": []
 								},
 								{
-									"name": "Exportar Recetario para Tratamientos Crónicos Vacío",
+									"name": "Exportar Recetario para Tratamientos Crónicos",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -18002,7 +18002,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/mobile/consultas/consultar-validaciones?nro_afiliado=80745800",
+									"raw": "{{url}}/api/mobile/consultas/consultar-validaciones?nro_afiliado=80696700&codigo_interno=B0C24181-1869-47A5-8A53-2AA2E0EAA916",
 									"host": [
 										"{{url}}"
 									],
@@ -18030,12 +18030,16 @@
 										},
 										{
 											"key": "id_estado",
-											"value": null,
+											"value": "",
 											"disabled": true
 										},
 										{
 											"key": "nro_afiliado",
-											"value": "80745800"
+											"value": "80696700"
+										},
+										{
+											"key": "codigo_interno",
+											"value": "B0C24181-1869-47A5-8A53-2AA2E0EAA916"
 										}
 									]
 								},

@@ -355,6 +355,7 @@ class MobileConsultasController extends ConexionSpController {
             $fecha_desde = request('fecha_desde');
             $fecha_hasta = request('fecha_hasta');
             $nro_afiliado = request('nro_afiliado');
+            $codigo_interno = request('codigo_interno');
 
             $params = [
                 'id_estado' => $id_estado,
@@ -362,6 +363,7 @@ class MobileConsultasController extends ConexionSpController {
                 'fecha_desde' => $fecha_desde,
                 'fecha_hasta' => $fecha_hasta,
                 'nro_afiliado' => $nro_afiliado,
+                'codigo_interno' => $codigo_interno
             ];
 
             if($logged_user['roles']['name'] != 'afiliado mobile' && $logged_user['roles']['name'] != 'afiliado'){
@@ -380,7 +382,7 @@ class MobileConsultasController extends ConexionSpController {
             }else{
                 array_push($extras['verificado'], [
                     'AWEB_TraerAutorizaciones' => [
-                        'nro_afiliado' => $nro_afiliado
+                            'nro_afiliado' => $nro_afiliado
                         ]
                     ]
                 );
@@ -406,8 +408,13 @@ class MobileConsultasController extends ConexionSpController {
                         }
                         // return [$filtrar_por_fechas, $fecha_desde, $fecha_hasta];
                     }
-
-                    $this->params['afiliado'] = $nro_afiliado;
+                    
+                    if(isset($nro_afiliado)){
+                        $this->params['afiliado'] = $nro_afiliado;
+                    }
+                    if(isset($codigo_interno)){
+                        $this->params['codigo_interno'] = $codigo_interno;
+                    }
                     
                     array_push($extras['sps'], ['AWEB_TraerAutorizaciones' => $this->params]);
                     array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerAutorizaciones', null));
