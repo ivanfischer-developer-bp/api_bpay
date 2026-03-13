@@ -17322,7 +17322,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"db\": \"validacion\",\n    \"sp\": \"sp_estado_preautorizacion_select\",\n    \"params\": {}\n}",
+									"raw": "{\n    \"db\": \"validacion\",\n    \"sp\": \"AWEB_TraerEstadosValidaciones\",\n    \"params\": {}\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -17384,6 +17384,40 @@
 									]
 								},
 								"description": "Envía un mensaje de whatsapp con la api de twilio"
+							},
+							"response": []
+						},
+						{
+							"name": "Probar código",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{intAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/int/pruebas/probar-codigo",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"int",
+										"pruebas",
+										"probar-codigo"
+									]
+								},
+								"description": "El metodo http puede ser GET o POST.\n\nLos parámetros pueden variar según el código a probar.\n\nSirve para probar porciones específicas de codigo sin tener que ejecutar todo el método, especial para cuando la parte que puede tener el error depende de muchas variables anteriores que se obtienen después de muchas ejecuciones o para partes sencibles, donde el error surge después de insertar campos en la base de datos, por ejemplo en el envío de email, notificaciones pusher o cosas así. El código en esta sección cambia para cada ocación de prueba."
 							},
 							"response": []
 						}

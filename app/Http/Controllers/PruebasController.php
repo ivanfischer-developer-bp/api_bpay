@@ -40,7 +40,7 @@ class PruebasController extends ConexionSpController
     /**
      * Prueba codigo de otros lugares, este metodo va cambiando segun la necesidad
      */
-    public function probar_codigo(Request $request){
+    public function probar_codigo_post(Request $request){
         // asignaciones generales
         $extras = [
             'api_software_version' => config('site.software_version'),
@@ -68,24 +68,7 @@ class PruebasController extends ConexionSpController
             $usuario_sqlserver_default = 1;
             $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
 
-            // codigo a probar
-            $params_sp = [
-                'p_id_contrato' => 3, // contrato 3 es de validaciones
-                // 'p_codigo_interno' => "37DC90ED-45FA-41D3-8CF7-0D26113291B1" //$codigo_interno
-            ];
-            array_push($extras['sps'], ['sp_contrato_usuario_rol_select' => $params_sp]);
-            array_push($extras['queries'], $this->get_query('admin', 'sp_contrato_usuario_rol_select', $params_sp));
-            $usuarios_notificar = $this->ejecutar_sp_directo('admin','sp_contrato_usuario_rol_select', $params_sp);
-            array_push($extras['responses'], ['sp_contrato_usuario_rol_select' => $usuarios_notificar]);
-            
-            $notificados = [];
-            $channel = "notificacion-push";
-            $event = "NotificacionEnviada";
-            $msg = [];
-
-            $validacion_cabecera = [];
-            $estados = [];
-            $estadoSelec = '';
+            // codigo a probar ...
 
             array_push($extras['sps'], ['AWEB_TraerEstadosValidaciones' => null]);
             array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerEstadosValidaciones', null));
@@ -101,33 +84,72 @@ class PruebasController extends ConexionSpController
                 }
             }
 
-            // if (count($usuarios_notificar) > 0) {
-            //     $params_sp = [
-            //         'codigo_interno' => "37DC90ED-45FA-41D3-8CF7-0D26113291B1" //$codigo_interno
-            //     ];
-            //     array_push($extras['sps'], ['AWEB_TraerAutorizacionCabecera' => $params_sp]);
-            //     array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerAutorizacionCabecera', $params_sp));
-            //     $validacion_cabecera = $this->ejecutar_sp_directo('validacion','AWEB_TraerAutorizacionCabecera', $params_sp);
-            //     array_push($extras['responses'], ['AWEB_TraerAutorizacionCabecera' => $validacion_cabecera]);
+            return response()->json([
+                'extras' => $extras
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => ['Line: ' . $th->getLine() . ' - Error: ' . $th->getMessage()],
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params_sp' => $params_sp,
+                'extras' => $extras,
+            ]);
+        }
+    }
 
-            //     array_push($extras['sps'], ['AWEB_TraerEstadosValidaciones' => null]);
-            //     array_push($extras['queries'], $this->get_query('validaciones', 'AWEB_TraerEstadosValidaciones', null));
-            //     $estados = $this->ejecutar_sp_directo('validaciones','AWEB_TraerEstadosValidaciones', null);
-            //     array_push($extras['responses'], ['AWEB_TraerEstadosValidaciones' => $estados]);
+    /**
+     * Prueba codigo de otros lugares, este metodo va cambiando segun la necesidad
+     */
+    public function probar_codigo_get(Request $request){
+        // asignaciones generales
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => 'int/pruebas/probar-codigo',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'queries' => [],
+            'responses' => [],
+            'sps' => [],
+            'verificado' => []
+        ];
+        $status = 'fail'; // 'ok', 'fail', 'empty', unauthorized', 'warning'  
+        $message = '';
+        $count = -1;
+        $code = null;
+        $data = null;
+        $errors = [];
+        $params_sp = [];
+        
+        try {
+            // obtenemos el usuario de la petición y sus permisos
+            $user = User::with('roles', 'permissions')->find(1);
+            $logged_user = $this->get_logged_user($user);
+            $usuario_sqlserver_default = 1;
+            $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
 
-            //     $estadoSelec = '';
-            //     foreach ($estados as $estado) {
-            //         if ($estado->id_estado == $resolucion['id_estado']) {
-            //             $estadoSelec = $estado->n_estado;
-            //         }
-            //     }
-            // }
+            // codigo a probar ...
+
+            array_push($extras['sps'], ['AWEB_TraerEstadosValidaciones' => null]);
+            array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerEstadosValidaciones', null));
+            $estados = $this->ejecutar_sp_directo('validacion','AWEB_TraerEstadosValidaciones', null);
+            array_push($extras['responses'], ['AWEB_TraerEstadosValidaciones' => $estados]);
+
+            $resolucion['id_estado'] = 1;
+
+            $estadoSelec = '';
+            foreach ($estados as $estado) {
+                if ($estado->id_estado == $resolucion['id_estado']) {
+                    $estadoSelec = $estado->n_estado;
+                }
+            }
 
             return response()->json([
-                'usuarios_notificar' => $usuarios_notificar,
-                'validacion_cabecera' => $validacion_cabecera,
-                'estados' => $estados,
-                'estado_selec' => $estadoSelec,
                 'extras' => $extras
             ]);
         } catch (\Throwable $th) {
