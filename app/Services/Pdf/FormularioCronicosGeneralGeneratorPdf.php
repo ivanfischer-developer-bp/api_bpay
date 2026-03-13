@@ -51,7 +51,7 @@ class FormularioCronicosGeneralGeneratorPdf
         $y = $pdf->GetY();
         $pdf->Rect($x, $y, 180, 30);
         $pdf->SetXY($x, $y + 1);
-        $textoResumenHC = $params['paciente'] != null && $params['paciente']['resumen_historia_clinica'] != '' ? $params['paciente']['resumen_historia_clinica'] : '';
+        $textoResumenHC = $params['resumen_historia_clinica'] != '' ? $params['resumen_historia_clinica'] : '';
         $pdf->Cell(180, 5, utf8_decode('Breve resumen de historia clínica '), 0, 1, 'L'); // resumen de hitoria clinica del paciente
         $pdf->MultiCell(180, 5, utf8_decode($textoResumenHC), 0, 'L'); // resumen de hitoria clinica del paciente
         $pdf->SetXY($x, $y + 30);
@@ -60,7 +60,7 @@ class FormularioCronicosGeneralGeneratorPdf
         $y = $pdf->GetY();
         $pdf->Rect($x, $y, 180, 30);
         $pdf->SetXY($x, $y + 1);
-        $cuadroJustificativo = $params['paciente'] != null && $params['paciente']['cuadro_justificativo'] != '' ? $params['paciente']['cuadro_justificativo'] : '';
+        $cuadroJustificativo = $params['cuadro_justificativo'] != '' ? $params['cuadro_justificativo'] : '';
         $pdf->Cell(180, 5, utf8_decode('Descripción del cuadro que justifica el uso de la/s droga/s solicitada/s (incluyendo limitaciones al uso de otra/s droga/s) '), 0, 1, 'L'); // justificacion de la medicación solicitada
         $pdf->MultiCell(180, 5, utf8_decode($cuadroJustificativo), 0, 'L'); // justificacion de la medicación solicitada
         $pdf->SetXY($x, $y + 30);
@@ -84,8 +84,8 @@ class FormularioCronicosGeneralGeneratorPdf
         $pdf->MultiCell(15, 3, utf8_decode('Número. unidades '), 0, 'L'); // contenido del envase del medicamento solicitado
         $x = $pdf->GetX();
         $y = $pdf->GetY();
-        if($params['paciente'] != null && isset($params['paciente']['medicamentos']) && is_array($params['paciente']['medicamentos']) && count($params['paciente']['medicamentos']) > 0) {
-            $medicamentos = $params['paciente']['medicamentos'];
+        if(isset($params['medicamentos']) && is_array($params['medicamentos']) && count($params['medicamentos']) > 0) {
+            $medicamentos = $params['medicamentos'];
             // return response()->json(['params' => $params, 'medicamentos' => $medicamentos, 'extras' => $extras], 200);
             foreach($medicamentos as $medicamento){
                 $pdf->Cell(51, 5, utf8_decode($medicamento['principio_activo']), 1, 0); // principio activo del medicamento solicitado
@@ -142,10 +142,8 @@ class FormularioCronicosGeneralGeneratorPdf
 
         // Obtener diagnósticos del paciente como array de strings
         $diagnosticos_paciente = [];
-        if($params['paciente'] != null) {
-            if(isset($params['paciente']['diagnosticos']) && is_array($params['paciente']['diagnosticos'])) {
-                $diagnosticos_paciente = $params['paciente']['diagnosticos'];
-            }
+        if(isset($params['diagnosticos']) && is_array($params['diagnosticos'])) {
+            $diagnosticos_paciente = $params['diagnosticos'];
         }
         
         // Debug: guardar los diagnósticos en extras
@@ -314,12 +312,12 @@ class FormularioCronicosGeneralGeneratorPdf
         $pdf->SetFont($font, '', 10);
         $pdf->Cell(180, 2, '', 0, 2); // espacio entre textos
 
-        $apellido_y_nombre_medico = $params['paciente'] != null && $params['paciente']['medico_prescriptor'] ? $params['paciente']['medico_prescriptor']['nombre_y_apellido'] : ''; // nombre y apellido del médico prescriptor
-        $especialidad_medico = $params['paciente'] != null && $params['paciente']['medico_prescriptor'] ? $params['paciente']['medico_prescriptor']['especialidad'] : ''; // especialidad del médico prescriptor
-        $matricula_medico = $params['paciente'] != null && $params['paciente']['medico_prescriptor'] ? $params['paciente']['medico_prescriptor']['matricula'] : ''; // matrícula del médico prescriptor
-        $telefono_medico = $params['paciente'] != null && $params['paciente']['medico_prescriptor'] ? $params['paciente']['medico_prescriptor']['telefono'] : ''; // teléfono del médico prescriptor
-        $institucion = $params['paciente'] != null ? $params['paciente']['institucion'] : ''; // institución del médico prescriptor
-        $fecha = $params['paciente'] != null ? $params['paciente']['fecha_emision'] : '     /     /      '; // fecha de emisión del formulario
+        $apellido_y_nombre_medico = $params['medico_prescriptor']['nombre_y_apellido'] ?? ''; // nombre y apellido del médico prescriptor
+        $especialidad_medico = $params['medico_prescriptor']['especialidad'] ?? ''; // especialidad del médico prescriptor
+        $matricula_medico = $params['medico_prescriptor']['matricula'] ?? ''; // matrícula del médico prescriptor
+        $telefono_medico = $params['medico_prescriptor']['telefono'] ?? ''; // teléfono del médico prescriptor
+        $institucion = $params['institucion'] ?? ''; // institución del médico prescriptor
+        $fecha = $params['fecha_emision'] ?? '     /     /      '; // fecha de emisión del formulario
         $pdf->Cell(180, 7, utf8_decode('Nombre y Apellido: '.$apellido_y_nombre_medico), 1, 2); // nombre y apellido del médico prescriptor
         $pdf->Cell(130, 7, utf8_decode('Especialidad: '.$especialidad_medico), 1, 0); // especialidad del médico prescriptor
         $pdf->Cell(50, 7, utf8_decode('Matrícula: '.$matricula_medico), 1, 1); // matrícula del médico prescriptor
@@ -330,17 +328,17 @@ class FormularioCronicosGeneralGeneratorPdf
         $pdf->SetY(232);
         $pdf->Cell(140, 10, utf8_decode('Firma y sello del médico: '), 0, 0); // firma y sello del médico prescriptor
         $pdf->Cell(40, 10, utf8_decode('Fecha: ' . $fecha), 0, 2); // fecha
-        if($params['paciente'] != null && isset($params['paciente']['medico_prescriptor']['nro_doc']) && $params['paciente']['medico_prescriptor']['nro_doc'] != '') {
-            if(file_exists(storage_path('app/public/uploads/firma_medicos').'/'.$params['paciente']['medico_prescriptor']['nro_doc'].'.png')){
-                $pdf->Image(storage_path('app/public/uploads/firma_medicos').'/'.$params['paciente']['medico_prescriptor']['nro_doc'].'.png', 50, $pdf->GetY() - 15, 30, 0, 'PNG');
+        if(isset($params['medico_prescriptor']['nro_doc']) && $params['medico_prescriptor']['nro_doc'] != '') {
+            if(file_exists(storage_path('app/public/uploads/firma_medicos').'/'.$params['medico_prescriptor']['nro_doc'].'.png')){
+                $pdf->Image(storage_path('app/public/uploads/firma_medicos').'/'.$params['medico_prescriptor']['nro_doc'].'.png', 50, $pdf->GetY() - 15, 30, 0, 'PNG');
                 // sello
                 $pdf->SetX(50);
                 $pdf->SetY(240);
                 $pdf->SetFont($font, 'B', 6);
                 $pdf->Cell(40, 2, utf8_decode(''), 0, 0, 'L');
-                $pdf->Cell(20, 2, utf8_decode($params['paciente']['medico_prescriptor']['nombre_y_apellido']), 0, 2, 'C');
-                $pdf->Cell(20, 2, utf8_decode($params['paciente']['medico_prescriptor']['matricula']), 0, 2, 'C');
-                $pdf->Cell(20, 2, utf8_decode($params['paciente']['medico_prescriptor']['especialidad']), 0, 2, 'C');
+                $pdf->Cell(20, 2, utf8_decode($params['medico_prescriptor']['nombre_y_apellido']), 0, 2, 'C');
+                $pdf->Cell(20, 2, utf8_decode($params['medico_prescriptor']['matricula']), 0, 2, 'C');
+                $pdf->Cell(20, 2, utf8_decode($params['medico_prescriptor']['especialidad']), 0, 2, 'C');
             }
         }
         $pdf->SetFont($font, 'B', 8);

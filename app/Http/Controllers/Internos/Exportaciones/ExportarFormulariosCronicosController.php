@@ -53,7 +53,14 @@ class ExportarFormulariosCronicosController extends ConexionSpController
             $params = [
                 'accion' => $accion,
                 'guardar' => request('guardar') !== null ? request('guardar') : true,
-                'paciente' => request('paciente_cronico') !== null ? request('paciente_cronico') : null
+                'paciente' => request('paciente_cronico') !== null ? request('paciente_cronico') : null,
+                'fecha_emision' => request('fecha_emision') !== null ? request('fecha_emision') : Carbon::now()->format('Y-m-d'),
+                'diagnosticos' => request('diagnosticos') !== null ? request('diagnosticos') : [],
+                'institucion' => request('institucion') !== null ? request('institucion') : null,
+                'medico_prescriptor' => request('medico_prescriptor') !== null ? request('medico_prescriptor') : null,
+                'medicamentos' => request('medicamentos') !== null ? request('medicamentos') : [],
+                'resumen_historia_clinica' => request('resumen_historia_clinica') !== null ? request('resumen_historia_clinica') : null,
+                'cuadro_justificativo' => request('cuadro_justificativo') !== null ? request('cuadro_justificativo') : null,
             ];
 
             // return response()->json(['params' => $params, 'extras' => $extras], 200);
@@ -72,8 +79,8 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                 if($params['paciente'] != null 
                     && $params['paciente']['nro_doc'] != null 
                     && $params['paciente']['tipo_doc'] != null
-                    && $params['guardar']){
-
+                    && $params['guardar'])
+                {
                     // guardar en historia clinica el pdf
                     $upload_path_externo = env('UPLOADS_PATH_EXTERNO');
                     if(!File::exists($upload_path_externo)){
@@ -87,7 +94,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
                         'tipo_documento' => $params['paciente']['tipo_doc'],
                         'numero_documento' => $params['paciente']['nro_doc'],
                         'usuario' => $logged_user['usuario'],
-                        'id_medico' => $params['paciente']['medico_prescriptor']['id_medico'],
+                        'id_medico' => $params['medico_prescriptor']['id_medico'],
                         'hoja' => 'Formulario de Habilitación de Medicamentos para Enfermedades Crónicas - Resolución 310/04',
                         'archivo' => $archivo_historia,
                         'Talla' => null,
