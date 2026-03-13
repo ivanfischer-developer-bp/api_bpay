@@ -1213,7 +1213,8 @@ Route::group(['prefix' => 'int'],
             function() {
                 Route::post('emitir-pusher', [PruebasController::class, 'emitir_pusher']); // int/pruebas/emitir_pusher
                 Route::post('emitir-cambio-version', [PruebasController::class, 'emitir_cambio_version']); // int/pruebas/emitir-cambio-version 
-                Route::post('prueba-osef', [AfiliadoController::class, 'prueba_osef']); // int/pruebas/prueba-osef  // 1.1.708-20260304 sólo para pruebas
+                Route::post('prueba-osef', [PruebasController::class, 'prueba_osef']); // int/pruebas/prueba-osef  // 1.1.708-20260304 sólo para pruebas
+                Route::post('probar-codigo', [PruebasController::class, 'probar_codigo']); // int/pruebas/probar-codigo  // 1.1.719-20260313 sólo para pruebas
             }
         );
     }

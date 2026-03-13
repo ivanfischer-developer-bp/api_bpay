@@ -12,6 +12,7 @@ use Pusher\Pusher;
 use Pusher\PusherException;
 
 use App\Models\Conexion;
+use App\Models\User;
 use App\Http\Controllers\ConexionSpController;
 
 use DB;
@@ -20,6 +21,9 @@ use DB;
 class PruebasController extends ConexionSpController
 {
 
+    /** 
+     * Prueba un store procedure directamente
+     */    
     public function probar_sp(Request $request)
     {
         try {
@@ -30,6 +34,114 @@ class PruebasController extends ConexionSpController
             return $conexion->ejecutar_sp($sp, $params);
         } catch (\Exception $e) {
             return $e;
+        }
+    }
+
+    /**
+     * Prueba codigo de otros lugares, este metodo va cambiando segun la necesidad
+     */
+    public function probar_codigo(Request $request){
+        // asignaciones generales
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => 'int/pruebas/probar-codigo',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'queries' => [],
+            'responses' => [],
+            'sps' => [],
+            'verificado' => []
+        ];
+        $status = 'fail'; // 'ok', 'fail', 'empty', unauthorized', 'warning'  
+        $message = '';
+        $count = -1;
+        $code = null;
+        $data = null;
+        $errors = [];
+        $params_sp = [];
+        
+        try {
+            // obtenemos el usuario de la petición y sus permisos
+            $user = User::with('roles', 'permissions')->find(1);
+            $logged_user = $this->get_logged_user($user);
+            $usuario_sqlserver_default = 1;
+            $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
+
+            // codigo a probar
+            $params_sp = [
+                'p_id_contrato' => 3, // contrato 3 es de validaciones
+                // 'p_codigo_interno' => "37DC90ED-45FA-41D3-8CF7-0D26113291B1" //$codigo_interno
+            ];
+            array_push($extras['sps'], ['sp_contrato_usuario_rol_select' => $params_sp]);
+            array_push($extras['queries'], $this->get_query('admin', 'sp_contrato_usuario_rol_select', $params_sp));
+            $usuarios_notificar = $this->ejecutar_sp_directo('admin','sp_contrato_usuario_rol_select', $params_sp);
+            array_push($extras['responses'], ['sp_contrato_usuario_rol_select' => $usuarios_notificar]);
+            
+            $notificados = [];
+            $channel = "notificacion-push";
+            $event = "NotificacionEnviada";
+            $msg = [];
+
+            $validacion_cabecera = [];
+            $estados = [];
+            $estadoSelec = '';
+
+            array_push($extras['sps'], ['AWEB_TraerEstadosValidaciones' => null]);
+            array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerEstadosValidaciones', null));
+            $estados = $this->ejecutar_sp_directo('validacion','AWEB_TraerEstadosValidaciones', null);
+            array_push($extras['responses'], ['AWEB_TraerEstadosValidaciones' => $estados]);
+
+            $resolucion['id_estado'] = 1;
+
+            $estadoSelec = '';
+            foreach ($estados as $estado) {
+                if ($estado->id_estado == $resolucion['id_estado']) {
+                    $estadoSelec = $estado->n_estado;
+                }
+            }
+
+            // if (count($usuarios_notificar) > 0) {
+            //     $params_sp = [
+            //         'codigo_interno' => "37DC90ED-45FA-41D3-8CF7-0D26113291B1" //$codigo_interno
+            //     ];
+            //     array_push($extras['sps'], ['AWEB_TraerAutorizacionCabecera' => $params_sp]);
+            //     array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerAutorizacionCabecera', $params_sp));
+            //     $validacion_cabecera = $this->ejecutar_sp_directo('validacion','AWEB_TraerAutorizacionCabecera', $params_sp);
+            //     array_push($extras['responses'], ['AWEB_TraerAutorizacionCabecera' => $validacion_cabecera]);
+
+            //     array_push($extras['sps'], ['AWEB_TraerEstadosValidaciones' => null]);
+            //     array_push($extras['queries'], $this->get_query('validaciones', 'AWEB_TraerEstadosValidaciones', null));
+            //     $estados = $this->ejecutar_sp_directo('validaciones','AWEB_TraerEstadosValidaciones', null);
+            //     array_push($extras['responses'], ['AWEB_TraerEstadosValidaciones' => $estados]);
+
+            //     $estadoSelec = '';
+            //     foreach ($estados as $estado) {
+            //         if ($estado->id_estado == $resolucion['id_estado']) {
+            //             $estadoSelec = $estado->n_estado;
+            //         }
+            //     }
+            // }
+
+            return response()->json([
+                'usuarios_notificar' => $usuarios_notificar,
+                'validacion_cabecera' => $validacion_cabecera,
+                'estados' => $estados,
+                'estado_selec' => $estadoSelec,
+                'extras' => $extras
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => ['Line: ' . $th->getLine() . ' - Error: ' . $th->getMessage()],
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params_sp' => $params_sp,
+                'extras' => $extras,
+            ]);
         }
     }
 
@@ -271,6 +383,7 @@ class PruebasController extends ConexionSpController
      */
     public function prueba_osef(Request $request)
     {
+        
         $extras = [
             'api_software_version' => config('site.software_version'),
             'ambiente' => config('site.ambiente'),
@@ -285,12 +398,44 @@ class PruebasController extends ConexionSpController
         $data = null;
         $errors = [];
         $params = [];
+        $logged_user = null;
 
         try {
             // Obtiene usuario de la petición
-            $user = User::with('roles', 'permissions')->find($request->user()->id);
-            $logged_user = $this->get_logged_user($user);
+            $requestUser = $request->user();
+            if (!$requestUser || empty($requestUser->id)) {
+                return response()->json([
+                    'status' => 'unauthorized',
+                    'count' => -1,
+                    'errors' => ['Usuario no autenticado'],
+                    'message' => 'No hay usuario autenticado en la solicitud',
+                    'line' => null,
+                    'code' => -1,
+                    'data' => null,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]);
+            }
 
+            $user = User::with('roles', 'permissions')->find($requestUser->id);
+            if (!$user) {
+                return response()->json([
+                    'status' => 'fail',
+                    'count' => -1,
+                    'errors' => ['Usuario autenticado no encontrado en base de datos'],
+                    'message' => 'No se pudo cargar el usuario autenticado',
+                    'line' => null,
+                    'code' => -1,
+                    'data' => null,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]);
+            }
+
+            $logged_user = $this->get_logged_user($user);
+            
             // Valida que tenga permiso de administración o de gestión de afiliados
             if (!$user->hasPermissionTo('gestionar afiliados') && !$user->hasRole('admin')) {
                 return response()->json([

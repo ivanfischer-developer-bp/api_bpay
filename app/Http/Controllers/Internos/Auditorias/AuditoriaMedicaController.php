@@ -145,8 +145,8 @@ class AuditoriaMedicaController extends ConexionSpController
                             array_push($extras['responses'], ['AWEB_TraerAutorizacionCabecera' => $validacion_cabecera]);
 
                             array_push($extras['sps'], ['AWEB_TraerEstadosValidaciones' => null]);
-                            array_push($extras['queries'], $this->get_query('validaciones', 'AWEB_TraerEstadosValidaciones', null));
-                            $estados = $this->ejecutar_sp_directo('validaciones','AWEB_TraerEstadosValidaciones', null);
+                            array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerEstadosValidaciones', null));
+                            $estados = $this->ejecutar_sp_directo('validacion','AWEB_TraerEstadosValidaciones', null);
                             array_push($extras['responses'], ['AWEB_TraerEstadosValidaciones' => $estados]);
 
                             $estadoSelec = '';
