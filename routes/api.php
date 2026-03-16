@@ -82,6 +82,7 @@ use App\Http\Controllers\Internos\Emails\EmailsAfiliacionesController;
 use App\Http\Controllers\Internos\Emails\EmailsConsultorioController;
 use App\Http\Controllers\Internos\Emails\EmailsEncuestasController;
 use App\Http\Controllers\Internos\Emails\EmailsExpedientesController;
+use App\Http\Controllers\Internos\Emails\EmailsFormulariosController;
 use App\Http\Controllers\Internos\Emails\EmailsRecetasController;
 use App\Http\Controllers\Internos\Emails\EmailsSolicitudSoporteController;
 use App\Http\Controllers\Internos\Emails\EmailsUsuariosController;
@@ -586,6 +587,7 @@ Route::group(['prefix' => 'int'],
                 Route::post('guardar-encuesta-atencion', [EncuestasController::class, 'guardar_encuesta_atencion']); // int/encuestas/guardar-encuesta-atencion  1.1.523-20250707
             }
         );
+        // afiliaciones, archivos, auditorias, coberturas-especiales, configuraciones, consultorio, etc ...
         Route::group([
                 'middleware' => 'auth:api'  
             ], function() {
@@ -823,10 +825,20 @@ Route::group(['prefix' => 'int'],
                                 Route::post('enviar-listado-turnos-medicos', [EmailsConsultorioController::class, 'enviar_email_listado_turnos_medicos']); // int/enviar-email/consultorio/listado-turnos-medicos  AB-79    
                             }
                         );
+                        Route::group(['prefix' => 'encuestas'], 
+                            function() {
+                                Route::post('enviar-encuesta-atencion', [EmailsEncuestasController::class, 'enviar_email_encuesta_atencion']); // int/enviar-email/encuestas/enviar-encuesta-atencion   1.1.521-20250704
+                            }
+                        );
                         Route::group(['prefix' => 'expedientes'], 
                             function() {
                                 // Route::post('enviar-caratula-expediente', [EmailsExpedientesController::class, 'enviar_email_caratula_expediente']);
                                 // Route::post('enviar-pedido-presupuesto', [EmailsExpedientesController::class, 'enviar_email_pedido_presupuesto_expediente']);
+                            }
+                        );
+                        Route::group(['prefix' => 'formularios'], 
+                            function() {
+                                Route::post('enviar-formulario-cronicos', [EmailsFormulariosController::class, 'enviar_email_formularios_cronicos']); // int/enviar-email/formularios/enviar-formularios-cronicos   11.1.722-20260316
                             }
                         );
                         Route::group(['prefix' => 'recetas'], 
@@ -846,11 +858,6 @@ Route::group(['prefix' => 'int'],
                                 Route::post('enviar-lista-prestaciones', [EmailsValidacionesController::class, 'enviar_email_lista_prestaciones']);
                                 Route::post('enviar-solicitud-informacion-preautorizacion', [EmailsValidacionesController::class, 'enviar_email_solicitud_informacion_preautorizacion']); // int/enviar-email/validaciones/enviar-solicitud-informacion-preautorizacion  1.1.627-20251127 
                                 Route::post('enviar-validacion', [EmailsValidacionesController::class, 'enviar_email_validacion']); // int/enviar-email/validaciones/validacion AB-55 
-                            }
-                        );
-                        Route::group(['prefix' => 'encuestas'], 
-                            function() {
-                                Route::post('enviar-encuesta-atencion', [EmailsEncuestasController::class, 'enviar_email_encuesta_atencion']); // int/enviar-email/encuestas/enviar-encuesta-atencion   1.1.521-20250704
                             }
                         );
                     }

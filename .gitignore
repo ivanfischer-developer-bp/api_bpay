@@ -34,6 +34,7 @@ app/Models/Modelo.php
 /resources/views/emails/notificacion_estado_cuenta.blade.php
 /resources/views/emails/notificacion_expediente.blade.php
 /resources/views/emails/notificacion_factura.blade.php
+/resources/views/emails/notificacion_formulario_cronicos.blade.php
 /resources/views/emails/notificacion_historia_clinica.blade.php
 /resources/views/emails/notificacion_informacion_afiliado.blade.php
 /resources/views/emails/notificacion_listado_turnos_medicos.blade.php
