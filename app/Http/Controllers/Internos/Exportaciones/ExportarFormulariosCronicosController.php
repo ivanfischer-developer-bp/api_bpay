@@ -217,7 +217,7 @@ class ExportarFormulariosCronicosController extends ConexionSpController
         $extras = [
             'api_software_version' => config('site.software_version'),
             'ambiente' => config('site.ambiente'),
-            'url' => '/int/consultorio/formularios/exportar-recetario-tratamientos-cronicos',
+            'url' => '/int/programas-especciales/formularios/exportar-recetario-tratamientos-cronicos',
             'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
             'function' => __FUNCTION__,
             'sps' => [],

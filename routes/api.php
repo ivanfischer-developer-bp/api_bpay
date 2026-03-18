@@ -776,12 +776,7 @@ Route::group(['prefix' => 'int'],
                                 Route::post('sincronizar-turno', [TurnosController::class, 'sincronizar_turno']); // int/consultorio/turnos/sincronizar_turno  AB-71  
                             }
                         );
-                        Route::group(['prefix' => 'formularios'],
-                            function(){
-                                Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/consultorio/formularios/exportar-formulario-cronicos  1.1.701-20260226
-                                Route::post('exportar-recetario-tratamientos-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos']); // int/consultorio/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
-                            }
-                        );
+                        
                     }
                 );
                 // consultas externas con auth:api
@@ -1130,6 +1125,19 @@ Route::group(['prefix' => 'int'],
                         Route::post('agregar-prestador', [PrestadorController::class, 'agregar_prestador']); // int/prestadores/agregar-prestador            
                     }
                 );
+                // programas especiales
+                Route::group(['prefix' => 'programas-especiales'], 
+                    function() {
+                        Route::get('buscar-programa-especial', [ProgramasEspecialesController::class, 'buscar_programa_especial']); // int/programas-especiales/buscar-programa-especial  AB-122    
+                        Route::get('listar-programas-especiales', [ProgramasEspecialesController::class, 'listar_programas_especiales']); // int/programas-especiales/listar-programas-especiales  AB-122    
+                        Route::group(['prefix' => 'formularios'],
+                            function(){
+                                Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/programas-especiales/formularios/exportar-formulario-cronicos  1.1.701-20260226
+                                Route::post('exportar-recetario-tratamientos-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos']); // int/programas-especiales/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
+                            }
+                        );
+                    }
+                );
                 // recetas
                 Route::group(['prefix' => 'recetas'], 
                     function() {
@@ -1216,7 +1224,7 @@ Route::group(['prefix' => 'int'],
                 Route::post('auth', [PusherController::class, 'auth']); // int/pusher/auth  
             }
         );
-        Route::group(['prefix' => 'pruebas'], 
+        Route::group(['prefix' => 'pruebas', 'middleware' => 'auth:api'], //quitar  'middleware' => 'auth:api' para pruebas sin logueo
             function() {
                 Route::post('emitir-pusher', [PruebasController::class, 'emitir_pusher']); // int/pruebas/emitir_pusher
                 Route::post('emitir-cambio-version', [PruebasController::class, 'emitir_cambio_version']); // int/pruebas/emitir-cambio-version 

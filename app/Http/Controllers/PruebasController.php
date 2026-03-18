@@ -425,6 +425,7 @@ class PruebasController extends ConexionSpController
         try {
             // Obtiene usuario de la petición
             $requestUser = $request->user();
+            
             if (!$requestUser || empty($requestUser->id)) {
                 return response()->json([
                     'status' => 'unauthorized',

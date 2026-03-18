@@ -4417,6 +4417,377 @@
 							"name": "Persona",
 							"item": [
 								{
+									"name": "Persona-Contacto",
+									"item": [
+										{
+											"name": "Contacto: Agregar Contacto",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"id_persona\": 1485,\n    \"id_tipo_contacto\": 1,\n    \"n_contacto\": \"edurocco44@email.com\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/agregar-contacto",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"agregar-contacto"
+													]
+												},
+												"description": "Agrega un nuevo contacto a la persona"
+											},
+											"response": []
+										},
+										{
+											"name": "Contacto: Listar Contactos",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/listar-contactos?tipo=persona&id_persona=1485",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"listar-contactos"
+													],
+													"query": [
+														{
+															"key": "tipo",
+															"value": "persona",
+															"description": "persona, empresa"
+														},
+														{
+															"key": "id_persona",
+															"value": "1485"
+														},
+														{
+															"key": "id_empresa",
+															"value": null,
+															"disabled": true
+														}
+													]
+												},
+												"description": "retorna un listado de contactos de la persona"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Persona-Domicilio",
+									"item": [
+										{
+											"name": "Domicilio: Agregar Domicilio",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"calle\": \"Av. de los Incas\",\n    \"departamento\": \"2\",\n    \"id_localidad\": 516,\n    \"id_persona\": 19800,\n    \"id_sucursal\": null,\n    \"id_tipo_domicilio\": 2,\n    \"id_zona\": 25,\n    \"latitud\": null,\n    \"longitud\": null,\n    \"n_domicilio\": \"Laboral\",\n    \"piso\": \"1\",\n    \"puerta\": \"7381\"\n}"
+												},
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/agregar-domicilio",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"agregar-domicilio"
+													]
+												},
+												"description": "Añade un nuevo domicilio a un afiliado"
+											},
+											"response": []
+										},
+										{
+											"name": "Domicilio: Listar domicilios",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/listar-domicilios?tipo=persona&id_persona=15350",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"listar-domicilios"
+													],
+													"query": [
+														{
+															"key": "tipo",
+															"value": "persona"
+														},
+														{
+															"key": "id_persona",
+															"value": "15350"
+														}
+													]
+												},
+												"description": "Obtiene un listado de los domicilios de la persona"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Persona-Patologia",
+									"item": [
+										{
+											"name": "Patología: Listar Patologías de la Persona",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/listar-persona-patologias?id_persona=7413",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"listar-persona-patologias"
+													],
+													"query": [
+														{
+															"key": "id_persona",
+															"value": "7413",
+															"description": "7413, 9830"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Patología: Guardar Persona Patología",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"fec_vto\": \"2024-08-25\",\n    \"id_patologia_cie10\": 126,\n    \"id_persona\": 19800,\n    \"id_persona_patologia\": null,\n    \"permanente\": 1,\n    \"prevalente\": 1,\n    \"porcentaje\": 30.00,\n    \"importe_recargo\": null,\n    \"cod_certificado\": null\n}\n",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/guardar-persona-patologia",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"guardar-persona-patologia"
+													]
+												},
+												"description": "Agrega o Actualiza una terapéutica especial de un afiliado"
+											},
+											"response": []
+										},
+										{
+											"name": "Patología: Eliminar Persona Patología",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"id_vigencia\": 3588198\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/eliminar-persona-patologia",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"eliminar-persona-patologia"
+													]
+												},
+												"description": "Elimina una patologia de una persona"
+											},
+											"response": []
+										},
+										{
+											"name": "Patología: Exportar a PDF Terapéuticas Especiales de la persona.",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest"
+													},
+													{
+														"key": "Authorization",
+														"value": "{{intAccessToken}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"accion\": \"enviar\",\n    \"afiliado\": {\n        \"n_afiliado\": \"80696700\",\n        \"n_convenio\": \"Omint\",\n        \"n_plan\": \"Clasico\",\n        \"n_persona\": \"ROCCO, MARIA GUILLERMINA\",\n        \"abrev_tipo_doc\": \"DNI\",\n        \"nro_doc\": \"31743589\",\n        \"n_contacto\": \"+54 9 221 4595197\",\n        \"n_domicilio\": \"Av. de los Incas Nro7381\",\n        \"n_localidad\": \"(1900) LA PLATA\"\n    },\n    \"patologias\": [\n        {\n            \"fec_vto\": \"2024-07-10 09:00:00.000\",\n            \"fija_valor\": 0,\n            \"id_patologia\": 3,\n            \"id_patologia_cie10\": 126,\n            \"id_persona_patologia\": 11243,\n            \"id_vigencia\": 3588176,\n            \"id_vigencia_recargo\": 3588177,\n            \"importe_recargo\": null,\n            \"n_capitulo\": \"Capitulo IV - Enfermedades Endócrinas, Nutricionales y Metabólicas\",\n            \"n_cie_item\": \"Diabetes mellitus insulinodependiente\",\n            \"n_patologia\": \"DIABETES (CUALQUIERA DE SUS TIPOS)\",\n            \"n_sub_capitulo\": \"Diabetes mellitus\",\n            \"permanente\": 1,\n            \"porcentaje\": \"20,00\",\n            \"prevalente\": 0,\n            \"valor_referencia\": null\n        },\n        {\n            \"fec_vto\": \"2024-08-25 00:00:00.000\",\n            \"fija_valor\": 0,\n            \"id_patologia\": 3,\n            \"id_patologia_cie10\": 126,\n            \"id_persona_patologia\": 11247,\n            \"id_vigencia\": 3588199,\n            \"id_vigencia_recargo\": null,\n            \"importe_recargo\": null,\n            \"n_capitulo\": \"Capitulo IV - Enfermedades Endócrinas, Nutricionales y Metabólicas\",\n            \"n_cie_item\": \"Diabetes mellitus insulinodependiente\",\n            \"n_patologia\": \"DIABETES (CUALQUIERA DE SUS TIPOS)\",\n            \"n_sub_capitulo\": \"Diabetes mellitus\",\n            \"permanente\": 1,\n            \"porcentaje\": \"30,00\",\n            \"prevalente\": 1,\n            \"valor_referencia\": null\n        }\n    ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/int/afiliaciones/persona/exportar-persona-patologia",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"int",
+														"afiliaciones",
+														"persona",
+														"exportar-persona-patologia"
+													]
+												},
+												"description": "Exporta a PDF el listado de terapéuticas especiales de una persona y lo devuelve como un blob"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Persona-Programa",
+									"item": []
+								},
+								{
 									"name": "Persona: buscar",
 									"request": {
 										"method": "GET",
@@ -4580,358 +4951,6 @@
 											]
 										},
 										"description": "Cambia el tipo y número de documento de una persona"
-									},
-									"response": []
-								},
-								{
-									"name": "Contacto: Agregar Contacto",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"id_persona\": 1485,\n    \"id_tipo_contacto\": 1,\n    \"n_contacto\": \"edurocco44@email.com\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/agregar-contacto",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"agregar-contacto"
-											]
-										},
-										"description": "Agrega un nuevo contacto a la persona"
-									},
-									"response": []
-								},
-								{
-									"name": "Contacto: Listar Contactos",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/listar-contactos?tipo=persona&id_persona=1485",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"listar-contactos"
-											],
-											"query": [
-												{
-													"key": "tipo",
-													"value": "persona",
-													"description": "persona, empresa"
-												},
-												{
-													"key": "id_persona",
-													"value": "1485"
-												},
-												{
-													"key": "id_empresa",
-													"value": null,
-													"disabled": true
-												}
-											]
-										},
-										"description": "retorna un listado de contactos de la persona"
-									},
-									"response": []
-								},
-								{
-									"name": "Domicilio: Agregar Domicilio",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"calle\": \"Av. de los Incas\",\n    \"departamento\": \"2\",\n    \"id_localidad\": 516,\n    \"id_persona\": 19800,\n    \"id_sucursal\": null,\n    \"id_tipo_domicilio\": 2,\n    \"id_zona\": 25,\n    \"latitud\": null,\n    \"longitud\": null,\n    \"n_domicilio\": \"Laboral\",\n    \"piso\": \"1\",\n    \"puerta\": \"7381\"\n}"
-										},
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/agregar-domicilio",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"agregar-domicilio"
-											]
-										},
-										"description": "Añade un nuevo domicilio a un afiliado"
-									},
-									"response": []
-								},
-								{
-									"name": "Domicilio: Listar domicilios",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/listar-domicilios?tipo=persona&id_persona=15350",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"listar-domicilios"
-											],
-											"query": [
-												{
-													"key": "tipo",
-													"value": "persona"
-												},
-												{
-													"key": "id_persona",
-													"value": "15350"
-												}
-											]
-										},
-										"description": "Obtiene un listado de los domicilios de la persona"
-									},
-									"response": []
-								},
-								{
-									"name": "Patología: Listar Patologías de la Persona",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/listar-persona-patologias?id_persona=7413",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"listar-persona-patologias"
-											],
-											"query": [
-												{
-													"key": "id_persona",
-													"value": "7413",
-													"description": "7413, 9830"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Patología: Guardar Persona Patología",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"fec_vto\": \"2024-08-25\",\n    \"id_patologia_cie10\": 126,\n    \"id_persona\": 19800,\n    \"id_persona_patologia\": null,\n    \"permanente\": 1,\n    \"prevalente\": 1,\n    \"porcentaje\": 30.00,\n    \"importe_recargo\": null,\n    \"cod_certificado\": null\n}\n",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/guardar-persona-patologia",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"guardar-persona-patologia"
-											]
-										},
-										"description": "Agrega o Actualiza una terapéutica especial de un afiliado"
-									},
-									"response": []
-								},
-								{
-									"name": "Patología: Eliminar Persona Patología",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"id_vigencia\": 3588198\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/eliminar-persona-patologia",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"eliminar-persona-patologia"
-											]
-										},
-										"description": "Elimina una patologia de una persona"
-									},
-									"response": []
-								},
-								{
-									"name": "Patología: Exportar a PDF Terapéuticas Especiales de la persona.",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"accion\": \"enviar\",\n    \"afiliado\": {\n        \"n_afiliado\": \"80696700\",\n        \"n_convenio\": \"Omint\",\n        \"n_plan\": \"Clasico\",\n        \"n_persona\": \"ROCCO, MARIA GUILLERMINA\",\n        \"abrev_tipo_doc\": \"DNI\",\n        \"nro_doc\": \"31743589\",\n        \"n_contacto\": \"+54 9 221 4595197\",\n        \"n_domicilio\": \"Av. de los Incas Nro7381\",\n        \"n_localidad\": \"(1900) LA PLATA\"\n    },\n    \"patologias\": [\n        {\n            \"fec_vto\": \"2024-07-10 09:00:00.000\",\n            \"fija_valor\": 0,\n            \"id_patologia\": 3,\n            \"id_patologia_cie10\": 126,\n            \"id_persona_patologia\": 11243,\n            \"id_vigencia\": 3588176,\n            \"id_vigencia_recargo\": 3588177,\n            \"importe_recargo\": null,\n            \"n_capitulo\": \"Capitulo IV - Enfermedades Endócrinas, Nutricionales y Metabólicas\",\n            \"n_cie_item\": \"Diabetes mellitus insulinodependiente\",\n            \"n_patologia\": \"DIABETES (CUALQUIERA DE SUS TIPOS)\",\n            \"n_sub_capitulo\": \"Diabetes mellitus\",\n            \"permanente\": 1,\n            \"porcentaje\": \"20,00\",\n            \"prevalente\": 0,\n            \"valor_referencia\": null\n        },\n        {\n            \"fec_vto\": \"2024-08-25 00:00:00.000\",\n            \"fija_valor\": 0,\n            \"id_patologia\": 3,\n            \"id_patologia_cie10\": 126,\n            \"id_persona_patologia\": 11247,\n            \"id_vigencia\": 3588199,\n            \"id_vigencia_recargo\": null,\n            \"importe_recargo\": null,\n            \"n_capitulo\": \"Capitulo IV - Enfermedades Endócrinas, Nutricionales y Metabólicas\",\n            \"n_cie_item\": \"Diabetes mellitus insulinodependiente\",\n            \"n_patologia\": \"DIABETES (CUALQUIERA DE SUS TIPOS)\",\n            \"n_sub_capitulo\": \"Diabetes mellitus\",\n            \"permanente\": 1,\n            \"porcentaje\": \"30,00\",\n            \"prevalente\": 1,\n            \"valor_referencia\": null\n        }\n    ]\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{url}}/api/int/afiliaciones/persona/exportar-persona-patologia",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"afiliaciones",
-												"persona",
-												"exportar-persona-patologia"
-											]
-										},
-										"description": "Exporta a PDF el listado de terapéuticas especiales de una persona y lo devuelve como un blob"
 									},
 									"response": []
 								}
@@ -8157,99 +8176,6 @@
 											]
 										},
 										"description": "borra de la base de datos el turno que coincide con el id pasado como parámetro."
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Formularios",
-							"item": [
-								{
-									"name": "Exportar Formulario Crónicos",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{ \n    \"accion\": \"mostrar\", \n    \"guardar\": false, \n    \"fecha_emision\": \"2026-03-11\", \n    \"paciente_cronico\": { \n        \"apellido_y_nombre\": \"Fischer, Iván Gustavo\", \n        \"tipo_doc\": \"DNI\", \n        \"nro_doc\": \"25329881\", \n        \"fec_nac\": \"1976-09-28\", \n        \"sexo\": \"Masculino\", \n        \"nro_afiliado\": \"2025329881001\", \n        \"edad\": 49, \n        \"telefono\": \"3571 554212\", \n        \"email\": \"ivanfischer76@gmail.com\", \n        \"domicilio\": \"Paraguay 319\", \n        \"localidad\": \"Almafuerte\", \n        \"provincia\": \"Córdoba\", \n        \"cod_postal\": 5854, \n        \"fec_ingreso\": \"1996-09-10\", \n        \"n_plan\": \"plan integral\", \n        \"telefono2\": null, \n        \"email2\": null, \n        \"domicilio2\": \"\" \n    }, \n    \"diagnosticos\": [ \n        \"Hipertensión arterial (I10)\", \n        \"Gota (M10)\"\n    ], \n    \"medico_prescriptor\": { \n        \"especialidad\": \"MEDICO CLINICO\", \n        \"id_medico\": 1, \n        \"matricula\": \"MN 143032\", \n        \"nombre_y_apellido\": \"BARANDIARAN MARIANO\", \n        \"nro_doc\": \"29898069\", \n        \"telefono\": \"1156405114\", \n        \"horario_consulta\": \"martes de 16:00 a 20:00\", \n        \"domicilio\": \"las heras 1546\", \n        \"localidad\": \"Bell Ville\" \n    }, \n    \"institucion\": \"Sanatorio Allende\", \n    \"resumen_historia_clinica\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \n    \"cuadro_justificativo\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \n    \"medicamentos\": [ \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        } \n    ]\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{url}}/api/int/consultorio/formularios/exportar-formulario-cronicos",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"consultorio",
-												"formularios",
-												"exportar-formulario-cronicos"
-											]
-										},
-										"description": "Crea un pdf del formulario 310 para pacientes crónicos vacío para ser impreso y llenado a mano por el médico.\n\nEl parametro accion puede ser mostrar o enviar, si se omite toma mostrar\n\nguardar undica si se va a guardar en la historia clinica, si no se enví se toma true. En false sirve para pruebas de pdf, esto evita llenar la base de datos de datos inútiles y repetidos.\n\n{ \"accion\": \"mostrar\", \"guardar\": false, \"fecha_emision\": \"2026-03-11\", \"paciente_cronico\": { \"apellido_y_nombre\": \"Fischer, Iván Gustavo\", \"tipo_doc\": \"DNI\", \"nro_doc\": \"25329881\", \"fec_nac\": \"1976-09-28\", \"sexo\": \"Masculino\", \"nro_afiliado\": \"2025329881001\", \"edad\": 49, \"telefono\": \"3571 554212\", \"email\": \"[ivanfischer76@gmail.com](https://mailto:ivanfischer76@gmail.com)\", \"domicilio\": \"Paraguay 319\", \"localidad\": \"Almafuerte\", \"provincia\": \"Córdoba\", \"cod_postal\": 5854, \"fec_ingreso\": \"1996-09-10\", \"n_plan\": \"plan integral\", \"telefono2\": null, \"email2\": null, \"domicilio2\": \"\" }, \"diagnosticos\": \\[ \"Hipertensión arterial\", \"Gota\", \"Otros\", \"dolor articular crónico\" \\], \"medico_prescriptor\": { \"especialidad\": \"MEDICO CLINICO\", \"id_medico\": 1, \"matricula\": \"MN 143032\", \"nombre_y_apellido\": \"BARANDIARAN MARIANO\", \"nro_doc\": \"29898069\", \"telefono\": \"1156405114\", \"horario_consulta\": \"martes de 16:00 a 20:00\", \"domicilio\": \"las heras 1546\", \"localidad\": \"Bell Ville\" }, \"institucion\": \"Sanatorio Allende\", \"resumen_historia_clinica\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \"cuadro_justificativo\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \"medicamentos\": \\[ { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" } \\]}\n\n{ \"accion\": \"mostrar\", \"guardar\": false, \"fecha_emision\": null, \"paciente_cronico\": null, \"diagnosticos\": \\[\\], \"medico_prescriptor\": null, \"institucion\": null, \"resumen_historia_clinica\": null, \"cuadro_justificativo\": null, \"medicamentos\": \\[\\]}"
-									},
-									"response": []
-								},
-								{
-									"name": "Exportar Recetario para Tratamientos Crónicos",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"accion\": \"mostrar\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{url}}/api/int/consultorio/formularios/exportar-recetario-tratamientos-cronicos",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"consultorio",
-												"formularios",
-												"exportar-recetario-tratamientos-cronicos"
-											]
-										},
-										"description": "Retorna un pdf de recetario para medicamentos crónicos para ser completado manualmente por el médico"
 									},
 									"response": []
 								}
@@ -14751,6 +14677,104 @@
 					]
 				},
 				{
+					"name": "Programas Especiales",
+					"item": [
+						{
+							"name": "Formularios",
+							"item": [
+								{
+									"name": "Exportar Formulario Crónicos",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \n    \"accion\": \"mostrar\", \n    \"guardar\": false, \n    \"fecha_emision\": \"2026-03-11\", \n    \"paciente_cronico\": { \n        \"apellido_y_nombre\": \"Fischer, Iván Gustavo\", \n        \"tipo_doc\": \"DNI\", \n        \"nro_doc\": \"25329881\", \n        \"fec_nac\": \"1976-09-28\", \n        \"sexo\": \"Masculino\", \n        \"nro_afiliado\": \"2025329881001\", \n        \"edad\": 49, \n        \"telefono\": \"3571 554212\", \n        \"email\": \"ivanfischer76@gmail.com\", \n        \"domicilio\": \"Paraguay 319\", \n        \"localidad\": \"Almafuerte\", \n        \"provincia\": \"Córdoba\", \n        \"cod_postal\": 5854, \n        \"fec_ingreso\": \"1996-09-10\", \n        \"n_plan\": \"plan integral\", \n        \"telefono2\": null, \n        \"email2\": null, \n        \"domicilio2\": \"\" \n    }, \n    \"diagnosticos\": [ \n        \"Hipertensión arterial (I10)\", \n        \"Gota (M10)\"\n    ], \n    \"medico_prescriptor\": { \n        \"especialidad\": \"MEDICO CLINICO\", \n        \"id_medico\": 1, \n        \"matricula\": \"MN 143032\", \n        \"nombre_y_apellido\": \"BARANDIARAN MARIANO\", \n        \"nro_doc\": \"29898069\", \n        \"telefono\": \"1156405114\", \n        \"horario_consulta\": \"martes de 16:00 a 20:00\", \n        \"domicilio\": \"las heras 1546\", \n        \"localidad\": \"Bell Ville\" \n    }, \n    \"institucion\": \"Sanatorio Allende\", \n    \"resumen_historia_clinica\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \n    \"cuadro_justificativo\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \n    \"medicamentos\": [ \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        }, \n        { \n            \"comprimidos_x_dia\": \"1\", \n            \"contenido_envase\": \"10\", \n            \"marca_comercial\": \"ACLOXIGENAC\", \n            \"principio_activo\": \"diclofenac sódico\", \n            \"regNo\": \"55690\", \n            \"unidad_posologica\": \"50 mg comp.rec.x 10\", \n            \"tiempo_prescripto_meses\": \"3\", \n            \"dictamen_auditoria\": \"autorizado\" \n        } \n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/programas-especiales/formularios/exportar-formulario-cronicos",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"programas-especiales",
+												"formularios",
+												"exportar-formulario-cronicos"
+											]
+										},
+										"description": "Crea un pdf del formulario 310 para pacientes crónicos vacío para ser impreso y llenado a mano por el médico.\n\nEl parametro accion puede ser mostrar o enviar, si se omite toma mostrar\n\nguardar undica si se va a guardar en la historia clinica, si no se enví se toma true. En false sirve para pruebas de pdf, esto evita llenar la base de datos de datos inútiles y repetidos.\n\n{ \"accion\": \"mostrar\", \"guardar\": false, \"fecha_emision\": \"2026-03-11\", \"paciente_cronico\": { \"apellido_y_nombre\": \"Fischer, Iván Gustavo\", \"tipo_doc\": \"DNI\", \"nro_doc\": \"25329881\", \"fec_nac\": \"1976-09-28\", \"sexo\": \"Masculino\", \"nro_afiliado\": \"2025329881001\", \"edad\": 49, \"telefono\": \"3571 554212\", \"email\": \"[ivanfischer76@gmail.com](https://mailto:ivanfischer76@gmail.com)\", \"domicilio\": \"Paraguay 319\", \"localidad\": \"Almafuerte\", \"provincia\": \"Córdoba\", \"cod_postal\": 5854, \"fec_ingreso\": \"1996-09-10\", \"n_plan\": \"plan integral\", \"telefono2\": null, \"email2\": null, \"domicilio2\": \"\" }, \"diagnosticos\": \\[ \"Hipertensión arterial\", \"Gota\", \"Otros\", \"dolor articular crónico\" \\], \"medico_prescriptor\": { \"especialidad\": \"MEDICO CLINICO\", \"id_medico\": 1, \"matricula\": \"MN 143032\", \"nombre_y_apellido\": \"BARANDIARAN MARIANO\", \"nro_doc\": \"29898069\", \"telefono\": \"1156405114\", \"horario_consulta\": \"martes de 16:00 a 20:00\", \"domicilio\": \"las heras 1546\", \"localidad\": \"Bell Ville\" }, \"institucion\": \"Sanatorio Allende\", \"resumen_historia_clinica\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \"cuadro_justificativo\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.\", \"medicamentos\": \\[ { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" }, { \"comprimidos_x_dia\": \"1\", \"contenido_envase\": \"10\", \"marca_comercial\": \"ACLOXIGENAC\", \"principio_activo\": \"diclofenac sódico\", \"regNo\": \"55690\", \"unidad_posologica\": \"50 mg comp.rec.x 10\", \"tiempo_prescripto_meses\": \"3\", \"dictamen_auditoria\": \"autorizado\" } \\]}\n\n{ \"accion\": \"mostrar\", \"guardar\": false, \"fecha_emision\": null, \"paciente_cronico\": null, \"diagnosticos\": \\[\\], \"medico_prescriptor\": null, \"institucion\": null, \"resumen_historia_clinica\": null, \"cuadro_justificativo\": null, \"medicamentos\": \\[\\]}"
+									},
+									"response": []
+								},
+								{
+									"name": "Exportar Recetario para Tratamientos Crónicos",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"accion\": \"mostrar\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/programas-especiales/formularios/exportar-recetario-tratamientos-cronicos",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"programas-especiales",
+												"formularios",
+												"exportar-recetario-tratamientos-cronicos"
+											]
+										},
+										"description": "Retorna un pdf de recetario para medicamentos crónicos para ser completado manualmente por el médico"
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "Publico",
 					"item": [
 						{
@@ -17366,7 +17390,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"db\": \"validacion\",\n    \"sp\": \"AWEB_TraerEstadosValidaciones\",\n    \"params\": {}\n}",
+									"raw": "{\n    \"db\": \"afiliacion\",\n    \"sp\": \"sp_persona_programa_select\",\n    \"params\": {\n        \"p_id_persona\": null,\n        \"p_fec_desde\": null,\n        \"p_fec_hasta\": null,\n        \"p_id_programa\": null\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
