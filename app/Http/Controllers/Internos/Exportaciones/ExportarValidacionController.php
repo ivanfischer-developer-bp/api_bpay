@@ -109,13 +109,19 @@ class ExportarValidacionController extends ConexionSpController
                         [
                             'codigo_interno' => $codigo_interno, 
                             'imprime_rechazos' => $imprimir_rechazadas
-                        ]);
+                        ]
+                    );
                     array_push($extras['responses'], ['AWEB_TraerAutorizacionDetalle' => $validacion->prestaciones]);
-    
-                    array_push($extras['sps'], ['AWEB_TraerAutorizacionTextos' => ['codigo_interno' => $codigo_interno]]);
-                    array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerAutorizacionTextos', ['codigo_interno' => $codigo_interno]));
-                    $validacion->textos = $this->ejecutar_sp_directo('validacion', 'AWEB_TraerAutorizacionTextos', ['codigo_interno' => $codigo_interno]);
-                    array_push($extras['responses'], ['AWEB_TraerAutorizacionTextos' => $validacion->textos]);
+    // return $validacion;
+                    // array_push($extras['sps'], ['AWEB_TraerAutorizacionTextos' => ['codigo_interno' => $codigo_interno]]);
+                    // array_push($extras['queries'], $this->get_query('validacion', 'AWEB_TraerAutorizacionTextos', ['codigo_interno' => $codigo_interno]));
+                    // $validacion->textos = $this->ejecutar_sp_directo('validacion', 'AWEB_TraerAutorizacionTextos', ['codigo_interno' => $codigo_interno]);
+                    // array_push($extras['responses'], ['AWEB_TraerAutorizacionTextos' => $validacion->textos]);
+                    $validacion->textos = [
+                        'texto_afiliado' => $validacion->texto_afiliado,
+                        'texto_efector' => $validacion->texto_efector,
+                        'texto_validacion' => $validacion->texto_validacion,
+                    ];
                     //  datos de internacion
                     $validacion->es_internacion = (!empty($validacion->codigo_internacion) && strlen($validacion->codigo_internacion) > 10 ? TRUE : FALSE);
                     $etiqueta_internacion = '';
@@ -772,10 +778,10 @@ class ExportarValidacionController extends ConexionSpController
         // $pdf->Cell(70, 6, utf8_decode('Usuario: ') . $usuario, 0, 1, 'R');
         $pos_y = $pdf->getY();
         // segunda línea con multilínea
-        $pdf->MultiCell(80, 6, utf8_decode('Efector: '.$data['efector']), 0, 'L');
+        $pdf->MultiCell(110, 6, utf8_decode('Efector: '.$data['efector']), 0, 'L');
         $pdf->setY($pos_y);
-        $pdf->setX($pdf->getX()+100);
-        $pdf->MultiCell(80, 6, utf8_decode('Usuario: '.$data['usuario']), 0, 'R');
+        $pdf->setX($pdf->getX()+110);
+        $pdf->MultiCell(70, 6, utf8_decode('Usuario: '.$data['usuario']), 0, 'R');
 
         // segunda y tercera línea sin acortar los nombres
         // $pdf->Cell(180, 6, utf8_decode('Efector: ') . utf8_decode($data['efector']), 0, 2);
@@ -799,7 +805,11 @@ class ExportarValidacionController extends ConexionSpController
         $pdf->Cell(60, 6, utf8_decode('Firma Afiliado'), 0, 1, 'C');
         
         //  si tiene que exportar observaciones
-        if ($exportar_observaciones && !empty($data['observaciones'])) {
+        if ($exportar_observaciones 
+            && !empty($data['observaciones']) 
+            && ($data['observaciones']['texto_afiliado'] != null 
+                || $data['observaciones']['texto_efector'] != null)
+            ) {
             //  ====================================================================
             //  observaciones
             //  ====================================================================
@@ -844,17 +854,28 @@ class ExportarValidacionController extends ConexionSpController
             //  titulo de tabla
             $pdf->Cell(180, 2, '', 0, 1);
             $pdf->Cell(180, 0.01, '', 1, 1, 'C');
-            $pdf->Cell(30, 10, utf8_decode('Fecha'), 0, 0, 'C');
+            // $pdf->Cell(30, 10, utf8_decode('Fecha'), 0, 0, 'C');
+            // $pdf->Cell(40, 10, utf8_decode('Destino'), 0, 0, 'C');
             $pdf->Cell(40, 10, utf8_decode('Destino'), 0, 0, 'C');
-            $pdf->Cell(110, 10, utf8_decode('Observación'), 0, 1);
+            $pdf->Cell(140, 10, utf8_decode('Observación'), 0, 1);
             $pdf->Cell(180, 0.01, '', 1, 1, 'C');
             $pdf->Cell(180, 2, '', 0, 1);
 
             //  por cada observacion
-            foreach ($data['observaciones'] as $observacion) {
-                $pdf->Cell(30, 7, $observacion->fecha, 0, 0, 'C');
-                $pdf->Cell(40, 7, $observacion->usuario, 0, 0, 'C');
-                $pdf->MultiCell(110, 7, utf8_decode($observacion->observacion), 0, 'L');
+            // foreach ($data['observaciones'] as $observacion) {
+            //     $pdf->Cell(30, 7, $observacion->fecha, 0, 0, 'C');
+            //     $pdf->Cell(40, 7, $observacion->usuario, 0, 0, 'C');
+            //     $pdf->MultiCell(110, 7, utf8_decode($observacion->observacion), 0, 'L');
+            // }
+            if($data['observaciones']['texto_afiliado'] != null){
+                $pdf->Cell(40, 7, utf8_decode('Afiliado'), 0, 0, 'C');
+                $pdf->Cell(140, 7, utf8_decode($data['observaciones']['texto_afiliado']), 0, 0, 'L');
+                $pdf->SetY($pdf->getY() + 7);
+            }
+            if($data['observaciones']['texto_efector'] != null){
+                $pdf->Cell(40, 7, utf8_decode('Efector'), 0, 0, 'C');
+                $pdf->Cell(140, 7, utf8_decode($data['observaciones']['texto_efector']), 0, 0, 'L');
+                $pdf->SetY($pdf->getY() + 7);
             }
         }
         return $pdf;
