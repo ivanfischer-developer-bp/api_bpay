@@ -133,6 +133,7 @@ use App\Http\Controllers\Internos\Prestadores\PrestacionController;
 use App\Http\Controllers\Internos\Prestadores\PrestacionesController;
 use App\Http\Controllers\Internos\Prestadores\PrestadorController;
 use App\Http\Controllers\Internos\Prestadores\PrestadoresController;
+use App\Http\Controllers\Internos\ProgramasEspecialesController;
 use App\Http\Controllers\Internos\Recetas\RecetasController;
 use App\Http\Controllers\Internos\Recetas\PrescripcionController;
 use App\Http\Controllers\Internos\Recetas\RecetaCertificadoController;
@@ -776,7 +777,6 @@ Route::group(['prefix' => 'int'],
                                 Route::post('sincronizar-turno', [TurnosController::class, 'sincronizar_turno']); // int/consultorio/turnos/sincronizar_turno  AB-71  
                             }
                         );
-                        
                     }
                 );
                 // consultas externas con auth:api
@@ -1128,8 +1128,7 @@ Route::group(['prefix' => 'int'],
                 // programas especiales
                 Route::group(['prefix' => 'programas-especiales'], 
                     function() {
-                        Route::get('buscar-programa-especial', [ProgramasEspecialesController::class, 'buscar_programa_especial']); // int/programas-especiales/buscar-programa-especial  AB-122    
-                        Route::get('listar-programas-especiales', [ProgramasEspecialesController::class, 'listar_programas_especiales']); // int/programas-especiales/listar-programas-especiales  AB-122    
+                        Route::get('buscar-programas-especiales', [ProgramasEspecialesController::class, 'buscar_programas_especiales']); // int/programas-especiales/buscar-programas-especiales  1.1.724-20260319   
                         Route::group(['prefix' => 'formularios'],
                             function(){
                                 Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/programas-especiales/formularios/exportar-formulario-cronicos  1.1.701-20260226
