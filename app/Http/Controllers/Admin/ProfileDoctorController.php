@@ -237,18 +237,18 @@ class ProfileDoctorController extends ConexionSpController
                     $message = 'No se pudo completar el perfil porque el usuario no tiene los permisos adecuados';
                 }else{
                     $medico = request('medico');
-                    $this->params = [
+                    $params = [
                         'id_usuario' => $id_usuario,
                         'medico' => $medico
                     ];
                     
-                    if($medico['sexo'] = 'M' 
+                    if($medico['sexo'] == 'M' 
                         || $medico['sexo'] == 'm' 
                         || $medico['sexo'] == 'Masculino' 
                         || $medico['sexo'] == 'masculino'
                         ){
                         $sexo = 'Masculino';
-                    }else if($medico['sexo'] = 'F' 
+                    }else if($medico['sexo'] == 'F' 
                         || $medico['sexo'] == 'f' 
                         || $medico['sexo'] == 'Femenino' 
                         || $medico['sexo'] == 'femenino'
@@ -257,7 +257,7 @@ class ProfileDoctorController extends ConexionSpController
                     }else{
                         $sexo = 'No Binario';
                     }
-
+                    
                     $ambiente_recipe = $medico['ambiente_recipe'] != null 
                         && $medico['ambiente_recipe'] !=  'receta' 
                         && $medico['ambiente_recipe'] !=  'Receta' 
@@ -268,7 +268,7 @@ class ProfileDoctorController extends ConexionSpController
                     $profile_doctor->user_id = $id_usuario;
                     $profile_doctor->apellido = $medico['apellido'];
                     $profile_doctor->nombre = $medico['nombre'];
-                    $profile_doctor->nombre = $medico['tratamiento'];
+                    $profile_doctor->tratamiento = $medico['tratamiento'];
                     $profile_doctor->tipoDoc = $medico['tipoDoc'] == 'DU' ? 'DNI' : $medico['tipoDoc'];
                     $profile_doctor->nroDoc = $medico['nroDoc'];
                     $profile_doctor->especialidad = $medico['especialidad'];
@@ -293,46 +293,47 @@ class ProfileDoctorController extends ConexionSpController
                     $profile_doctor->firma_registrada = $medico['firma_registrada'] != null ? $medico['firma_registrada'] : false;
                     $profile_doctor->idRefeps = $medico['idRefeps'];
                     // return response()->json([
-                    //     'params' => $this->params,
+                    //     'params' => $params,
                     //     'profile_doctor' => $profile_doctor
                     // ]);
                     $response_profile_doctor = ProfileDoctor::updateOrCreate(['user_id' => $id_usuario], [
                         'user_id' => $id_usuario,
-                        'apellido' => $medico['apellido'],
-                        'nombre' => $medico['nombre'],
-                        'tratamiento' => $medico['tratamiento'],
-                        'tipoDoc' => $medico['tipoDoc'] == 'DU' ? 'DNI' : $medico['tipoDoc'],
-                        'nroDoc' => $medico['nroDoc'],
-                        'especialidad' => $medico['especialidad'],
-                        'sexo' => $sexo,
-                        'fechaNacimiento' => $medico['fechaNacimiento'],
-                        'email' => strtolower($medico['email']),
-                        'telefono' => $medico['telefono'] != null && $medico['telefono'] != '' ? $medico['telefono'] : '0',
-                        'pais' => $medico['pais'],
-                        'firmalink' => $medico['firmalink'],
-                        'matricula_tipo' => $medico['matricula_tipo'] != null ? $medico['matricula_tipo'] : $medico['matricula']['tipo'],
-                        'matricula_numero' => $medico['matricula_numero'] != null ? $medico['matricula_numero'] : $medico['matricula']['numero'],
-                        'matricula_provincia' => $medico['matricula_provincia'] != null ? $medico['matricula_provincia'] : $medico['matricula']['provincia'], 
-                        'cuit' => $medico['cuit'],
-                        'idTributario' => $medico['cuit'],
-                        'horario' => $medico['horario'],
-                        'diasAtencion' => $medico['diasAtencion'],
-                        'datosContacto' => $medico['datosContacto'],
-                        'nombreConsultorio' => $medico['nombreConsultorio'],
-                        'direccionConsultorio' => $medico['direccionConsultorio'],
-                        'informacionAdicional' => $medico['informacionAdicional'],
-                        'ambiente_recipe' => $ambiente_recipe,
-                        'firma_registrada' => $medico['firma_registrada'] != null ? $medico['firma_registrada'] : false,
-                        'idRefeps' => $medico['idRefeps'],
+                        'apellido' => $profile_doctor->apellido,
+                        'nombre' => $profile_doctor->nombre,
+                        'tratamiento' => $profile_doctor->tratamiento,
+                        'tipoDoc' => $profile_doctor->tipoDoc,
+                        'nroDoc' => $profile_doctor->nroDoc,
+                        'especialidad' => $profile_doctor->especialidad,
+                        'sexo' => $profile_doctor->sexo,
+                        'fechaNacimiento' => $profile_doctor->fechaNacimiento,
+                        'email' => $profile_doctor->email,
+                        'telefono' => $profile_doctor->telefono,
+                        'pais' => $profile_doctor->pais,
+                        'firmalink' => $profile_doctor->firmalink,
+                        'matricula_tipo' => $profile_doctor->matricula_tipo,
+                        'matricula_numero' => $profile_doctor->matricula_numero,
+                        'matricula_provincia' => $profile_doctor->matricula_provincia, 
+                        'cuit' => $profile_doctor->cuit,
+                        'idTributario' => $profile_doctor->idTributario,
+                        'horario' => $profile_doctor->horario,
+                        'diasAtencion' => $profile_doctor->diasAtencion,
+                        'datosContacto' => $profile_doctor->datosContacto,
+                        'nombreConsultorio' => $profile_doctor->nombreConsultorio,
+                        'direccionConsultorio' => $profile_doctor->direccionConsultorio,
+                        'informacionAdicional' => $profile_doctor->informacionAdicional,
+                        'ambiente_recipe' => $profile_doctor->ambiente_recipe,
+                        'firma_registrada' => $profile_doctor->firma_registrada,
+                        'idRefeps' => $profile_doctor->idRefeps,
                         'id_convenio' => null,
                     ]);
                     array_push($extras['responses'], ['profile_doctor' => $response_profile_doctor]);
+
                     if($response_profile_doctor){
                         $datos_notificacion = [
-                            'apellido' => $medico['apellido'],
-                            'nombre' => $medico['nombre'],
-                            'matricula_tipo' => $medico['matricula_tipo'],
-                            'matricula_numero' => $medico['matricula_numero']
+                            'apellido' => $profile_doctor->apellido,
+                            'nombre' => $profile_doctor->nombre,
+                            'matricula_tipo' => $profile_doctor->matricula_tipo,
+                            'matricula_numero' => $profile_doctor->matricula_numero
                         ];
                         if(env('AMBIENTE') != 'produccion'){
                             $asunto = 'Verificación de email (staging)';
@@ -346,52 +347,56 @@ class ProfileDoctorController extends ConexionSpController
                         }else{
                             $email = $user_logueado->email;
                         }
-                        // es redundante porque tiene un fallback interno solo demuestra la configuración del .env
-                        if(env('MAIL_USE_MICROSOFT_GRAPH', false)){
-                            $mailable = new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion);
-                            // Envía automáticamente con fallback
-                            $resultado = $this->sendEmail($email, $mailable);
-                            array_push($extras['responses'], ['microsoft_graph_result' => $resultado]);
-                            if ($resultado) {
-                                $message = 'Email enviado con Microsoft Graph. ';
-                                $error = null;
-                                $status = 'ok';
-                                $code = 1;
-                            }else{
-                                $message = 'Error al enviar email con Microsoft Graph';
-                                $error = $resultado;
-                                $status = 'fail';
-                                $code = -3;
-                            }
-                        }else{
-                            Mail::to($email)->send(new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion));
-                            if(Mail::failures()){
-                                array_push($extras['responses'], ['smtp_result' => false]);
-                                Log::channel('email')->error('Email fallido por SMTP', [
-                                    'email' => $email,
-                                    'asunto' => $asunto,
-                                    'datos_notificacion' => $datos_notificacion
-                                ]);
-                                $message = 'Error al enviar email por SMTP. ';
-                                $error = Mail::failures();
-                                $status = 'fail';
-                                $code = -4;
-                            }else{
-                                array_push($extras['responses'], ['smtp_result' => true]);
-                                Log::channel('email')->info('Email enviado exitosamente a través de SMTP', [
-                                    'email' => $email,
-                                    'asunto' => $asunto,
-                                    'datos_notificacion' => $datos_notificacion
-                                ]);
-                                $message = 'Email enviado por SMTP. ';
-                                $error = null;
-                                $status = 'ok';
-                                $code = 2;
-                            }
-                            Log::channel('email')->info('═══════════════════════════════════════════════════════════════════════════════════════════');
-                        }
 
-                        // Mail::to($user_logueado->email)->send(new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion));
+                        // si no tiene perfil completo es que es la primera vez que lo completa, entonces se le envía el email de notificación, 
+                        // si ya tiene el perfil completo no se le vuelve a enviar aunque edite su perfil
+                        if(!$logged_user['perfil_completo']){
+                            // es redundante porque tiene un fallback interno, solo demuestra la configuración del .env
+                            if(env('MAIL_USE_MICROSOFT_GRAPH', false)){
+                                $mailable = new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion);
+                                // Envía automáticamente con fallback
+                                $resultado = $this->sendEmail($email, $mailable);
+                                array_push($extras['responses'], ['microsoft_graph_result' => $resultado]);
+                                if ($resultado) {
+                                    $message = 'Email enviado con Microsoft Graph. ';
+                                    $error = null;
+                                    $status = 'ok';
+                                    $code = 1;
+                                }else{
+                                    $message = 'Error al enviar email con Microsoft Graph';
+                                    $error = $resultado;
+                                    $status = 'fail';
+                                    $code = -3;
+                                }
+                            }else{
+                                Mail::to($email)->send(new NotificacionEmailRegistroUsuarioDoctor($asunto, $datos_notificacion));
+                                if(Mail::failures()){
+                                    array_push($extras['responses'], ['smtp_result' => false]);
+                                    Log::channel('email')->error('Email fallido por SMTP', [
+                                        'email' => $email,
+                                        'asunto' => $asunto,
+                                        'datos_notificacion' => $datos_notificacion
+                                    ]);
+                                    $message = 'Error al enviar email por SMTP. ';
+                                    $error = Mail::failures();
+                                    $status = 'fail';
+                                    $code = -4;
+                                }else{
+                                    array_push($extras['responses'], ['smtp_result' => true]);
+                                    Log::channel('email')->info('Email enviado exitosamente a través de SMTP', [
+                                        'email' => $email,
+                                        'asunto' => $asunto,
+                                        'datos_notificacion' => $datos_notificacion
+                                    ]);
+                                    $message = 'Email enviado por SMTP. ';
+                                    $error = null;
+                                    $status = 'ok';
+                                    $code = 2;
+                                }
+                                Log::channel('email')->info('═══════════════════════════════════════════════════════════════════════════════════════════');
+                            }
+                        }
+                        
                         $user = User::find($id_usuario);
                         $user->perfil_completo = true;
                         $response_user = $user->update();
@@ -405,7 +410,7 @@ class ProfileDoctorController extends ConexionSpController
                             'perfil_medico' => $profile_doctor
                         ];
                     }else{
-                        $staus = 'fail';
+                        $status = 'fail';
                         $count = 1;
                         $message = 'Perfil no guardado. '.$message;
                         array_push($errors, 'error guardando perfil de medico');
