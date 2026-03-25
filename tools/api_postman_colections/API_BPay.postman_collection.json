@@ -7837,6 +7837,56 @@
 							"response": []
 						},
 						{
+							"name": "Consultar Padrón Externo",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{intAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/int/consultas-externas/consultar-padron-externo?nro_doc=31743589 &id_persona=19800&actualizar_afiliado=NO",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"int",
+										"consultas-externas",
+										"consultar-padron-externo"
+									],
+									"query": [
+										{
+											"key": "nro_doc",
+											"value": "31743589 ",
+											"description": "16682900 = Activo, 8399164 = Inactivo, 31743589 = fuera de padrón"
+										},
+										{
+											"key": "id_persona",
+											"value": "19800",
+											"description": "27172 para 16682900, 27171 para 8399164, 19800 para 31743589"
+										},
+										{
+											"key": "actualizar_afiliado",
+											"value": "NO"
+										}
+									]
+								},
+								"description": "Consulta el padrón de afiliados externo de los distintos ambientes a través de una API proporcionada por los ambientes, obteniendo el estado del afiliado en dicho padrón"
+							},
+							"response": []
+						},
+						{
 							"name": "XXX - Consultar Boletín Protectivo",
 							"request": {
 								"method": "GET",
@@ -17442,7 +17492,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"db\": \"afiliacion\",\n    \"sp\": \"sp_persona_programa_select\",\n    \"params\": {\n        \"p_id_persona\": null,\n        \"p_fec_desde\": null,\n        \"p_fec_hasta\": null,\n        \"p_id_programa\": null\n    }\n}",
+									"raw": "{\n    \"db\": \"afiliacion\",\n    \"sp\": \"sp_afiliado_estado_update\",\n    \"params\": {\n        \"id_persona\": 19800,\n        \"id_usuario\": 1006,\n        \"n_estado\": \"Activo\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
