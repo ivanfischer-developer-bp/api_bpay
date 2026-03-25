@@ -323,7 +323,7 @@ class ConsultasExternasController extends ConexionSpController
         $code = -1;
         $line = null;
         $data = [
-            'estado_padron' => null,
+            'estado_afiliado' => null,
             'actualizado' => false,
             'info_padron' => null
         ];
@@ -353,10 +353,10 @@ class ConsultasExternasController extends ConexionSpController
                     $info = $resp['info'] ?? 'No se obtuvo información del padrón externo';
                     $estado = $resp['estado'] ?? null;
                     $data['info_padron'] = $info;
-                    $data['estado_padron'] = $estado;
+                    $data['estado_afiliado'] = $estado;
                     if($resp['estado'] != null){
                         $estado = $resp['estado'];
-                        $data['estado_padron'] = $estado;
+                        $data['estado_afiliado'] = $estado;
 
                         if(env('ACTUALIZAR_PADRON_AL_BUSCAR') == 'SI'){
                             $actualizar = true;
