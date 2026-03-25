@@ -112,7 +112,7 @@ class AuditoriaMedicaController extends ConexionSpController
                                 'cantidad' => $prestacion['cantidad'],
                                 'id_estado' => $prestacion['id_estado'],
                                 'comentarios' => $prestacion['comentarios'] ? $prestacion['comentarios'] : null,
-                                'extra_capita' => $prestacion['extra_capita'] ? $prestacion['extra_capita'] : null
+                                'extra_capita' => $prestacion['extra_capita'] == 1 ? $prestacion['extra_capita'] : 0
                             ];
                             array_push($extras['sps'], ['aud_auditar_item' => $params_sp]);
                             array_push($extras['queries'], $this->get_query('validacion', 'aud_auditar_item', $params_sp));

@@ -447,7 +447,7 @@ function generar_receta_prescripcion($miprescripcion, $ambiente_recipe)
             $miprescripcion['subemisor']['direccion'] = env('SUBEMISOR_DIRECCION');
             $miprescripcion['subemisor']['logoBase64'] = base64_encode(file_get_contents(env('SUBEMISOR_LOGO')));
             $miprescripcion['clienteAppId'] = env('QBI2RECIPE_CLIENTEAPPID');
-            curl_setopt($ch, CURLOPT_URL, env('QBI2RECIPE_URLPRACTICAS'));
+            curl_setopt($ch, CURLOPT_URL, env('QBI2RECIPE_URLPRACTICAS')); 
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
                 'Authorization: Bearer '.env('QBI2RECIPE_TOKEN'),
