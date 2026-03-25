@@ -27,13 +27,24 @@ class PruebasController extends ConexionSpController
     public function probar_sp(Request $request)
     {
         try {
+            $query = null;
             $sp = request('sp');
             $params = request('params', []);
             $db = request('db', 'afiliacion');
             $conexion = new Conexion($db);
-            return $conexion->ejecutar_sp($sp, $params);
+
+            $query = $this->get_query($db, $sp, $params);
+            $response = $conexion->ejecutar_sp($sp, $params);
+            $data = [
+                'query' => $query,
+                'response' => $response
+            ];
+            return response()->json($data);
         } catch (\Exception $e) {
-            return $e;
+            return response()->json([
+                'query' => $query,
+                'error' => $e->getMessage()
+            ]);
         }
     }
 

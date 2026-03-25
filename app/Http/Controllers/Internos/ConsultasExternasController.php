@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Response as FacadeResponse;
 use App\Http\Controllers\ConexionSpController;
 use App\Models\User;
 
+use App\Services\Afiliados\PadronExternoOsceara;
+
 use File;
 use Storage;
 use Carbon\Carbon;
-use setasign\Fpdi\Fpdi;
 
 class ConsultasExternasController extends ConexionSpController
 {
@@ -298,8 +299,144 @@ class ConsultasExternasController extends ConexionSpController
         }
     }
 
+    /**
+     * Consulta el padrón antiguo de osceara
+     * 
+     * @return \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function consultar_padron_externo(Request $request)
+    {   
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => '/int/consultas-externas/consultar-padron-externo',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'sps' => [],
+            'responses' => [],
+            'queries' => []
+        ];
+        $status = 'fail';
+        $message = '';
+        $count = -1;
+        $code = -1;
+        $line = null;
+        $data = [
+            'estado_padron' => null,
+            'actualizado' => false,
+            'info_padron' => null
+        ];
+        $errors = [];
+        $params = [];
+    
+        // obtenemos el usuario de la petición y sus permisos
+        $user = User::with('roles', 'permissions')->find($request->user()->id);
+        $logged_user = $this->get_logged_user($user);
+        $usuario_sqlserver_default = 1;
+        $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
+        
+        try{
+            if($user->hasPermissionTo('buscar afiliado')){
+                $params = [
+                    'nro_doc' => request('nro_doc'),
+                    'id_persona' => request('id_persona'),
+                    'actualizar_afiliado' => request('actualizar_afiliado') == 'SI' ? true : false
+                ];
+                if(env('AMBIENTE_PADRON_EXTERNO') == 'osceara'){
+                    $actualizar = false;
+                    $padron = new PadronExternoOsceara();
+                    $resp = $padron->consultar($params['nro_doc']);
+                    array_push($extras['responses'], [
+                        'padron_externo_osceara' => $resp
+                    ]);
+                    $info = $resp['info'] ?? 'No se obtuvo información del padrón externo';
+                    $estado = $resp['estado'] ?? null;
+                    $data['info_padron'] = $info;
+                    $data['estado_padron'] = $estado;
+                    if($resp['estado'] != null){
+                        $estado = $resp['estado'];
+                        $data['estado_padron'] = $estado;
 
+                        if(env('ACTUALIZAR_PADRON_AL_BUSCAR') == 'SI'){
+                            $actualizar = true;
+                        }else{
+                            if($params['actualizar_afiliado']){
+                                $actualizar = true;
+                            }
+                        }
 
+                        if($actualizar && $estado != null){
+                            $sp = 'sp_afiliado_estado_update';
+                            $db = 'afiliacion';
+                            $params_sp = [
+                                'id_persona' => $params['id_persona'],
+                                'id_usuario' => $id_usuario,
+                                'n_estado' => $estado
+                            ];
+                            array_push($extras['sps'], [$sp => $params_sp]);
+                            array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
+                            $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
+                            array_push($extras['responses'], [$sp => $response]);
+                            if(isset($response['error']) && $response['error'] != null){
+                                array_push($errors, 'Error al actualizar el estado del afiliado en la base de datos local: '.$response['error']);
+                                $message = 'Estado NO actualizado. ';
+                            }else{
+                                if($response[0]->id == 1){
+                                    $message = 'Estado actualizado correctamente. ';
+                                    $data['actualizado'] = true;
+                                }
+                            }
+                        }
+                        $status = 'ok';
+                        $message = $message.'Consulta realizada en padrón externo de Osceara. ';
+                        $count = 1;
+                        $code = 1;
+                    }else{
+                        $status = 'empty';
+                        $message = 'Consulta realizada en padrón externo de Osceara pero no se obtuvo un estado válido. '.$info;
+                        $count = 0;
+                        $code = -3;
+                    }
+                }
+            }else{
+                $status = 'unauthorized';
+                $message = 'No puede acceder a esta ruta, el usuario con rol '.strtoupper($user->roles[0]->name).' no tiene permiso. Se requiere permiso para BUSCAR AFILIADO';
+                $count  = 0;
+                $data = null;
+                $error = 'Error de permisos';
+                $code = -2;
+            }
+            // retorna el response
+            return response()->json([
+                'status' => $status,
+                'count' => $count,
+                'errors' => $errors,
+                'message' => $message,
+                'line' => null,
+                'code' => $code,
+                'data' => $data,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => $logged_user,
+            ]); 
+        } catch (\Throwable $th) {
+            array_push($errors, 'Error de Backend');
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => null,
+            ]);
+        }
+
+    }
 
 
 
