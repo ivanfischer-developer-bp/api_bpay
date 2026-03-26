@@ -4045,6 +4045,11 @@
 												{
 													"key": "id_estado",
 													"value": "1"
+												},
+												{
+													"key": "cuit",
+													"value": null,
+													"disabled": true
 												}
 											]
 										},

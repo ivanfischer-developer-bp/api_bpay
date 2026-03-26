@@ -56,6 +56,7 @@ class AfiliadoController extends ConexionSpController
                     $id_persona = request('id_persona');
                     $codigo = request('codigo');
                     $nombre = request('nombre');
+                    $cuit = request('cuit');
                     $id_tipo_documento = request('id_tipo_documento');
                     $numero_documento = request('numero_documento');
                     $tipo_busqueda = request('tipo_busqueda');
@@ -93,6 +94,10 @@ class AfiliadoController extends ConexionSpController
                     if ($nombre != '' && $nombre != 'null'){
                         $this->params['nombre'] = $nombre;
                         $params_sp['nombre'] = $nombre;
+                    }
+                    if ($cuit != '' && $cuit != 'null'){
+                        $this->params['cuit'] = $cuit;
+                        $params_sp['p_cuit'] = $cuit;
                     }
                     if ($id_tipo_documento != '' && $id_tipo_documento != 'null'){
                         $this->params['id_tipo_doc'] = intval($id_tipo_documento);
