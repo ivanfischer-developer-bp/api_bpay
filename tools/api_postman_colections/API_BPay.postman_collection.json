@@ -5608,6 +5608,50 @@
 										"description": "Quita el archivo de la carpeta storage/app/public/uploads/firma_medicos"
 									},
 									"response": []
+								},
+								{
+									"name": "Descargar Firma Medico",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nro_doc\": 29898069\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/archivos/firma-medicos/descargar-firma-medico",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"archivos",
+												"firma-medicos",
+												"descargar-firma-medico"
+											]
+										},
+										"description": "Descarga el archivo de firma del madico"
+									},
+									"response": []
 								}
 							]
 						},

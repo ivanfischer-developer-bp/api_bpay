@@ -850,6 +850,72 @@ class FileController extends ConexionSpController
     }
 
     /**
+     * Descarga un archivo de firma de médico si lo encuentra, de lo contrario devuelve un error indicando que no se encontró la firma del médico.
+     * 
+     */
+    public function descargar_firma_medico(Request $request)
+    {
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => '/int/archivos/firma-medicos/descargar-firma-medico',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'sps' => [],
+        ];
+        try {
+            $user = User::with('roles', 'permissions')->find($request->user()->id);
+            $logged_user = $this->get_logged_user($user);
+            
+            $file = request('nro_doc');
+            $extension = request('extension') != null ? request('extension') : 'png';
+            $filename = $file . '.' . $extension;
+
+            $params = [
+                'file' => $file,
+                'extension' => $extension
+            ];
+
+            $disk = Storage::disk('firma_medicos');
+
+            if ($disk->exists($filename)){
+                return response($disk->get($filename), 200, [
+                    'Content-Type' => $disk->mimeType($filename) ?? 'application/octet-stream',
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                    'Content-Length' => $disk->size($filename),
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'fail',
+                    'count' => 0,
+                    'errors' => ['No se encontró la firma del médico.'],
+                    'message' => 'No se encontró la firma del médico. El médico con dni '.$file.' no tiene firma registrada en el sistema.',
+                    'line' => null,
+                    'code' => -1,
+                    'data' => null,
+                    'params' => $params,
+                    'logged_user' => $logged_user,
+                    'extras' => $extras
+                ]);
+            }
+        } catch (\Throwable $th) {
+            $errors = ['Line: '.$th->getLine().' - Error: '.$th->getMessage()];
+            return response()->json([
+                'status' => 'fail',
+                'count' => 0,
+                'errors' => $errors,
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params' => $params,
+                'logged_user' => $logged_user,
+                'extras' => $extras
+            ]);
+        }
+    }
+
+    /**
      * Sube un manual de usuario en pdf a la carpeta storage/app/public/uploads/manuales
      * @param archivo file archivo a subir.
      * @param nombre_archivo string nombre del archivo con su extensión. 

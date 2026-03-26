@@ -704,6 +704,7 @@ Route::group(['prefix' => 'int'],
                                 Route::get('buscar-firma-medico', [FileController::class, 'buscar_firma_medico']); // int/archivos/firma-medicos/buscar-firma-medico 
                                 Route::post('quitar-firma-medico', [FileController::class, 'quitar_firma_medico']); // int/archivos/firma-medicos/quitar-firma-medico 
                                 Route::post('subir-firma-medico', [FileController::class, 'subir_firma_medico']); // int/archivos/firma-medicos/subir-firma-medico 
+                                Route::post('descargar-firma-medico', [FileController::class, 'descargar_firma_medico']); // int/archivos/firma-medicos/descargar-firma-medico 1.1.730-20260326 
                             }
                         );
                         Route::group(['prefix' => 'manuales'],
