@@ -7697,6 +7697,378 @@
 					"name": "Consultas Externas",
 					"item": [
 						{
+							"name": "Padrón Externo",
+							"item": [
+								{
+									"name": "API OSCEARA",
+									"item": [
+										{
+											"name": "Login",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"ws\":\"Logueo\",\n    \"args\":{\n        \"Usuario\":\"BPAY\",\n        \"Password\":\"jPF98rFSDasq\"\n    }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://web.oscearasistemas.com.ar/wsapi",
+													"protocol": "https",
+													"host": [
+														"web",
+														"oscearasistemas",
+														"com",
+														"ar"
+													],
+													"path": [
+														"wsapi"
+													]
+												},
+												"description": "Obtiene un token de la api de osceara"
+											},
+											"response": []
+										},
+										{
+											"name": "Obtener Afiliados",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"ws\":\"AfiliadosObtener\",\n    \"token\":\"F4708335E1EB0738FC6C9FD8B9C3F1\",\n    \"IdAdmSys\":1,\n    \"username\": \"BPAY\",\n    \"args\": {\n        \"ApellidoNombre\": \"\",\n        \"Nombre\": \"\",\n        \"NumDoc\": 46433781,\n        \"CUIL\": 0,\n        \"AfilNumero\": 0,\n        \"IdTipoDoc\": null,\n        \"IdCanalAcc\": 0,\n        \"StrCanalesAcceso\": null,\n        \"IdModoIng\": null,\n        \"IdPlan\": null,\n        \"IdDelegacion\": null,\n        \"Estado\": 127,\n        \"Sexo\": null,\n        \"IdProvincia\": null,\n        \"IdZona\": null,\n        \"IdPartido\": null,\n        \"TipoBeneficiario\": null,\n        \"IdSitRevista\": null,\n        \"IdNacionalidad\": null,\n        \"IdParentesco\": null,\n        \"_ModoResult\": 5,\n        \"_Fields\": \"NumAfiliado,ApellidoNombre,CUIL,Edad,StrTipoDoc,NumDoc,StrSexo,StrEstCivil,Parentesco,FechaNacimiento,DomiCalle,DomiNumero,DomiPiso,DomiDpto,Provincia,Localidad,Telefonos,EMail,CPostal,CanalAcceso,ModoIngreso,Plan,FechaEntregaCarnet,Delegacion,CampoActivo,FechaEstado,NumHCLinica,StrTipoBeneficiario,StrSitRevista,Partido,NumAfiliadoNuevoMasViejo,MotivoAltaBaja,Nombre,RN,RT,ID,EditaTipoBenef,StrSitRevista,SinServicio\",\n        \"_Pag\": 1,\n        \"_RegPag\": 50,\n        \"FechaBase\": null,\n        \"Buscar\": 0,\n        \"Padron\": 1\n    }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://web.oscearasistemas.com.ar/wsapi",
+													"protocol": "https",
+													"host": [
+														"web",
+														"oscearasistemas",
+														"com",
+														"ar"
+													],
+													"path": [
+														"wsapi"
+													]
+												},
+												"description": "Obtiene un listado de afiliados en el padrón de osceara"
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Consultar Padrón Externo",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/consultas-externas/consultar-padron-externo?nro_doc=8399164&id_persona=27171&actualizar_afiliado=SI",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"consultas-externas",
+												"consultar-padron-externo"
+											],
+											"query": [
+												{
+													"key": "nro_doc",
+													"value": "8399164",
+													"description": "16682900 = Activo, 8399164 = Inactivo, 31743589 = fuera de padrón"
+												},
+												{
+													"key": "id_persona",
+													"value": "27171",
+													"description": "27172 para 16682900, 27171 para 8399164, 19800 para 31743589"
+												},
+												{
+													"key": "actualizar_afiliado",
+													"value": "SI"
+												}
+											]
+										},
+										"description": "Consulta el padrón de afiliados externo de los distintos ambientes a través de una API proporcionada por los ambientes, obteniendo el estado del afiliado en dicho padrón"
+									},
+									"response": []
+								},
+								{
+									"name": "Buscar Afiliado Pardón Externo",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/consultas-externas/buscar-afiliado-padron-externo?nro_doc=38531067",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"consultas-externas",
+												"buscar-afiliado-padron-externo"
+											],
+											"query": [
+												{
+													"key": "nro_doc",
+													"value": "38531067",
+													"description": "38531067 = si, 8399164 = si"
+												},
+												{
+													"key": "cuit",
+													"value": "20083991640",
+													"disabled": true
+												}
+											]
+										},
+										"description": "Busca un afiliado por número de documento o por cuit en el padrón externo"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "XXX Afilmed",
+							"item": [
+								{
+									"name": "XXX - Consultar Boletín Protectivo",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/consultas-externas/boletin-protectivo?nro_afiliado=68451401&tipo_doc=DNI&nro_doc=21886839",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"consultas-externas",
+												"boletin-protectivo"
+											],
+											"query": [
+												{
+													"key": "nro_afiliado",
+													"value": "68451401",
+													"description": "80696700 no esta en boletin, 68451401 si, 104390310 dado de baja en afilmed 52254610 también"
+												},
+												{
+													"key": "tipo_doc",
+													"value": "DNI"
+												},
+												{
+													"key": "nro_doc",
+													"value": "21886839",
+													"description": "31743589 no esta en boletin, 21886839 si, 39428680 dado de baja"
+												},
+												{
+													"key": null,
+													"value": "",
+													"description": "Morosos: 68451401 VICTOR ALBERTO SOAJE, 52254610 RODRIGO DE MAIO",
+													"disabled": true
+												},
+												{
+													"key": null,
+													"value": "",
+													"description": "Bajas: 58212590 Alemano, 104390310 Herrera",
+													"disabled": true
+												}
+											]
+										},
+										"description": "Consulta si un afiliado se encuentra en boletín protectivo en la api de Silvio Quadri para casa y en un sp para los otros ambientes"
+									},
+									"response": []
+								},
+								{
+									"name": "XXX - Cuenta Corriente Afilmed",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/consultas-externas/cuenta-corriente-afilmed?nro_afiliado=68451401 ",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"consultas-externas",
+												"cuenta-corriente-afilmed"
+											],
+											"query": [
+												{
+													"key": "nro_afiliado",
+													"value": "68451401 ",
+													"description": "68451401 no tiene, 101819601 si tiene"
+												}
+											]
+										},
+										"description": "consume la api de cuenta corriente histoirca de afilmed"
+									},
+									"response": []
+								},
+								{
+									"name": "XXX - Cobranzas Afilmed",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/consultas-externas/cobranzas-afilmed?nro_doc=21886839",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"consultas-externas",
+												"cobranzas-afilmed"
+											],
+											"query": [
+												{
+													"key": "nro_doc",
+													"value": "21886839"
+												}
+											]
+										},
+										"description": "Consultas las cobranzas de afilmed"
+									},
+									"response": []
+								},
+								{
+									"name": "XXX - Consultar Afiliado Afilmed",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/consultas-externas/afiliado?tipo_doc=DNI&nro_doc=5216187",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"consultas-externas",
+												"afiliado"
+											],
+											"query": [
+												{
+													"key": "tipo_doc",
+													"value": "DNI"
+												},
+												{
+													"key": "nro_doc",
+													"value": "5216187"
+												}
+											]
+										},
+										"description": "Consulta los datos de un afiliado en la API de Silvio Quadri por su tipo y numero de documento."
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Acceso: Consultar SISA",
 							"request": {
 								"method": "POST",
@@ -7882,255 +8254,6 @@
 									]
 								},
 								"description": "consulta al ministerio de salud por un medicamento o laboratorio"
-							},
-							"response": []
-						},
-						{
-							"name": "Consultar Padrón Externo",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-Requested-With",
-										"value": "XMLHttpRequest"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{intAccessToken}}"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/api/int/consultas-externas/consultar-padron-externo?nro_doc=31743589 &id_persona=19800&actualizar_afiliado=NO",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"int",
-										"consultas-externas",
-										"consultar-padron-externo"
-									],
-									"query": [
-										{
-											"key": "nro_doc",
-											"value": "31743589 ",
-											"description": "16682900 = Activo, 8399164 = Inactivo, 31743589 = fuera de padrón"
-										},
-										{
-											"key": "id_persona",
-											"value": "19800",
-											"description": "27172 para 16682900, 27171 para 8399164, 19800 para 31743589"
-										},
-										{
-											"key": "actualizar_afiliado",
-											"value": "NO"
-										}
-									]
-								},
-								"description": "Consulta el padrón de afiliados externo de los distintos ambientes a través de una API proporcionada por los ambientes, obteniendo el estado del afiliado en dicho padrón"
-							},
-							"response": []
-						},
-						{
-							"name": "XXX - Consultar Boletín Protectivo",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-Requested-With",
-										"value": "XMLHttpRequest"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{intAccessToken}}"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/api/int/consultas-externas/boletin-protectivo?nro_afiliado=68451401&tipo_doc=DNI&nro_doc=21886839",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"int",
-										"consultas-externas",
-										"boletin-protectivo"
-									],
-									"query": [
-										{
-											"key": "nro_afiliado",
-											"value": "68451401",
-											"description": "80696700 no esta en boletin, 68451401 si, 104390310 dado de baja en afilmed 52254610 también"
-										},
-										{
-											"key": "tipo_doc",
-											"value": "DNI"
-										},
-										{
-											"key": "nro_doc",
-											"value": "21886839",
-											"description": "31743589 no esta en boletin, 21886839 si, 39428680 dado de baja"
-										},
-										{
-											"key": null,
-											"value": "",
-											"description": "Morosos: 68451401 VICTOR ALBERTO SOAJE, 52254610 RODRIGO DE MAIO",
-											"disabled": true
-										},
-										{
-											"key": null,
-											"value": "",
-											"description": "Bajas: 58212590 Alemano, 104390310 Herrera",
-											"disabled": true
-										}
-									]
-								},
-								"description": "Consulta si un afiliado se encuentra en boletín protectivo en la api de Silvio Quadri para casa y en un sp para los otros ambientes"
-							},
-							"response": []
-						},
-						{
-							"name": "XXX - Cuenta Corriente Afilmed",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-Requested-With",
-										"value": "XMLHttpRequest"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{intAccessToken}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/api/int/consultas-externas/cuenta-corriente-afilmed?nro_afiliado=68451401 ",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"int",
-										"consultas-externas",
-										"cuenta-corriente-afilmed"
-									],
-									"query": [
-										{
-											"key": "nro_afiliado",
-											"value": "68451401 ",
-											"description": "68451401 no tiene, 101819601 si tiene"
-										}
-									]
-								},
-								"description": "consume la api de cuenta corriente histoirca de afilmed"
-							},
-							"response": []
-						},
-						{
-							"name": "XXX - Cobranzas Afilmed",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-Requested-With",
-										"value": "XMLHttpRequest"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{intAccessToken}}"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/api/int/consultas-externas/cobranzas-afilmed?nro_doc=21886839",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"int",
-										"consultas-externas",
-										"cobranzas-afilmed"
-									],
-									"query": [
-										{
-											"key": "nro_doc",
-											"value": "21886839"
-										}
-									]
-								},
-								"description": "Consultas las cobranzas de afilmed"
-							},
-							"response": []
-						},
-						{
-							"name": "XXX - Consultar Afiliado Afilmed",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "X-Requested-With",
-										"value": "XMLHttpRequest"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{intAccessToken}}"
-									}
-								],
-								"url": {
-									"raw": "{{url}}/api/int/consultas-externas/afiliado?tipo_doc=DNI&nro_doc=5216187",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"int",
-										"consultas-externas",
-										"afiliado"
-									],
-									"query": [
-										{
-											"key": "tipo_doc",
-											"value": "DNI"
-										},
-										{
-											"key": "nro_doc",
-											"value": "5216187"
-										}
-									]
-								},
-								"description": "Consulta los datos de un afiliado en la API de Silvio Quadri por su tipo y numero de documento."
 							},
 							"response": []
 						}

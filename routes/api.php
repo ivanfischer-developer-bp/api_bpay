@@ -785,6 +785,7 @@ Route::group(['prefix' => 'int'],
                     function(){
                         Route::get('consultar-vademecum', [ConsultasExternasController::class, 'consultar_vademecum']); // int/consultas-externas/obtener-precio-medicamento  1.1.691-20260209
                         Route::get('consultar-padron-externo', [ConsultasExternasController::class, 'consultar_padron_externo']); // int/consultas-externas/consultar-padron-externo 1.1.728-20260325
+                        Route::get('buscar-afiliado-padron-externo', [ConsultasExternasController::class, 'buscar_afiliado_padron_externo']); // int/consultas-externas/buscar_afiliado-padron-externo 1.1.732-20260327
 
                         // antiguas consultas a las apis de Silvio Quadri, que se mantienen por compatibilidad pero ya no se usan en el proyecto nuevo, salvo la de afiliado que la sigue usando plataforma
                         Route::get('afiliado', [ConsultasExternasController::class, 'afiliado_afilmed']); // int/consultas-externas/afiliado 1.1.510-20250623
