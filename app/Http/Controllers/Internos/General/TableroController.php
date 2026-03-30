@@ -61,12 +61,38 @@ class TableroController extends ConexionSpController
                 switch (request('consulta')) {
                     case 'validaciones':
                         $response = $this->buscar_autorizaciones($extras, $errors, $params, $logged_user);
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'autorizadas' => array_column($response['data'], 'autorizadas'),
+                                'rechazadas' => array_column($response['data'], 'rechazadas'),
+                                'diferidas' => array_column($response['data'], 'diferidas'),
+                            ];
+                        }else{
+                            $data = $data;
+                        }
                         break;
                     case 'recetas':
                         $response = $this->buscar_recetas($extras, $errors, $params, $logged_user);
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'datasets' => array_column($response['data'], 'datasets'),
+                            ];
+                        }else{
+                            $data = $data;
+                        }
                         break;
                     case 'afiliados':
                         $response = $this->buscar_afiliados($extras, $errors, $params, $logged_user);
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'datasets' => array_column($response['data'], 'datasets'),
+                            ];
+                        }else{
+                            $data = $data;
+                        }
                         break;
 
                 }
@@ -76,14 +102,7 @@ class TableroController extends ConexionSpController
                 $message = $response['message'];
                 $count = $response['count'];
                 $code = $response['code'];
-                if(is_array($response['data']) && $response['data'] != null){
-                    $data = [
-                        'labels' => array_column($response['data'], 'labels'),
-                        'datasets' => array_column($response['data'], 'datasets'),
-                    ];
-                }else{
-                    $data = $data;
-                }
+                
                 return response()->json([
                     'status' => $status,
                     'count' => $count,
@@ -142,22 +161,9 @@ class TableroController extends ConexionSpController
         $data = null;
         $count = 0;
         $errors = [];
-        $code = 0;
-        // return [
-        //     'status' => 'ok',
-        //     'count' => 12,
-        //     'errors' => $errors,
-        //     'message' => 'Transacción realizada con éxito.',
-        //     'line' => null,
-        //     'code' => 1,
-        //     'data' => [
-        //         'labels' => ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        //         'datasets' => [243, 150, 200, 170, 220, 190, 240, 210, 230, 180, 250, 260],
-        //     ],
-        //     'extras' => $extras,
-        // ]; 
+        $code = 0; 
         try {
-            $sp = 'sp_tc_autorizaciones';
+            $sp = 'sp_tc_autorizaciones_estados';
             $db = 'validacion';
             $params_sp = [
                 'fecha_desde' => $params['fecha_desde'],
