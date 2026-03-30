@@ -107,6 +107,7 @@ use App\Http\Controllers\Internos\General\FileController;
 use App\Http\Controllers\Internos\General\InformesController;
 use App\Http\Controllers\Internos\General\LocalidadController;
 use App\Http\Controllers\Internos\General\PhoneMessagesController;
+use App\Http\Controllers\Internos\General\TableroController;
 use App\Http\Controllers\Internos\Internaciones\InternacionController;
 use App\Http\Controllers\Internos\Listados\ABMActividadController;
 use App\Http\Controllers\Internos\Listados\ABMConvenioController;
@@ -885,7 +886,12 @@ Route::group(['prefix' => 'int'],
                                 Route::post('habilitar-informe', [InformesController::class, 'habilitar_informe']); // int/general/informes/habilitar-informe 1.1.672-20260106     
                                 Route::post('deshabilitar-informe', [InformesController::class, 'deshabilitar_informe']); // int/general/informes/deshabilitar-informe 1.1.672-20260106     
                             }
-                        );  
+                        );
+                        Route::group(['prefix' => 'tablero'],
+                            function() {
+                                Route::get('buscar-datos', [TableroController::class, 'buscar_datos']); // int/general/tablero/buscar-datos 1.1.733-20260330
+                            }
+                        );
                     }
                 );
                 // internaciones

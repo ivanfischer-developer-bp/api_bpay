@@ -7835,7 +7835,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{url}}/api/int/consultas-externas/buscar-afiliado-padron-externo?nro_doc=38531067",
+											"raw": "{{url}}/api/int/consultas-externas/buscar-afiliado-padron-externo?nro_doc=31448094",
 											"host": [
 												"{{url}}"
 											],
@@ -7848,8 +7848,8 @@
 											"query": [
 												{
 													"key": "nro_doc",
-													"value": "38531067",
-													"description": "38531067 = si, 8399164 = si"
+													"value": "31448094",
+													"description": "38531067 = beneficiario, 31448094 = titular"
 												},
 												{
 													"key": "cuit",
@@ -9811,6 +9811,56 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "Buscar Datos Tablero",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{intAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=validaciones&fecha_desde=2026-01-01T00:00:00.000-03:00&fecha_hasta=2026-03-30T23:59:59.450-03:00",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"int",
+										"general",
+										"tablero",
+										"buscar-datos"
+									],
+									"query": [
+										{
+											"key": "consulta",
+											"value": "validaciones",
+											"description": "validacione, recetas, afiliados"
+										},
+										{
+											"key": "fecha_desde",
+											"value": "2026-01-01T00:00:00.000-03:00"
+										},
+										{
+											"key": "fecha_hasta",
+											"value": "2026-03-30T23:59:59.450-03:00"
+										}
+									]
+								},
+								"description": "Retorna un set de datos para representar gráfico en tablero de comandos"
+							},
+							"response": []
 						}
 					]
 				},
