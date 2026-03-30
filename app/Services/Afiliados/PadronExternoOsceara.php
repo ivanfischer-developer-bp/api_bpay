@@ -83,10 +83,10 @@ class PadronExternoOsceara
                             "IdNacionalidad" => null,
                             "IdParentesco" => null,
                             "_ModoResult" => 5,
-                            "_Fields" => "NumAfiliado,ApellidoNombre,CUIL,Edad,StrTipoDoc,NumDoc,StrSexo,StrEstCivil,Parentesco,FechaNacimiento,DomiCalle,DomiNumero,DomiPiso,DomiDpto,Provincia,Localidad,Telefonos,EMail,CPostal,CanalAcceso,ModoIngreso,Plan,FechaEntregaCarnet,Delegacion,CampoActivo,FechaEstado,NumHCLinica,StrTipoBeneficiario,StrSitRevista,Partido,NumAfiliadoNuevoMasViejo,MotivoAltaBaja,Nombre,RN,RT,ID,EditaTipoBenef,StrSitRevista,SinServicio",
+                            "_Fields" => null,
                             "_Pag" => 1,
                             "_RegPag" => 50,
-                            "FechaBase" => "2020-05-12T00:00:00",
+                            "FechaBase" => null,
                             "Buscar" => 0,
                             "Padron" => 1
                         ]
