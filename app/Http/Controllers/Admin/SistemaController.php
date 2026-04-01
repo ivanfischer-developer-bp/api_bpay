@@ -503,11 +503,7 @@ class SistemaController extends ConexionSpController
                 if(!empty($usuarios)){
                     foreach($usuarios as $usuario){
                         if($usuario->conectado == 1 && $usuario->ambiente != 'postman'){
-                            if(!empty($id_usuarios)){
-                                if(in_array($id_usuarios, $usuario->id)){
-                                    array_push($id_usuarios, $usuario->user_id);
-                                }
-                            }else{
+                            if(!in_array($usuario->user_id, $id_usuarios)){
                                 array_push($id_usuarios, $usuario->user_id);
                             }
                         }
@@ -939,16 +935,8 @@ class SistemaController extends ConexionSpController
                 if(!empty($usuarios)){
                     foreach($usuarios as $usuario){
                         if($usuario->conectado == 1 && $usuario->ambiente != 'postman'){
-                            if(!empty($id_usuarios)){
-                                if(in_array($id_usuarios, $usuario->id)){
-                                    if($usuario->user_id != $id_usuario){
-                                        array_push($id_usuarios, $usuario->user_id);
-                                    }
-                                }
-                            }else{
-                                if($usuario->user_id != $id_usuario){
-                                    array_push($id_usuarios, $usuario->user_id);
-                                }
+                            if($usuario->user_id != $id_usuario && !in_array($usuario->user_id, $id_usuarios)){
+                                array_push($id_usuarios, $usuario->user_id);
                             }
                         }
                     }
