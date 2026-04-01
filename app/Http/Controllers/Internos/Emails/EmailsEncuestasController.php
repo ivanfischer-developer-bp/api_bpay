@@ -114,7 +114,13 @@ class EmailsEncuestasController extends EmailController
                 $n_persona = $data['n_persona'];
                 $nro_doc = $data['nro_doc'];
     
-                $trimemails = [$data['email']];
+                if(env('AMBIENTE') == 'local'){
+                    $trimemails = ['ivanfischer76@gmail.com'];
+                }else if(env('AMBIENTE') == 'casa asistencial' || env('AMBIENTE') == 'testing'){
+                    $trimemails = ['ivanfischer76@gmail.com', 'pablo.rojas.paulazo@gmail.com'];
+                }else{
+                    $trimemails = [$data['email']];
+                }
     
                 $status = '';
                 $message = '';
