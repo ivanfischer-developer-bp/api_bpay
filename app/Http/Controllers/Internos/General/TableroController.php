@@ -59,8 +59,43 @@ class TableroController extends ConexionSpController
                 ];
 
                 switch (request('consulta')) {
-                    case 'validaciones':
-                        $response = $this->buscar_autorizaciones($extras, $errors, $params, $logged_user);
+                    case 'afiliados_activos':
+                        $response = $this->buscar_afiliados_activos($extras, $errors, $params, $logged_user);
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'datasets' => array_column($response['data'], 'datasets'),
+                            ];
+                        }else{
+                            $data = $data;
+                        }
+                        break;
+                    case 'autorizaciones_autorizadas':
+                        $response = $this->buscar_autorizaciones_autorizadas($extras, $errors, $params, $logged_user);
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'datasets' => array_column($response['data'], 'datasets')
+                            ];
+                        }else{
+                            $data = $data;
+                        }
+                        break;
+                    case 'estados_afiliados':
+                        $response = $this->buscar_afiliados_estados($extras, $errors, $params, $logged_user);
+                        // return $response;
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'activos' => array_column($response['data'], 'activo'),
+                                'inactivos' => array_column($response['data'], 'inactivo')
+                            ];
+                        }else{
+                            $data = $data;
+                        }
+                        break;
+                    case 'estados_autorizaciones':
+                        $response = $this->buscar_autorizaciones_estados($extras, $errors, $params, $logged_user);
                         if(is_array($response['data']) && $response['data'] != null){
                             $data = [
                                 'labels' => array_column($response['data'], 'labels'),
@@ -83,18 +118,17 @@ class TableroController extends ConexionSpController
                             $data = $data;
                         }
                         break;
-                    case 'afiliados':
-                        $response = $this->buscar_afiliados($extras, $errors, $params, $logged_user);
-                        if(is_array($response['data']) && $response['data'] != null){
-                            $data = [
-                                'labels' => array_column($response['data'], 'labels'),
-                                'datasets' => array_column($response['data'], 'datasets'),
-                            ];
-                        }else{
-                            $data = $data;
-                        }
+                    default:
+                        $response = [
+                            'extras' => 'default',
+                            'errors' => 'no se encontró una consulta válida',
+                            'status' => 'fail',
+                            'message' => 'No se indicó una consulta válida',
+                            'count' => 0,
+                            'code' => -5,
+                        ];
+                        $data = [];
                         break;
-
                 }
                 $extras = $response['extras'];
                 $errors = $response['errors'];
@@ -153,9 +187,10 @@ class TableroController extends ConexionSpController
     }
 
     /**
-     * Busca la cantidad de validaciones autorizadas entre las fechas indicadas, agrupadas por mes. Retorna un array con los meses y la cantidad de validaciones emitidas en cada mes.
+     * Busca la cantidad de validaciones entre las fechas indicadas, agrupadas por mes. 
+     * Retorna un array con los meses y la cantidad de validaciones autorizadas, rechazadas y diferidas en cada mes.
      */
-    private function buscar_autorizaciones($extras, $errors, $params, $logged_user){
+    private function buscar_autorizaciones_estados($extras, $errors, $params, $logged_user){
         $status = 'fail';
         $message = '';
         $data = null;
@@ -222,7 +257,78 @@ class TableroController extends ConexionSpController
     }
 
     /**
-     * Busca la cantidad de recetas emitidas entre las fechas indicadas, agrupadas por mes. Retorna un array con los meses y la cantidad de recetas emitidas en cada mes.
+     * Busca la cantidad de validaciones autorizadas entre las fechas indicadas, agrupadas por mes. 
+     * Retorna un array con los meses y la cantidad de validaciones autorizadas en cada mes.
+     */
+    private function buscar_autorizaciones_autorizadas($extras, $errors, $params, $logged_user){
+        $status = 'fail';
+        $message = '';
+        $data = null;
+        $count = 0;
+        $errors = [];
+        $code = 0; 
+        try {
+            $sp = 'sp_tc_autorizaciones';
+            $db = 'validacion';
+            $params_sp = [
+                'fecha_desde' => $params['fecha_desde'],
+                'fecha_hasta' => $params['fecha_hasta'],
+            ];
+            array_push($extras['sps'], [$sp => $params_sp]);
+            array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
+            $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
+            array_push($extras['responses'], [$sp => $response]);
+            if(is_array($response) && array_key_exists('error', $response)){
+                array_push($errors, $response['error']);
+                $status = 'fail';
+                $message = 'Se produjo un error al realizar la petición';
+                $count = 0;
+                $data = null;
+                $code = -3;
+                // Log::channel('')->error(''); // buscar canales en config/loggin.php
+            }else if(empty($response)){
+                $status = 'empty';
+                $message = 'No se encontraron registros que coincidan con los parámetros de búsqueda';
+                $count = 0;
+                $data = $response;
+                $code = -4;
+                // Log::channel('')->info(''); // buscar canales en config/loggin.php
+            }else{
+                $status = 'ok';
+                $message = 'Transacción realizada con éxito.';
+                $count = sizeof($response);
+                $data = $response;
+                $code = 1;
+            }
+            
+            return [
+                'status' => $status,
+                'count' => $count,
+                'errors' => $errors,
+                'message' => $message,
+                'line' => null,
+                'code' => $code,
+                'data' => $data,
+                'extras' => $extras,
+            ]; 
+        } catch (\Throwable $th) {
+            array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
+            return [
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => 'Error al obtener las validaciones autorizadas.',
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'extras' => $extras,
+            ];
+        }
+    }
+
+    /**
+     * Busca la cantidad de recetas emitidas entre las fechas indicadas, agrupadas por mes. 
+     * Retorna un array con los meses y la cantidad de recetas emitidas en cada mes.
      */
     private function buscar_recetas($extras, $errors, $params, $logged_user){
         $status = 'fail';
@@ -302,30 +408,85 @@ class TableroController extends ConexionSpController
     }
 
     /**
-     * Busca la cantidad de afiliados registrados entre las fechas indicadas, agrupadas por mes. Retorna un array con los meses y la cantidad de validaciones emitidas en cada mes.
+     * Busca la cantidad de afiliados registrados entre las fechas indicadas, agrupadas por mes. 
+     * Retorna un array con los meses y la cantidad de afiliados activos en cada mes.
      */
-    private function buscar_afiliados($extras, $errors, $params, $logged_user){
+    private function buscar_afiliados_activos($extras, $errors, $params, $logged_user){
         $status = 'fail';
         $message = '';
         $data = null;
         $count = 0;
         $errors = [];
-        $code = 0;
-        // return [
-        //     'status' => 'ok',
-        //     'count' => 12,
-        //     'errors' => $errors,
-        //     'message' => 'Transacción realizada con éxito.',
-        //     'line' => null,
-        //     'code' => 1,
-        //     'data' => [
-        //         'labels' => ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        //         'datasets' => [243, 150, 200, 170, 220, 190, 240, 210, 230, 180, 250, 260],
-        //     ],
-        //     'extras' => $extras,
-        // ]; 
+        $code = 0; 
         try {
             $sp = 'sp_tc_afiliados';
+            $db = 'afiliacion';
+            $params_sp = [];
+            array_push($extras['sps'], [$sp => $params_sp]);
+            array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
+            $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
+            array_push($extras['responses'], [$sp => $response]);
+            if(is_array($response) && array_key_exists('error', $response)){
+                array_push($errors, $response['error']);
+                $status = 'fail';
+                $message = 'Se produjo un error al realizar la petición';
+                $count = 0;
+                $data = null;
+                $code = -3;
+                // Log::channel('')->error(''); // buscar canales en config/loggin.php
+            }else if(empty($response)){
+                $status = 'empty';
+                $message = 'No se encontraron registros que coincidan con los parámetros de búsqueda';
+                $count = 0;
+                $data = $response;
+                $code = -4;
+                // Log::channel('')->info(''); // buscar canales en config/loggin.php
+            }else{
+                $status = 'ok';
+                $message = 'Transacción realizada con éxito.';
+                $count = sizeof($response);
+                $data = $response;
+                $code = 1;
+            }
+            
+            return [
+                'status' => $status,
+                'count' => $count,
+                'errors' => $errors,
+                'message' => $message,
+                'line' => null,
+                'code' => $code,
+                'data' => $data,
+                'extras' => $extras,
+            ]; 
+        } catch (\Throwable $th) {
+            array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
+            return [
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => 'Error al obtener las validaciones emitidas.',
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'extras' => $extras,
+            ];
+        }
+    }
+
+    /**
+     * Busca la cantidad de afiliados registrados entre las fechas indicadas, agrupadas por mes. 
+     * Retorna un array con los meses y la cantidad de afiliados activvos e inactivos en cada mes.
+     */
+    private function buscar_afiliados_estados($extras, $errors, $params, $logged_user){
+        $status = 'fail';
+        $message = '';
+        $data = null;
+        $count = 0;
+        $errors = [];
+        $code = 0; 
+        try {
+            $sp = 'sp_tc_afiliados_estados';
             $db = 'afiliacion';
             $params_sp = [];
             array_push($extras['sps'], [$sp => $params_sp]);

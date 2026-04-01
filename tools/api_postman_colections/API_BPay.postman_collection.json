@@ -9831,7 +9831,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=validaciones&fecha_desde=2026-01-01T00:00:00.000-03:00&fecha_hasta=2026-03-30T23:59:59.450-03:00",
+									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=autorizaciones autorizadas&fecha_desde=2025-01-01T00:00:00.000-03:00&fecha_hasta=2025-12-31T23:59:59.450-03:00",
 									"host": [
 										"{{url}}"
 									],
@@ -9845,16 +9845,16 @@
 									"query": [
 										{
 											"key": "consulta",
-											"value": "validaciones",
-											"description": "validacione, recetas, afiliados"
+											"value": "autorizaciones autorizadas",
+											"description": "afiliados_activos, autorizaciones_autorizadas, estados_afiliados, estados_autorizaciones, recetas"
 										},
 										{
 											"key": "fecha_desde",
-											"value": "2026-01-01T00:00:00.000-03:00"
+											"value": "2025-01-01T00:00:00.000-03:00"
 										},
 										{
 											"key": "fecha_hasta",
-											"value": "2026-03-30T23:59:59.450-03:00"
+											"value": "2025-12-31T23:59:59.450-03:00"
 										}
 									]
 								},
