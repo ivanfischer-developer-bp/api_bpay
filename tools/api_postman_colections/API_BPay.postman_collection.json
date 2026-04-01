@@ -11990,7 +11990,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"n_plan\": \"nuevo plan galeno\",\n    \"id_convenio\": 5,\n    \"vxgp\": 1,\n    \"nivel\": \"BAJO\",\n    \"cobertura_medicamento\": 35,\n    \"conceptos\": [\n        1, 2, 3, 4\n    ]\n}",
+													"raw": "{\n    \"n_plan\": \"nuevo plan galeno\",\n    \"id_convenio\": 5,\n    \"vxgp\": 1,\n    \"nivel\": \"BAJO\",\n    \"cobertura_medicamento\": 35,\n    \"conceptos\": [\n        1, 2, 3, 4\n    ],\n    \"modelo_credencial\": \"galeno\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -12034,7 +12034,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"id_plan\": 31,\n    \"n_plan\": \"nuevo plan galeno modificado\",\n    \"id_convenio\": 5,\n    \"vxgp\": 0,\n    \"nivel\": \"BAJO\",\n    \"cobertura_medicamento\": 25,\n    \"conceptos\": [\n        1, 2, 5\n    ]\n}",
+													"raw": "{\n    \"id_plan\": 31,\n    \"n_plan\": \"nuevo plan galeno modificado\",\n    \"id_convenio\": 5,\n    \"vxgp\": 0,\n    \"nivel\": \"BAJO\",\n    \"cobertura_medicamento\": 25,\n    \"conceptos\": [\n        1, 2, 5\n    ],\n    \"modelo_credencial\": \"swiss_nedical\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"

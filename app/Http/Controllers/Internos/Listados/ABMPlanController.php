@@ -111,7 +111,8 @@ class ABMPlanController extends ConexionSpController
                     'vxgp' => request('vxgp') != null ? request('vxgp') : 0,
                     'nivel' => request('nivel'),
                     'cobertura_medicamento' => request('cobertura_medicamento'),
-                    'conceptos' => request('conceptos')
+                    'conceptos' => request('conceptos'),
+                    'modelo_credencial' => request('modelo_credencial') != null ? request('modelo_credencial') : ''
                 ];
                 $params_sp = [
                     'p_n_plan' => request('n_plan'),
@@ -121,6 +122,7 @@ class ABMPlanController extends ConexionSpController
                     'p_cobertura_medicamento' => request('cobertura_medicamento'),
                     'p_id_usuario' => $id_usuario,
                     'p_fecha' => Carbon::now()->format('Ymd H:i:s'),
+                    'p_modelo_credencial' => request('modelo_credencial') != null ? request('modelo_credencial') : ''
                 ];
 
                 array_push($extras['sps'], ['sp_plan_Insert' => $params_sp]);
@@ -270,7 +272,8 @@ class ABMPlanController extends ConexionSpController
                     'vxgp' => request('vxgp') != null ? request('vxgp') : 0,
                     'nivel' => request('nivel'),
                     'cobertura_medicamento' => request('cobertura_medicamento'),
-                    'conceptos' => request('conceptos')
+                    'conceptos' => request('conceptos'),
+                    'modelo_credencial' => request('modelo_credencial') != null ? request('modelo_credencial') : ''
                 ];
                 $params_sp = [
                     'p_id_plan' => request('id_plan'),
@@ -278,7 +281,8 @@ class ABMPlanController extends ConexionSpController
                     'p_id_convenio' => request('id_convenio'),
                     'p_vxgp' => request('vxgp') != null ? request('vxgp') : 0,
                     'p_nivel' => request('nivel'),
-                    'p_cobertura_medicamento' => request('cobertura_medicamento')
+                    'p_cobertura_medicamento' => request('cobertura_medicamento'),
+                    'p_modelo_credencial' => request('modelo_credencial') != null ? request('modelo_credencial') : ''
                 ];
 
                 array_push($extras['sps'], ['sp_plan_Update' => $params_sp]);
