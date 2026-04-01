@@ -342,6 +342,8 @@ class EmailsEncuestasController extends EmailController
                     // $emails, $funcionalidad, $nro_afiliado, $n_persona, $nro_doc
                     $res = $this->registrar_email_enviado($trimemails, 'encuestas', $nro_afiliado, $n_persona, $nro_doc, $parametros);
                     array_push($extras['queries'], $res['queries']);
+                    array_push($extras['responses'], ['registro_envio_email_response' => $res['registro_envio_email_response']]);
+                    array_push($extras['sps'], ['sp_envio_email_insert' => $res['sps']]);
                     if($res['code'] > 0){
                         $status = 'ok';
                         $message = 'Notificación enviada con éxito. ';

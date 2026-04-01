@@ -55,23 +55,30 @@ class EmailController extends ConexionSpController
                     'p_numero' => $numero
                 ];
                 $mail_enviado = $this->ejecutar_sp_directo('afiliacion', 'sp_envio_email_insert', null);
-                if(!empty($mail_enviado) && $mail_enviado[0]->id > 0){
+                $err = '';
+                if(is_array($mail_enviado) && isset($mail_enviado['error'])){
+                    $err = $mail_enviado['error'];
+                }else if(!empty($mail_enviado) && $mail_enviado[0]->id > 0){
                     $emails_enviados++;
                 }
             }
-            if(sizeof($emails) == $emails_enviados){
+            if(sizeof($emails) == $emails_enviados && $err == ''){
                 return [
+                    'registro_envio_email_response' => $mail_enviado,
                     'code' => 1,
                     'message' => 'Envío registrado con éxito',
                     'error' => null,
-                    'queries' => $this->get_query('validacion', 'sp_envio_email_insert', $this->params)
+                    'queries' => $this->get_query('validacion', 'sp_envio_email_insert', $this->params),
+                    'sps' => ['sp_envio_email_insert' => $this->params]
                 ];
             }else{
                 return [
                     'code' => -1,
                     'message' => 'No se pudo registrar el envío de email',
-                    'error' => 'No se pudo registrar todos los emails.',
-                    'queries' => $this->get_query('validacion', 'sp_envio_email_insert', $this->params)
+                    'error' => 'No se pudo registrar todos los emails. '.$err,
+                    'queries' => $this->get_query('validacion', 'sp_envio_email_insert', $this->params),
+                    'registro_envio_email_response' => $mail_enviado,
+                    'sps' => ['sp_envio_email_insert' => $this->params]
                 ];
             }
             
@@ -80,7 +87,9 @@ class EmailController extends ConexionSpController
                 'code' => -2,
                 'message' => 'Error al registrar envío de email en la base de datos.',
                 'error' => $th->getMessage().' Line: '.$th->getLine(),
-                'queries' => $this->get_query('validacion', 'sp_envio_email_insert', $this->params)
+                'queries' => $this->get_query('validacion', 'sp_envio_email_insert', $this->params),
+                'registro_envio_email_response' => null,
+                'sps' => null
             ];
         }
     }
