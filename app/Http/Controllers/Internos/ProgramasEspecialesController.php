@@ -52,8 +52,8 @@ class ProgramasEspecialesController extends ConexionSpController
                 $params = [
                     'id_persona' => request('id_persona'),
                     'id_programa' => request('id_programa'),
-                    'fecha_desde' => request('fecha_desde'),
-                    'fecha_hasta' => request('fecha_hasta')
+                    'fecha_desde' => request('fecha_desde') != null && request('fecha_desde') != '' && request('fecha_desde') != 'null' ? request('fecha_desde') : null,
+                    'fecha_hasta' => request('fecha_hasta') != null && request('fecha_hasta') != '' && request('fecha_hasta') != 'null' ? request('fecha_hasta') : null
                 ];
                 
                 $db = 'afiliacion';
@@ -64,33 +64,42 @@ class ProgramasEspecialesController extends ConexionSpController
                     'p_fec_desde' => $params['fecha_desde'],
                     'p_fec_hasta' => $params['fecha_hasta']
                 ];
-                
-                array_push($extras['sps'], [$sp => $params_sp]);
-                array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
-                $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
-                array_push($extras['responses'], [$sp => $response]);
-                
-                if(is_array($response) && array_key_exists('error', $response)){
-                    array_push($errors, $response['error']);
+                array_push($extras['verificado'], [$sp => ['fecha_desde' => $params['fecha_desde'], 'fecha_hasta' => $params['fecha_hasta']]]);
+                if ( $params['fecha_desde'] == null || $params['fecha_hasta'] == null ){
+                    array_push($errors, 'Parámetros incompletos o incorrectos');
                     $status = 'fail';
-                    $message = 'Se produjo un error al realizar la petición';
+                    $message = 'Verifique los parámetros, Fecha desde y Fecha hasta son obligatorios para esta consulta.';
                     $count = 0;
                     $data = null;
-                    $code = -3;
-                    // Log::channel('')->error(''); // buscar canales en config/loggin.php
-                }else if(empty($response)){
-                    $status = 'empty';
-                    $message = 'No se encontraron registros que coincidan con los parámetros de búsqueda';
-                    $count = 0;
-                    $data = $response;
-                    $code = -4;
-                    // Log::channel('')->info(''); // buscar canales en config/loggin.php
+                    $code = -5;
                 }else{
-                    $status = 'ok';
-                    $message = 'Transacción realizada con éxito.';
-                    $count = sizeof($response);
-                    $data = $response;
-                    $code = 1;
+                    array_push($extras['sps'], [$sp => $params_sp]);
+                    array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
+                    $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
+                    array_push($extras['responses'], [$sp => $response]);
+                    
+                    if(is_array($response) && array_key_exists('error', $response)){
+                        array_push($errors, $response['error']);
+                        $status = 'fail';
+                        $message = 'Se produjo un error al realizar la petición';
+                        $count = 0;
+                        $data = null;
+                        $code = -3;
+                        // Log::channel('')->error(''); // buscar canales en config/loggin.php
+                    }else if(empty($response)){
+                        $status = 'empty';
+                        $message = 'No se encontraron registros que coincidan con los parámetros de búsqueda';
+                        $count = 0;
+                        $data = $response;
+                        $code = -4;
+                        // Log::channel('')->info(''); // buscar canales en config/loggin.php
+                    }else{
+                        $status = 'ok';
+                        $message = 'Transacción realizada con éxito.';
+                        $count = sizeof($response);
+                        $data = $response;
+                        $code = 1;
+                    }
                 }
                 
                 return response()->json([
