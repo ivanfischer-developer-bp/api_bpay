@@ -89,6 +89,7 @@ use App\Http\Controllers\Internos\Emails\EmailsUsuariosController;
 use App\Http\Controllers\Internos\Emails\EmailsValidacionesController;
 use App\Http\Controllers\MicrosoftGraphAuthController;
 use App\Http\Controllers\Internos\EncuestasController;
+use App\Http\Controllers\Internos\EntornoFrontendController;
 use App\Http\Controllers\Internos\Exportaciones\ExportarAfiliadoController;
 use App\Http\Controllers\Internos\Exportaciones\ExportarCoberturaEspecialController;
 use App\Http\Controllers\Internos\Exportaciones\ExportarFormulariosCronicosController;
@@ -589,6 +590,12 @@ Route::group(['prefix' => 'int'],
                 Route::post('guardar-encuesta-atencion', [EncuestasController::class, 'guardar_encuesta_atencion']); // int/encuestas/guardar-encuesta-atencion  1.1.523-20250707
             }
         );
+        // // entorno frontend
+        // Route::group(['prefix' => 'entorno-frontend'],
+        //     function(){
+        //         Route::get('cargar-entorno', [EntornoFrontendController::class, 'cargar_entorno']); // int/entorno-frontend/cargar-entorno  1.1.742-20260406
+        //     }
+        // );
         // afiliaciones, archivos, auditorias, coberturas-especiales, configuraciones, consultorio, etc ...
         Route::group([
                 'middleware' => 'auth:api'  
@@ -764,6 +771,12 @@ Route::group(['prefix' => 'int'],
                                 Route::get('buscar-estados-grupos', [EstadoGrupoController::class, 'buscar_estados_grupos']); // int/configuraciones/estados-grupos/buscar-estados-grupos  1.1.526-20250711
                                 Route::post('actualizar-estado-grupo', [EstadoGrupoController::class, 'actualizar_estado_grupo']); // int/configuraciones/estados-grupos/actualizar-estado-grupo  1.1.526-20250711
                                 Route::post('agregar-estado-grupo', [EstadoGrupoController::class, 'agregar_estado_grupo']); // int/configuraciones/estados-grupos/agregar-estado-grupo  1.1.526-20250711
+                            }
+                        );
+                        Route::group(['prefix' => 'entorno-frontend'],
+                            function(){
+                                Route::get('cargar-entorno', [EntornoFrontendController::class, 'cargar_entorno']); // int/configuraciones/entorno-frontend/cargar-entorno  1.1.742-20260406
+                                Route::post('actualizar-entorno', [EntornoFrontendController::class, 'actualizar_entorno']); // int/configuraciones/entorno-frontend/actualizar-entorno  1.1.742-20260406
                             }
                         );
                     }

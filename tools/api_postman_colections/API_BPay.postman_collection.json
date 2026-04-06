@@ -7553,6 +7553,45 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "Entorno Frontend",
+							"item": [
+								{
+									"name": "Cargar Entorno",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/configuraciones/entorno-frontend/cargar-entorno",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"configuraciones",
+												"entorno-frontend",
+												"cargar-entorno"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
@@ -7740,7 +7779,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"ws\":\"AfiliadosObtener\",\n    \"token\":\"F4708335E1EB0738FC6C9FD8B9C3F1\",\n    \"IdAdmSys\":1,\n    \"username\": \"BPAY\",\n    \"args\": {\n        \"ApellidoNombre\": \"\",\n        \"Nombre\": \"\",\n        \"NumDoc\": 46433781,\n        \"CUIL\": 0,\n        \"AfilNumero\": 0,\n        \"IdTipoDoc\": null,\n        \"IdCanalAcc\": 0,\n        \"StrCanalesAcceso\": null,\n        \"IdModoIng\": null,\n        \"IdPlan\": null,\n        \"IdDelegacion\": null,\n        \"Estado\": 127,\n        \"Sexo\": null,\n        \"IdProvincia\": null,\n        \"IdZona\": null,\n        \"IdPartido\": null,\n        \"TipoBeneficiario\": null,\n        \"IdSitRevista\": null,\n        \"IdNacionalidad\": null,\n        \"IdParentesco\": null,\n        \"_ModoResult\": 5,\n        \"_Fields\": \"NumAfiliado,ApellidoNombre,CUIL,Edad,StrTipoDoc,NumDoc,StrSexo,StrEstCivil,Parentesco,FechaNacimiento,DomiCalle,DomiNumero,DomiPiso,DomiDpto,Provincia,Localidad,Telefonos,EMail,CPostal,CanalAcceso,ModoIngreso,Plan,FechaEntregaCarnet,Delegacion,CampoActivo,FechaEstado,NumHCLinica,StrTipoBeneficiario,StrSitRevista,Partido,NumAfiliadoNuevoMasViejo,MotivoAltaBaja,Nombre,RN,RT,ID,EditaTipoBenef,StrSitRevista,SinServicio\",\n        \"_Pag\": 1,\n        \"_RegPag\": 50,\n        \"FechaBase\": null,\n        \"Buscar\": 0,\n        \"Padron\": 1\n    }\n}",
+													"raw": "{\n    \"ws\":\"AfiliadosObtener\",\n    \"token\":\"F4708335E1EB0738FC6C9FD8B9C3F1\",\n    \"IdAdmSys\":1,\n    \"username\": \"BPAY\",\n    \"args\": {\n        \"ApellidoNombre\": \"\",\n        \"Nombre\": \"\",\n        \"NumDoc\": 46433781,\n        \"CUIL\": 0,\n        \"AfilNumero\": 0,\n        \"IdTipoDoc\": null,\n        \"IdCanalAcc\": 0,\n        \"StrCanalesAcceso\": null,\n        \"IdModoIng\": null,\n        \"IdPlan\": null,\n        \"IdDelegacion\": null,\n        \"Estado\": 127,\n        \"Sexo\": null,\n        \"IdProvincia\": null,\n        \"IdZona\": null,\n        \"IdPartido\": null,\n        \"TipoBeneficiario\": null,\n        \"IdSitRevista\": null,\n        \"IdNacionalidad\": null,\n        \"IdParentesco\": null,\n        \"_ModoResult\": 5,\n        \"_Fields\": null,\n        \"_Pag\": 1,\n        \"_RegPag\": 50,\n        \"FechaBase\": null,\n        \"Buscar\": 0,\n        \"Padron\": 1\n    }\n}",
 													"options": {
 														"raw": {
 															"language": "json"

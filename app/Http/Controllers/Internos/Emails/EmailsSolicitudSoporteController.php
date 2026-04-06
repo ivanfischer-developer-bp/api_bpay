@@ -18,6 +18,9 @@ use App\Models\User;
 
 class EmailsSolicitudSoporteController extends EmailController
 {
+    /**
+     * Envía un email de solicitud de soporte al correo de soporte definido en el .env y registra la solicitud en la base de datos.
+     */
     public function enviar_solicitud_soporte(Request $request)
     {
         $extras = [
@@ -229,6 +232,14 @@ class EmailsSolicitudSoporteController extends EmailController
                 'extras' => $extras
             ];
         }
+        
+    }
+
+    /**
+     * Envía un email de respuesta desde soporte al usuario que realizó la solicitud, y actualiza el estado de la solicitud en la base de datos.
+     */
+    public function enviar_respuesta_soporte(Request $request)
+    {
         
     }
 }
