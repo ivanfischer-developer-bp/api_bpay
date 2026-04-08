@@ -1034,15 +1034,19 @@ class ValidacionController extends ConexionSpController
             $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
             array_push($extras['responses'], [$sp => $response]);
             $data = $response;
-
-            if($response[0]->error == 0){
+            if(isset($response['error'])){
+                $status = 'fail';
+                $message = 'No se pudo actualizar la validacion';
+                $code = -6;
+                array_push($errors, 'Error actualizando validacion'.$response['error']);
+            }else if($response[0]->error == 0){
                 $status = 'ok';
                 $message = 'Validacion actualizada con éxito';
                 $code = 2;
                 if($params['cambiar_pic']){
                     // ejecutamos el otro sp
                     $params_sp_pic = [
-                        'p_id_usuario' => $request->user()->usuario,
+                        'p_id_usuario' => $id_usuario,
                         'p_codigo_interno' => $params['codigo_interno']
                     ];
                     $sp_pic = 'sp_generar_pic';
@@ -1052,7 +1056,12 @@ class ValidacionController extends ConexionSpController
                     array_push($extras['responses'], [$sp_pic => $response_pic]);
                     $data['pic_cambiado'] = $response_pic;
 
-                    if($response_pic[0]->error == 0){
+                    if(isset($response_pic['error'])){
+                        $status = 'fail';
+                        $message = 'No se pudo cambiar el PIC';
+                        $code = -7;
+                        array_push($errors, 'Error actualizando PIC'. $response_pic['error']);
+                    }else if($response_pic[0]->registros == 1){
                         $status = 'ok';
                         $message = 'Validacion actualizada y PIC actualizado';
                         $code = 2;
