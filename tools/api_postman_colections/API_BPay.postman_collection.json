@@ -1952,6 +1952,89 @@
 							]
 						},
 						{
+							"name": "Entorno Frontend",
+							"item": [
+								{
+									"name": "Cargar Entorno",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/admin/sistema/entorno-frontend/cargar-entorno",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"sistema",
+												"entorno-frontend",
+												"cargar-entorno"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Actualizar Entorno",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"entorno\": {\n        \"id\": 1,\n        \"ambiente\": \"desarrollo\",\n        \"modelo_formulario_cronicos\": \"general\",\n        \"imprimir_validaciones_rechazadas\": true,\n        \"empresa\": \"Bpay Health\",\n        \"mostrarPdf\": \"innovamed\",\n        \"ambiente_recipe\": \"staging\",\n        \"restringir_postdatar\": \"si\",\n        \"restringir_postdatar_prescripcion\": \"no\",\n        \"consultar_vademecum\": \"si\",\n        \"cantidad_prescripciones_por_receta\": 10,\n        \"mostrarSpinnerGlobal\": \"si\",\n        \"mostrar_mensajes_conexion_pusher\": true,\n        \"ambiente_padron_externo\": \"osceara\",\n        \"consultar_padron_externo\": \"no\",\n        \"mostrar_consultar_padron_externo\": \"si\",\n        \"actualizar_afiliado_desde_padron_externo\": \"si\",\n        \"mostrar_boton_buscar_afiliado_en_padron_externo\": \"si\",\n        \"entorno\": \"local\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/sistema/entorno-frontend/actualizar-entorno",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"sistema",
+												"entorno-frontend",
+												"actualizar-entorno"
+											]
+										},
+										"description": "Actualiza los valores de las variables de entorno del frontend en la base de datos y emite un evento ConfiguracionActualizada en el canal pusher configuracion-actualizada"
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Informar nueva versión de software",
 							"request": {
 								"method": "POST",
@@ -7549,45 +7632,6 @@
 											]
 										},
 										"description": "Actualiza los campos de un estado de grupo"
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "Entorno Frontend",
-							"item": [
-								{
-									"name": "Cargar Entorno",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "X-Requested-With",
-												"value": "XMLHttpRequest"
-											},
-											{
-												"key": "Authorization",
-												"value": "{{intAccessToken}}"
-											}
-										],
-										"url": {
-											"raw": "{{url}}/api/int/configuraciones/entorno-frontend/cargar-entorno",
-											"host": [
-												"{{url}}"
-											],
-											"path": [
-												"api",
-												"int",
-												"configuraciones",
-												"entorno-frontend",
-												"cargar-entorno"
-											]
-										}
 									},
 									"response": []
 								}

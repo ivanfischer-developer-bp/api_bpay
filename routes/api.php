@@ -534,6 +534,12 @@ Route::group(['prefix' => 'admin',
                         Route::post('actualizar-solicitud-soporte', [SolicitudSoporteController::class, 'actualizar_solicitud_soporte']); // admin/sistema/solicitud-soporte/actualizar-solicitud-soporte 1.1.698-20260218
                     }
                 );
+                Route::group(['prefix' => 'entorno-frontend'],
+                    function(){
+                        Route::get('cargar-entorno', [EntornoFrontendController::class, 'cargar_entorno']); // admin/sistema/entorno-frontend/cargar-entorno  1.1.742-20260406
+                        Route::post('actualizar-entorno', [EntornoFrontendController::class, 'actualizar_entorno']); // admin/sistema/entorno-frontend/actualizar-entorno  1.1.742-20260406
+                    }
+                );
                 Route::group(['prefix' => 'estadisticas'],
                     function(){
                         Route::get('conexiones-realizadas', [SistemaController::class, 'conexiones_realizadas']);  // admin/sistema/estadisticas/recetas-emitidas
@@ -771,12 +777,6 @@ Route::group(['prefix' => 'int'],
                                 Route::get('buscar-estados-grupos', [EstadoGrupoController::class, 'buscar_estados_grupos']); // int/configuraciones/estados-grupos/buscar-estados-grupos  1.1.526-20250711
                                 Route::post('actualizar-estado-grupo', [EstadoGrupoController::class, 'actualizar_estado_grupo']); // int/configuraciones/estados-grupos/actualizar-estado-grupo  1.1.526-20250711
                                 Route::post('agregar-estado-grupo', [EstadoGrupoController::class, 'agregar_estado_grupo']); // int/configuraciones/estados-grupos/agregar-estado-grupo  1.1.526-20250711
-                            }
-                        );
-                        Route::group(['prefix' => 'entorno-frontend'],
-                            function(){
-                                Route::get('cargar-entorno', [EntornoFrontendController::class, 'cargar_entorno']); // int/configuraciones/entorno-frontend/cargar-entorno  1.1.742-20260406
-                                Route::post('actualizar-entorno', [EntornoFrontendController::class, 'actualizar_entorno']); // int/configuraciones/entorno-frontend/actualizar-entorno  1.1.742-20260406
                             }
                         );
                     }
