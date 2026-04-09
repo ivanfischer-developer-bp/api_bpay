@@ -30,6 +30,7 @@ class EntornoFrontend extends Model
         'actualizar_afiliado_desde_padron_externo',
         'mostrar_boton_buscar_afiliado_en_padron_externo',
         'entorno',
+        'colores_validaciones'
     ];
 
     protected $casts = [

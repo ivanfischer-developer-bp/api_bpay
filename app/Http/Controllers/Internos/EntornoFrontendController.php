@@ -129,6 +129,7 @@ class EntornoFrontendController extends ConexionSpController
                 $entorno_frontend['mostrar_consultar_padron_externo'] = $entorno['mostrar_consultar_padron_externo'];
                 $entorno_frontend['actualizar_afiliado_desde_padron_externo'] = $entorno['actualizar_afiliado_desde_padron_externo'];
                 $entorno_frontend['mostrar_boton_buscar_afiliado_en_padron_externo'] = $entorno['mostrar_boton_buscar_afiliado_en_padron_externo'];
+                $entorno_frontend['colores_validaciones'] = $entorno['colores_validaciones'];
                 $guardado = $entorno_frontend->save();
                 if($guardado){
                     $status = 'ok';
