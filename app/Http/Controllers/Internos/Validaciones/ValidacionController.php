@@ -448,12 +448,17 @@ class ValidacionController extends ConexionSpController
                     $resp = (object) $ret;
                     $codigo_interno = $resp->data->codigo_interno ?? null;
                     
-                    array_push($errors, $resp->errors);
-                    array_push($params, $resp->params);
-                    array_push($extras['responses'], $resp->extras->responses);
-                    array_push($extras['sps'], $resp->extras->sps);
-                    array_push($extras['verificado'], $resp->extras->verificado);
-                    array_push($extras['queries'], $resp->extras->queries);
+                    $errors = array_merge($errors, (array) $resp->errors);
+                    $params = array_merge($params, (array) $resp->params);
+                    $extras['responses'] = array_merge($extras['responses'], (array) $resp->extras->responses);
+                    $extras['sps'] = array_merge($extras['sps'], (array) $resp->extras->sps);
+                    $extras['verificado'] = array_merge($extras['verificado'], (array) $resp->extras->verificado);
+                    $extras['queries'] = array_merge($extras['queries'], (array) $resp->extras->queries);
+                    // array_push($errors, $resp->errors);
+                    // array_push($params, $resp->params);
+                    // array_push($extras['sps'], $resp->extras->sps);
+                    // array_push($extras['verificado'], $resp->extras->verificado);
+                    // array_push($extras['queries'], $resp->extras->queries);
                     $data = $resp->data;
                     $message = $resp->message;
                     $status = $resp->status;
@@ -602,6 +607,22 @@ class ValidacionController extends ConexionSpController
             $code = 1;
             $numero_formateado = get_agregar_ceros($response[0]->id_sucursal, 3) . get_agregar_ceros($response[0]->autorizacion, 8);
             Log::channel('validaciones')->info('Validacion emitida N° '.$response[0]->autorizacion.' codigo_interno: '.$response[0]->codigo_interno.' emitida por '.$logged_user['name'].' (id '.$logged_user['id'].')');
+            
+            $response_pic = null;
+            // si tiene pic ejecuta sp_genera_pic
+            if($params_sp['tiene_pic'] == 1){
+                $sp = 'sp_generar_pic';
+                $db = 'validacion';
+                $params_pic = [
+                    'p_id_usuario' => $id_usuario,
+                    'p_codigo_interno' => $response[0]->codigo_interno,
+                ];
+                array_push($extras['sps'], [$sp => $params_pic]);
+                array_push($extras['queries'], $controlador->get_query($db, $sp, $params_pic));
+                $response_pic = $controlador->ejecutar_sp_directo($db, $sp, $params_pic);
+                array_push($extras['responses'], [$sp => $response_pic]);
+            }
+            
             if (!empty($observaciones)) {
                 if(!empty($observaciones['afiliado'])){
                     //  agrega la observacion al afiliado
@@ -724,7 +745,7 @@ class ValidacionController extends ConexionSpController
                 //     $hc_ok = FALSE;
                 // }
             }
-
+        
             // ejecutar notificación a usuarios mediante pusher
             $params_notificar = [
                 'p_id_contrato' => 3,  // validaciones es el id_contrato 3.    Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
@@ -862,7 +883,8 @@ class ValidacionController extends ConexionSpController
                 'validacion_emitida' => $response,
                 'insercion_en_historia_clinica' => $hc_insert,
                 'data' => $datos_extras,
-                'observaciones' => $observaciones
+                'observaciones' => $observaciones,
+                'generar_pic' => $response_pic
             ];
         
             // Código TACH para generar QR después de emisión exitosa
