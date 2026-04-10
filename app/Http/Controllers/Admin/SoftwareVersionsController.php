@@ -118,6 +118,136 @@ class SoftwareVersionsController extends ConexionSpController
     }
 
     /**
+     * retrona un listado de versiones de software registradas, tanto para frontend como para backend, 
+     * ordenadas por fecha de creación de forma descendente.
+     */
+    public function listar_versiones(Request $request)
+    {
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => 'admin/sistema/software-versions/listar-versiones',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'queries' => [],
+            'responses' => [],
+            'sps' => [],
+            'verificado' => []
+        ];
+        $status = 'fail'; // 'ok', 'fail', 'empty', unauthorized', 'warning'  
+        $message = '';
+        $count = 0;
+        $code = 0;
+        $data = null;
+        $errors = [];
+        $params = [];
+        $params_sp = [];
+        
+        // obtenemos el usuario de la petición y sus permisos
+        $user = User::with('roles', 'permissions')->find($request->user()->id);
+        $logged_user = $this->get_logged_user($user);
+        $usuario_sqlserver_default = 1;
+        $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
+        try {
+            date_default_timezone_set('America/Argentina/Cordoba');
+            $permiso_requerido = '';
+            if($permiso_requerido == '' || $user->hasPermissionTo($permiso_requerido)){
+                $destino = request('destino');
+                $fecha_desde = request('fecha_desde');
+                $fecha_hasta = request('fecha_hasta');
+                $order = request('order', 'desc'); // por defecto descendente
+
+                $params = [
+                    'destino' => $destino,
+                    'fecha_desde' => $fecha_desde,
+                    'fecha_hasta' => $fecha_hasta,
+                    'order' => $order
+                ];
+                
+                array_push($extras['verificado'], ['destino' => $destino]);
+                if ( empty(request('destino')) ){
+                    array_push($errors, 'Parámetros incompletos o incorrectos');
+                    $status = 'fail';
+                    $message = 'Verifique los parámetros';
+                    $count = 0;
+                    $data = null;
+                    $code = -5;
+                }else{
+                    // buscar el listado
+                    if($destino == 'front'){
+                        $listado = FrontSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
+                            return $query->whereBetween('created_at', [$fecha_desde, $fecha_hasta]);
+                        })->orderBy('created_at', $order)->get();
+                    }else if($destino == 'back'){
+                        $listado = BackSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
+                            return $query->whereBetween('created_at', [$fecha_desde, $fecha_hasta]);
+                        })->orderBy('created_at', $order)->get();  
+                    }
+                    array_push($extras['responses'], ['listado' => $listado]);
+                    if($listado != null){
+                        $status = 'ok';
+                        $message = 'Transacción realizada con éxito.';
+                        $count = count($listado);
+                        $data = $listado;
+                        $code = 1;
+                    }else{
+                        $status = 'empty';
+                        $message = 'No se encontraron versiones de software para los parámetros indicados.';
+                        $count = 0;
+                        $data = null;
+                        $code = -3;
+                    }
+                }
+                return response()->json([
+                    'status' => $status,
+                    'count' => $count,
+                    'errors' => $errors,
+                    'message' => $message,
+                    'line' => null,
+                    'code' => $code,
+                    'data' => $data,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]); 
+            }else{
+                $status = 'unauthorized';
+                $message = 'No puede acceder a esta ruta, el usuario con rol '.strtoupper($user->roles[0]->name).' no tiene permiso. Se requiere permiso para '.strtoupper($permiso_requerido);
+                $count  = -1;
+                $data = null;
+                array_push($errors, 'Error de permisos. '.$message);
+                // retorna el response
+                return response()->json([
+                    'status' => $status,
+                    'count' => $count,
+                    'errors' => $errors,
+                    'message' => $message,
+                    'line' => null,
+                    'code' => -2,
+                    'data' => $data,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]); 
+            }
+        } catch (\Throwable $th) {
+            array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => $logged_user,
+            ]);
+        }
+    }
+
+    /**
      * Registra una nueva versión de software para el frontend o backend. 
      * Se espera recibir en el request un campo 'destino' con valor 'front' o 'back' para indicar a qué tipo de versión corresponde, 
      * y los demás campos necesarios para crear la versión (version_number, tarea, acciones, observaciones, version_notes, ambiente, desarrollador, tiempo, publicar).
@@ -127,7 +257,7 @@ class SoftwareVersionsController extends ConexionSpController
         $extras = [
             'api_software_version' => config('site.software_version'),
             'ambiente' => config('site.ambiente'),
-            'url' => '',
+            'url' => 'admin/sistema/software-versions/registrar-version',
             'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
             'function' => __FUNCTION__,
             'queries' => [],

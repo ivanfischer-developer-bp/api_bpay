@@ -555,6 +555,7 @@ Route::group(['prefix' => 'admin',
                     function() {
                         Route::get('buscar-ultimas-versiones', [SoftwareVersionsController::class, 'buscar_ultimas_versiones']); // admin/sistema/software-versions/buscar-ultimas-versiones 1.1.748-20260410
                         Route::post('registrar-version', [SoftwareVersionsController::class, 'registrar_version']); // admin/sistema/software-versions/registrar-version 1.1.749-20260410
+                        Route::get('listar-versiones', [SoftwareVersionsController::class, 'listar_versiones']); // admin/sistema/software-versions/listar-versiones 1.1.749-20260410
                     }
                 );
             }

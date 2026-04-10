@@ -2115,6 +2115,59 @@
 										"description": "Registra una nueva versión de software"
 									},
 									"response": []
+								},
+								{
+									"name": "Listar Versiones",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/admin/sistema/software-versions/listar-versiones?destino=back&fecha_desde&fecha_hasta&order=desc",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"sistema",
+												"software-versions",
+												"listar-versiones"
+											],
+											"query": [
+												{
+													"key": "destino",
+													"value": "back"
+												},
+												{
+													"key": "fecha_desde",
+													"value": null
+												},
+												{
+													"key": "fecha_hasta",
+													"value": null
+												},
+												{
+													"key": "order",
+													"value": "desc"
+												}
+											]
+										},
+										"description": "retorna un listado de versiones de software delimitado entre fechas y ordenado ascendente o descendente"
+									},
+									"response": []
 								}
 							]
 						},
