@@ -9914,7 +9914,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=autorizaciones autorizadas&fecha_desde=2025-01-01T00:00:00.000-03:00&fecha_hasta=2025-12-31T23:59:59.450-03:00",
+									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=recetas&fecha_desde=2025-01-01T00:00:00.000-03:00&fecha_hasta=2025-12-31T23:59:59.450-03:00",
 									"host": [
 										"{{url}}"
 									],
@@ -9928,16 +9928,18 @@
 									"query": [
 										{
 											"key": "consulta",
-											"value": "autorizaciones autorizadas",
-											"description": "afiliados_activos, autorizaciones_autorizadas, estados_afiliados, estados_autorizaciones, recetas"
+											"value": "recetas",
+											"description": "afiliados_activos, autorizaciones_autorizadas, edades_afiliados, estados_afiliados, estados_autorizaciones, recetas "
 										},
 										{
 											"key": "fecha_desde",
-											"value": "2025-01-01T00:00:00.000-03:00"
+											"value": "2025-01-01T00:00:00.000-03:00",
+											"description": "2025-01-01T00:00:00.000-03:00"
 										},
 										{
 											"key": "fecha_hasta",
-											"value": "2025-12-31T23:59:59.450-03:00"
+											"value": "2025-12-31T23:59:59.450-03:00",
+											"description": "2025-12-31T23:59:59.450-03:00"
 										}
 									]
 								},

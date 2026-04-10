@@ -92,16 +92,16 @@ class FacturacionController extends ConexionSpController
                 $empresa_propia = $this->ejecutar_sp_directo('afiliacion','sp_empresa_propia_Select', null);
                 array_push($extras['responses'], ['sp_empresa_propia_Select' => $empresa_propia]);
 
+                array_push($extras['sps'], ['sp_periodo_Select' => ['activo' => 1]]);
+                array_push($extras['queries'], $this->get_query('afiliacion', 'sp_periodo_Select', ['activo' => 1]));
+                $periodo = $this->ejecutar_sp_directo('afiliacion','sp_periodo_Select', ['activo' => 1]);
+                array_push($extras['responses'], ['sp_periodo_Select' => $periodo]);
+
                 // 1.cabecera 2.aviso 3.estado_cuenta 4.detalle 5.totales 6.cod_barras 9.todos_los_resultados (1,5,6)
                 array_push($extras['sps'], ['sp_factura_lst_tmp' => ['tipo_dato' => 1, 'n_afiliado' => $nro_afiliado]]);
                 array_push($extras['queries'], $this->get_query('afiliacion', 'sp_factura_lst_tmp', ['tipo_dato' => 1, 'n_afiliado' => $nro_afiliado]));
                 $cabecera = $this->ejecutar_sp_directo('afiliacion','sp_factura_lst_tmp', ['tipo_dato' => 1, 'n_afiliado' => $nro_afiliado]);
                 array_push($extras['responses'], ['sp_factura_lst_tmp' => $cabecera]);
-
-                array_push($extras['sps'], ['sp_factura_lst_tmp' => ['tipo_dato' => 4, 'n_afiliado' => $nro_afiliado]]);
-                array_push($extras['queries'], $this->get_query('afiliacion', 'sp_factura_lst_tmp', ['tipo_dato' => 4, 'n_afiliado' => $nro_afiliado]));
-                $conceptos = $this->ejecutar_sp_directo('afiliacion','sp_factura_lst_tmp', ['tipo_dato' => 4, 'n_afiliado' => $nro_afiliado]);
-                array_push($extras['responses'], ['sp_factura_lst_tmp' => $conceptos]);
 
                 array_push($extras['sps'], ['sp_factura_lst_tmp' => ['tipo_dato' => 5, 'n_afiliado' => $nro_afiliado]]);
                 array_push($extras['queries'], $this->get_query('afiliacion', 'sp_factura_lst_tmp', ['tipo_dato' => 5, 'n_afiliado' => $nro_afiliado]));
@@ -113,18 +113,18 @@ class FacturacionController extends ConexionSpController
                 $codigos_barra = $this->ejecutar_sp_directo('afiliacion','sp_factura_lst_tmp', ['tipo_dato' => 6, 'n_afiliado' => $nro_afiliado]);
                 array_push($extras['responses'], ['sp_factura_lst_tmp' => $codigos_barra]);
 
-                array_push($extras['sps'], ['sp_periodo_Select' => ['activo' => 1]]);
-                array_push($extras['queries'], $this->get_query('afiliacion', 'sp_periodo_Select', ['activo' => 1]));
-                $periodo = $this->ejecutar_sp_directo('afiliacion','sp_periodo_Select', ['activo' => 1]);
-                array_push($extras['responses'], ['sp_periodo_Select' => $periodo]);
-
-                
+                array_push($extras['sps'], ['sp_factura_lst_tmp' => ['tipo_dato' => 4, 'n_afiliado' => $nro_afiliado]]);
+                array_push($extras['queries'], $this->get_query('afiliacion', 'sp_factura_lst_tmp', ['tipo_dato' => 4, 'n_afiliado' => $nro_afiliado]));
+                $conceptos = $this->ejecutar_sp_directo('afiliacion','sp_factura_lst_tmp', ['tipo_dato' => 4, 'n_afiliado' => $nro_afiliado]);
+                array_push($extras['responses'], ['sp_factura_lst_tmp' => $conceptos]);
 
                 $conceptoString = "";        
                 $importeString = "";
-                foreach ($conceptos as $concepto) {
-                    $conceptoString = $conceptoString." ".$concepto->n_periodo. " ".$concepto->n_concepto."<br>";
-                    $importeString = $importeString." ".number_format($concepto->importe,2,",",".")."<br>";
+                if(!isset($conceptos['error'])){
+                    foreach ($conceptos as $concepto) {
+                        $conceptoString = $conceptoString." ".$concepto->n_periodo. " ".$concepto->n_concepto."<br>";
+                        $importeString = $importeString." ".number_format($concepto->importe,2,",",".")."<br>";
+                    }
                 }
                
                 $options = [
@@ -776,8 +776,8 @@ class FacturacionController extends ConexionSpController
                     'code' => null,
                     'data' => $data,
                     'params' => $params,
-                    'logged_user' => $logged_user,
-                    'extras' => $extras
+                    'extras' => $extras,
+                    'logged_user' => $logged_user
                 ]); 
             }
         } catch (\Throwable $th) {

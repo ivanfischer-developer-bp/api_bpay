@@ -81,6 +81,27 @@ class TableroController extends ConexionSpController
                             $data = $data;
                         }
                         break;
+                    case 'edades_afiliados':
+                        $response = $this->buscar_afiliados_edades($extras, $errors, $params, $logged_user);
+                        // return $response;
+                        if(is_array($response['data']) && $response['data'] != null){
+                            $data = [
+                                'labels' => array_column($response['data'], 'labels'),
+                                'Edad_0_10' => array_column($response['data'], 'Edad_0_10'),
+                                'Edad_11_20' => array_column($response['data'], 'Edad_11_20'),
+                                'Edad_21_30' => array_column($response['data'], 'Edad_21_30'),
+                                'Edad_31_40' => array_column($response['data'], 'Edad_31_40'),
+                                'Edad_41_50' => array_column($response['data'], 'Edad_41_50'),
+                                'Edad_51_60' => array_column($response['data'], 'Edad_51_60'),
+                                'Edad_61_70' => array_column($response['data'], 'Edad_61_70'),
+                                'Edad_71_80' => array_column($response['data'], 'Edad_71_80'),
+                                'Edad_81_90' => array_column($response['data'], 'Edad_81_90'),
+                                'Edad_91_100' => array_column($response['data'], 'Edad_91_100')
+                            ];
+                        }else{
+                            $data = $data;
+                        }
+                        break;
                     case 'estados_afiliados':
                         $response = $this->buscar_afiliados_estados($extras, $errors, $params, $logged_user);
                         // return $response;
@@ -247,7 +268,7 @@ class TableroController extends ConexionSpController
                 'status' => 'fail',
                 'count' => -1,
                 'errors' => $errors,
-                'message' => 'Error al obtener las validaciones emitidas.',
+                'message' => 'Error al obtener los estados de las validaciones emitidas.',
                 'line' => $th->getLine(),
                 'code' => -1,
                 'data' => null,
@@ -398,7 +419,7 @@ class TableroController extends ConexionSpController
                 'status' => 'fail',
                 'count' => -1,
                 'errors' => $errors,
-                'message' => 'Error al obtener las validaciones emitidas.',
+                'message' => 'Error al obtener las recetas generadas.',
                 'line' => $th->getLine(),
                 'code' => -1,
                 'data' => null,
@@ -465,7 +486,7 @@ class TableroController extends ConexionSpController
                 'status' => 'fail',
                 'count' => -1,
                 'errors' => $errors,
-                'message' => 'Error al obtener las validaciones emitidas.',
+                'message' => 'Error al obtener los afiliados activos.',
                 'line' => $th->getLine(),
                 'code' => -1,
                 'data' => null,
@@ -487,6 +508,73 @@ class TableroController extends ConexionSpController
         $code = 0; 
         try {
             $sp = 'sp_tc_afiliados_estados';
+            $db = 'afiliacion';
+            $params_sp = [];
+            array_push($extras['sps'], [$sp => $params_sp]);
+            array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
+            $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
+            array_push($extras['responses'], [$sp => $response]);
+            if(is_array($response) && array_key_exists('error', $response)){
+                array_push($errors, $response['error']);
+                $status = 'fail';
+                $message = 'Se produjo un error al realizar la petición';
+                $count = 0;
+                $data = null;
+                $code = -3;
+                // Log::channel('')->error(''); // buscar canales en config/loggin.php
+            }else if(empty($response)){
+                $status = 'empty';
+                $message = 'No se encontraron registros que coincidan con los parámetros de búsqueda';
+                $count = 0;
+                $data = $response;
+                $code = -4;
+                // Log::channel('')->info(''); // buscar canales en config/loggin.php
+            }else{
+                $status = 'ok';
+                $message = 'Transacción realizada con éxito.';
+                $count = sizeof($response);
+                $data = $response;
+                $code = 1;
+            }
+            
+            return [
+                'status' => $status,
+                'count' => $count,
+                'errors' => $errors,
+                'message' => $message,
+                'line' => null,
+                'code' => $code,
+                'data' => $data,
+                'extras' => $extras,
+            ]; 
+        } catch (\Throwable $th) {
+            array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
+            return [
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => 'Error al obtener los estados de los afiliados.',
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'extras' => $extras,
+            ];
+        }
+    }
+
+    /**
+     * Busca las edades de los afiliados registrados agrupados por origen. 
+     * Retorna un array con los origenes y la cantidad de afiliados en cada rango de edad en cada origen.
+     */
+    private function buscar_afiliados_edades($extras, $errors, $params, $logged_user){
+        $status = 'fail';
+        $message = '';
+        $data = null;
+        $count = 0;
+        $errors = [];
+        $code = 0; 
+        try {
+            $sp = 'sp_tc_afiliados_edad';
             $db = 'afiliacion';
             $params_sp = [];
             array_push($extras['sps'], [$sp => $params_sp]);
