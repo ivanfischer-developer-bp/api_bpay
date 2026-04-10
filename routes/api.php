@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SistemaController;
 use App\Http\Controllers\Admin\SolicitudSoporteController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SoftwareVersionsController;
 
 // autorizacion
 use App\Http\Controllers\Auth\AuthController;
@@ -548,6 +549,12 @@ Route::group(['prefix' => 'admin',
                 Route::group(['prefix' => 'informes-sistema'], 
                     function() {
                         Route::get('medicamentos-recetados', [InformesSistemaController::class, 'generar_informe_medicamentos_recetados']); // admin/sistema/informes-sistema/medicamentos-recetados  1.1.698-20260218
+                    }
+                );
+                Route::group(['prefix' => 'software-versions'],
+                    function() {
+                        Route::get('buscar-ultimas-versiones', [SoftwareVersionsController::class, 'buscar_ultimas_versiones']); // admin/sistema/software-versions/buscar-ultimas-versiones 1.1.748-20260410
+                        Route::post('registrar-version', [SoftwareVersionsController::class, 'registrar_version']); // admin/sistema/software-versions/registrar-version 1.1.749-20260410
                     }
                 );
             }

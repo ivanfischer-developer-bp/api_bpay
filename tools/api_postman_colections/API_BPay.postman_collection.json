@@ -2035,6 +2035,90 @@
 							]
 						},
 						{
+							"name": "Software Versions",
+							"item": [
+								{
+									"name": "Buscar Últimas Versiones",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/admin/sistema/software-versions/buscar-ultimas-versiones",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"sistema",
+												"software-versions",
+												"buscar-ultimas-versiones"
+											]
+										},
+										"description": "retorna las últimas versiones tanto del backend como del frontend"
+									},
+									"response": []
+								},
+								{
+									"name": "Registrar Versión",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"destino\": \"back\",\n    \"software_version\": {\n        \"version_number\": \"1.1.749-20260410\",\n        \"external_version_number\": null,\n        \"tarea\": \"crear endpoint para registrar una verrsion de software\",\n        \"acciones\": \"se añadió la función registrar_version en el controlador SoftwareVersionController y se cero la ruta admin/sistema/software-versions/registrar-version, se creo y ejecutó la prueba en postman\",\n        \"observaciones\": null,\n        \"version_notes\": \"Creación endpoint para registrar versiones de software\",\n        \"ambientes\": \"todos\",\n        \"desarrollador\": \"Iván Fischer\",\n        \"tiempo\": \"1:00 hs\",\n        \"publicar\": true,\n        \"fecha\": \"2026-04-10\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/sistema/software-versions/registrar-version",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"sistema",
+												"software-versions",
+												"registrar-version"
+											]
+										},
+										"description": "Registra una nueva versión de software"
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Informar nueva versión de software",
 							"request": {
 								"method": "POST",
@@ -9914,7 +9998,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=recetas&fecha_desde=2025-01-01T00:00:00.000-03:00&fecha_hasta=2025-12-31T23:59:59.450-03:00",
+									"raw": "{{url}}/api/int/general/tablero/buscar-datos?consulta=edades_afiliados&fecha_desde=&fecha_hasta=",
 									"host": [
 										"{{url}}"
 									],
@@ -9928,17 +10012,17 @@
 									"query": [
 										{
 											"key": "consulta",
-											"value": "recetas",
+											"value": "edades_afiliados",
 											"description": "afiliados_activos, autorizaciones_autorizadas, edades_afiliados, estados_afiliados, estados_autorizaciones, recetas "
 										},
 										{
 											"key": "fecha_desde",
-											"value": "2025-01-01T00:00:00.000-03:00",
+											"value": "",
 											"description": "2025-01-01T00:00:00.000-03:00"
 										},
 										{
 											"key": "fecha_hasta",
-											"value": "2025-12-31T23:59:59.450-03:00",
+											"value": "",
 											"description": "2025-12-31T23:59:59.450-03:00"
 										}
 									]
