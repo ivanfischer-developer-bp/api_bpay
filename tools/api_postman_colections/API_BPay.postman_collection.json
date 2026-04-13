@@ -2092,7 +2092,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"destino\": \"back\",\n    \"software_version\": {\n        \"version_number\": \"1.1.750-20260410\",\n        \"external_version_number\": null,\n        \"tarea\": \"crear endpoint para listar verrsiones de software\",\n        \"acciones\": \"se añadió la función listar_versiones en el controlador SoftwareVersionController y se cero la ruta admin/sistema/software-versions/listar-versiones, se creo y ejecutó la prueba en postman\",\n        \"observaciones\": null,\n        \"version_notes\": \"Creación de endpoint para listar versiones de software\",\n        \"ambientes\": \"todos\",\n        \"desarrollador\": \"Iván Fischer\",\n        \"tiempo\": \"1:00 hs\",\n        \"publicar\": true,\n        \"fecha\": \"2026-04-10\"\n    }\n}",
+											"raw": "{\n    \"destino\": \"back\",\n    \"software_version\": {\n        \"version_number\": \"1.1.752-20260413\",\n        \"external_version_number\": null,\n        \"tarea\": \"cambio en la manera de pasar el parametro medicamento en sp AWEB_TraerPracticas\",\n        \"acciones\": \"se modifica para que siempre pase el parámetro medicamento en 1 o 0, no pasa mas null\",\n        \"observaciones\": null,\n        \"version_notes\": null,\n        \"ambientes\": \"todos\",\n        \"desarrollador\": \"Iván Fischer\",\n        \"tiempo\": \"1:00 hs\",\n        \"publicar\": true,\n        \"fecha\": \"2026-04-13\"\n    }\n}",
 											"options": {
 												"raw": {
 													"language": "json"
