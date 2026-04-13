@@ -2092,7 +2092,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"destino\": \"back\",\n    \"software_version\": {\n        \"version_number\": \"1.1.749-20260410\",\n        \"external_version_number\": null,\n        \"tarea\": \"crear endpoint para registrar una verrsion de software\",\n        \"acciones\": \"se añadió la función registrar_version en el controlador SoftwareVersionController y se cero la ruta admin/sistema/software-versions/registrar-version, se creo y ejecutó la prueba en postman\",\n        \"observaciones\": null,\n        \"version_notes\": \"Creación endpoint para registrar versiones de software\",\n        \"ambientes\": \"todos\",\n        \"desarrollador\": \"Iván Fischer\",\n        \"tiempo\": \"1:00 hs\",\n        \"publicar\": true,\n        \"fecha\": \"2026-04-10\"\n    }\n}",
+											"raw": "{\n    \"destino\": \"back\",\n    \"software_version\": {\n        \"version_number\": \"1.1.750-20260410\",\n        \"external_version_number\": null,\n        \"tarea\": \"crear endpoint para listar verrsiones de software\",\n        \"acciones\": \"se añadió la función listar_versiones en el controlador SoftwareVersionController y se cero la ruta admin/sistema/software-versions/listar-versiones, se creo y ejecutó la prueba en postman\",\n        \"observaciones\": null,\n        \"version_notes\": \"Creación de endpoint para listar versiones de software\",\n        \"ambientes\": \"todos\",\n        \"desarrollador\": \"Iván Fischer\",\n        \"tiempo\": \"1:00 hs\",\n        \"publicar\": true,\n        \"fecha\": \"2026-04-10\"\n    }\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -16591,6 +16591,12 @@
 													"key": "verificar_consulta",
 													"value": "0",
 													"description": "opcional, valores aceptados: 1 o 0"
+												},
+												{
+													"key": "medicamento",
+													"value": "false",
+													"description": "true, false o null. Se envía si tipo validacion es medicamento",
+													"disabled": true
 												}
 											]
 										},

@@ -70,7 +70,7 @@ class PrestacionController extends ConexionSpController
             'tipo_busqueda' => request('tipo_busqueda'),
             'id_plan_prestacional' => request('id_plan_prestacional'),
             'id_persona' => request('id_persona') != null ? intval(request('id_persona')) : null,
-            'medicamento' => request('medicamento') !== null ? intval(request('medicamento')) : 0
+            'medicamento' => filter_var(request('medicamento'), FILTER_VALIDATE_BOOLEAN) ? 1 : 0
         ];
         $this->params_sp = [
             'id_convenio' => $this->params['id_convenio'], 
@@ -88,6 +88,9 @@ class PrestacionController extends ConexionSpController
             }
             if ( $this->params['id_plan_prestacional'] != '' ){
                 $this->params_sp['id_tipo_internacion'] = 0;
+            }
+            if($this->params['medicamento'] == 1){
+                $this->params_sp['medicamento'] = 1;
             }
             $this->sp = 'AWEB_TraerPracticas';
             return $this->ejecutar_sp_simple();
