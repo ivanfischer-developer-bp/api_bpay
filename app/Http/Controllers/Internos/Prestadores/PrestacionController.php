@@ -89,9 +89,10 @@ class PrestacionController extends ConexionSpController
             if ( $this->params['id_plan_prestacional'] != '' ){
                 $this->params_sp['id_tipo_internacion'] = 0;
             }
-            if($this->params['medicamento'] == 1){
-                $this->params_sp['medicamento'] = 1;
-            }
+            // if($this->params['medicamento'] == 1){
+            //     $this->params_sp['medicamento'] = 1;
+            // }
+            $this->params_sp['medicamento'] = $this->params['medicamento'];
             $this->sp = 'AWEB_TraerPracticas';
             return $this->ejecutar_sp_simple();
         }

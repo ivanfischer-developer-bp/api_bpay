@@ -175,13 +175,15 @@ class SoftwareVersionsController extends ConexionSpController
                 }else{
                     // buscar el listado
                     if($destino == 'front'){
-                        $listado = FrontSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
+                        $query = FrontSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
                             return $query->whereBetween('created_at', [$fecha_desde, $fecha_hasta]);
-                        })->orderBy('created_at', $order)->get();
+                        })->orderBy('created_at', $order);
+                        $listado = (empty($fecha_desde) || empty($fecha_hasta)) ? $query->take(10)->get() : $query->get();
                     }else if($destino == 'back'){
-                        $listado = BackSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
+                        $query = BackSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
                             return $query->whereBetween('created_at', [$fecha_desde, $fecha_hasta]);
-                        })->orderBy('created_at', $order)->get();  
+                        })->orderBy('created_at', $order);
+                        $listado = (empty($fecha_desde) || empty($fecha_hasta)) ? $query->take(10)->get() : $query->get();
                     }
                     array_push($extras['responses'], ['listado' => $listado]);
                     if($listado != null){
