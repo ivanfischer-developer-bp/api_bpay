@@ -42,6 +42,15 @@ class FrontSoftwareVersion extends Model
         'fecha' => 'date:Y-m-d',
     ];
 
+    protected function asDateTime($value)
+    {
+        if (is_string($value) && preg_match('/:\w{2}$/', $value)) {
+            // Fix legacy ODBC format: "Apr 15 2026 12:00:00:AM" -> "Apr 15 2026 12:00:00 AM"
+            $value = preg_replace('/:([APap][Mm])$/', ' $1', $value);
+        }
+        return parent::asDateTime($value);
+    }
+
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
