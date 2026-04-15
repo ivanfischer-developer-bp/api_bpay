@@ -238,7 +238,7 @@ class MobileAuthController extends ConexionSpController {
                             Mail::to($destinatarios)->send(new NotificacionEmailRegistroUsuarioAfiliado($asunto, $datos_notificacion));
                             if(Mail::failures()){
                                 array_push($extras['responses'], ['smtp_result' => false]);
-                                Log::channel('email')->error('MobileAuth registrar_usuario _afiliado Error al enviar email por SMTP', [
+                                Log::channel('email')->error('MobileAuth registrar_usuario_afiliado Error al enviar email por SMTP', [
                                     'emails' => $destinatarios,
                                     'asunto' => $asunto,
                                     'datos_notificacion' => $datos_notificacion,
@@ -250,7 +250,7 @@ class MobileAuthController extends ConexionSpController {
                                 $code = -4;
                             }else{
                                 array_push($extras['responses'], ['smtp_result' => true]);
-                                Log::channel('email')->info('MobileAuth registrar_usuario _afiliado Email enviado exitosamente a través de SMTP', [
+                                Log::channel('email')->info('MobileAuth registrar_usuario_afiliado Email enviado exitosamente a través de SMTP', [
                                     'emails' => $destinatarios,
                                     'asunto' => $asunto,
                                     'datos_notificacion' => $datos_notificacion,

@@ -314,7 +314,7 @@ class SoftwareVersionsController extends ConexionSpController
                     $version->tarea = $sv['tarea'];
                     $version->acciones = $sv['acciones'];
                     $version->observaciones = $sv['observaciones'];
-                    $version->version_notes = $sv['version_notes'] != null ? $sv['version_notes'] : 'Modificaciones, mejoras y correcciones de fallos';
+                    $version->version_notes = $sv['version_notes'] != null ? $sv['version_notes'] : 'Modificaciones, mejoras y correcciones de fallos.';
                     $version->ambientes = $sv['ambientes'];
                     $version->desarrollador = $sv['desarrollador'] != null ? $sv['desarrollador'] : 'Iván Gustavo Fischer';
                     $version->tiempo = $sv['tiempo'];

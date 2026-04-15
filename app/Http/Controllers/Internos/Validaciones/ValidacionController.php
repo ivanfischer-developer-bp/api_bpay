@@ -871,6 +871,8 @@ class ValidacionController extends ConexionSpController
                 } catch (\Exception $e) {
                     return $e;
                 } 
+
+                // incorporar mensaje firebase
             }
             $data = [
                 'id' => $response[0]->codigo_interno,
