@@ -190,7 +190,10 @@ class SoftwareVersionsController extends ConexionSpController
                         $status = 'ok';
                         $message = 'Transacción realizada con éxito.';
                         $count = count($listado);
-                        $data = $listado;
+                        $data = [
+                            'listado' => $listado,
+                            'vsb_actual' => config('site.software_version')
+                        ];
                         $code = 1;
                     }else{
                         $status = 'empty';
