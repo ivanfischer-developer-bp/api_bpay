@@ -174,16 +174,16 @@ class SoftwareVersionsController extends ConexionSpController
                     $code = -5;
                 }else{
                     // buscar el listado
+                    $fecha_desde_final = !empty($fecha_desde) ? $fecha_desde : Carbon::now()->startOfYear()->format('Y-m-d');
+                    $fecha_hasta_final = !empty($fecha_hasta) ? $fecha_hasta : Carbon::now()->addDays(1)->format('Y-m-d');
                     if($destino == 'front'){
-                        $query = FrontSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
-                            return $query->whereBetween('created_at', [$fecha_desde, $fecha_hasta]);
-                        })->orderBy('created_at', $order);
-                        $listado = (empty($fecha_desde) || empty($fecha_hasta)) ? $query->take(10)->get() : $query->get();
+                        $query = FrontSoftwareVersion::whereBetween('created_at', [$fecha_desde_final, $fecha_hasta_final])
+                            ->orderBy('created_at', $order);
+                        $listado = $query->get();
                     }else if($destino == 'back'){
-                        $query = BackSoftwareVersion::when(!empty($fecha_desde) && !empty($fecha_hasta), function($query) use ($fecha_desde, $fecha_hasta){
-                            return $query->whereBetween('created_at', [$fecha_desde, $fecha_hasta]);
-                        })->orderBy('created_at', $order);
-                        $listado = (empty($fecha_desde) || empty($fecha_hasta)) ? $query->take(10)->get() : $query->get();
+                        $query = BackSoftwareVersion::whereBetween('created_at', [$fecha_desde_final, $fecha_hasta_final])
+                            ->orderBy('created_at', $order);
+                        $listado = $query->get();
                     }
                     array_push($extras['responses'], ['listado' => $listado]);
                     if($listado != null){
