@@ -40,6 +40,7 @@ class BackSoftwareVersion extends Model
 
     protected $casts = [
         'publicar' => 'boolean',
+        'fecha' => 'date:Y-m-d',
     ];
 
     protected function serializeDate(\DateTimeInterface $date)
