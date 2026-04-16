@@ -289,12 +289,12 @@ class MobileAuthController extends ConexionSpController {
                     $count = 0;
                     $code = -2;
                 }
-            }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -1){  // usuario existente
+            }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -1){  // dni existente
                 // significa que el usuario ya existe
                 $id_usuario_sqlserver = null;
                 $status = 'fail';
                 $message = 'El DNI ya existe en el sistema.';
-                array_push($errors, 'El usuario ya existe en el sistema');
+                array_push($errors, 'El DNI ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -4;
             }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -2){ // email existente
@@ -302,15 +302,15 @@ class MobileAuthController extends ConexionSpController {
                 $id_usuario_sqlserver = null;
                 $status = 'fail';
                 $message = 'El email ya existe en el sistema.';
-                array_push($errors, 'El email ya existe en el sistema');
+                array_push($errors, 'El email ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -5;
-            }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -3){ // dni existente
+            }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -3){ // usuario existente
                 // significa que el usuario no se pudo registrar
                 $id_usuario_sqlserver = null;
                 $status = 'fail';
                 $message = 'El usuario ya existe en el sistema.';
-                array_push($errors, 'El usuario ya existe en el sistema');
+                array_push($errors, 'El nombre de usuario ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -6;
             }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -4){ // numero celular existente
@@ -318,7 +318,7 @@ class MobileAuthController extends ConexionSpController {
                 $id_usuario_sqlserver = null;
                 $status = 'fail';
                 $message = 'El número de celular ya existe en el sistema.';
-                array_push($errors, 'El número de celular ya existe en el sistema');
+                array_push($errors, 'El número de celular ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -7;
             }else{ // otro error
