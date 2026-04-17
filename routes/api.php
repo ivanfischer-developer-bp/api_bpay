@@ -338,6 +338,7 @@ Route::group(['prefix' => 'mobile'],
         // logueado
         Route::group(['middleware' => 'auth:api'], 
             function(){
+                Route:: post('actualizar-fcm-token', [MobileAuthController::class, 'actualizar_fcm_token']); // mobile/auth/actualizar-fcm-token  // 1.1.760-20260416
                 Route::group(['prefix' => 'consultas'], 
                     function() {
                         Route::get('consultar-reintegro', [MobileConsultasController::class, 'consultar_reintegro']);  // mogile/consultas/consultar-reintegro  // 1.1.443-20250505
@@ -605,12 +606,6 @@ Route::group(['prefix' => 'int'],
                 Route::post('guardar-encuesta-atencion', [EncuestasController::class, 'guardar_encuesta_atencion']); // int/encuestas/guardar-encuesta-atencion  1.1.523-20250707
             }
         );
-        // // entorno frontend
-        // Route::group(['prefix' => 'entorno-frontend'],
-        //     function(){
-        //         Route::get('cargar-entorno', [EntornoFrontendController::class, 'cargar_entorno']); // int/entorno-frontend/cargar-entorno  1.1.742-20260406
-        //     }
-        // );
         // afiliaciones, archivos, auditorias, coberturas-especiales, configuraciones, consultorio, etc ...
         Route::group([
                 'middleware' => 'auth:api'  
@@ -1161,6 +1156,9 @@ Route::group(['prefix' => 'int'],
                 Route::group(['prefix' => 'programas-especiales'], 
                     function() {
                         Route::get('buscar-programas-especiales', [ProgramasEspecialesController::class, 'buscar_programas_especiales']); // int/programas-especiales/buscar-programas-especiales  1.1.724-20260319   
+                        Route::get('listar-programas-especiales', [ProgramasEspecialesController::class, 'listar_programas_especiales']); // int/programas-especiales/listar-programas-especiales  1.1.760-20260417
+                        Route::post('agregar-programa-especial', [ProgramasEspecialesController::class, 'agregar_programa_especial']); // int/programas-especiales/agregar-programa-especial  1.1.760-20260417
+                        Route::post('actualizar-programa-especial', [ProgramasEspecialesController::class, 'actualizar_programa_especial']); // int/programas-especiales/actualizar-programa-especial  1.1.760-20260417
                         Route::group(['prefix' => 'formularios'],
                             function(){
                                 Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/programas-especiales/formularios/exportar-formulario-cronicos  1.1.701-20260226
@@ -1262,6 +1260,7 @@ Route::group(['prefix' => 'int'],
                 Route::post('prueba-osef', [PruebasController::class, 'prueba_osef']); // int/pruebas/prueba-osef  // 1.1.708-20260304 sólo para pruebas
                 Route::post('probar-codigo', [PruebasController::class, 'probar_codigo_post']); // int/pruebas/probar-codigo  // 1.1.720-20260313 sólo para pruebas
                 Route::get('probar-codigo', [PruebasController::class, 'probar_codigo_get']); // int/pruebas/probar-codigo  // 1.1.720-20260313 sólo para pruebas
+                Route::post('prueba-firebase', [PruebasController::class, 'prueba_firebase']); // int/pruebas/prueba-firebase  // 1.1.759-20260416 sólo para pruebas
             }
         );
     }

@@ -150,4 +150,105 @@ class ProgramasEspecialesController extends ConexionSpController
             ]);
         }
     }
+
+    /**
+     * Lista los programas especiales para su configuración
+     */
+    public function listar_programas_especiales(Request $request)
+    {
+        date_default_timezone_set('America/Argentina/Cordoba');
+        $this->user_id = $request->user()->id;
+        $this->controlador = explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1];
+        $this->funcion = __FUNCTION__;
+        $this->metodo_http = 'get';  //get, post
+        $this->url = 'int/programas-especiales/listar-programas-especiales';
+        $this->permiso_requerido = 'realizar configuraciones';
+        $this->db = 'afiliacion'; // afiliacion, validacion, admin, alfabeta
+        $this->sp = 'sp_programa_especial_select';
+        return $this->ejecutar_sp_simple();
+    }
+
+    /**
+     * Agrega un nuevo programa especial al listado de programas especiales
+     */
+    public function agregar_programa_especial(Request $request)
+    {    
+        date_default_timezone_set('America/Argentina/Cordoba');
+        $this->user_id = $request->user()->id;
+        $this->controlador = explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1];
+        $this->funcion = __FUNCTION__;
+        $this->metodo_http = 'post';  //get, post
+        $this->url = 'int/programas-especiales/agregar-programa-especial';
+        $this->permiso_requerido = '';
+        $this->db = 'afiliacion'; // afiliacion, validacion, admin, alfabeta
+        $this->sp = 'sp_programa_especial_insert';
+        $this->verificado = [
+            $this->sp => [
+                'n_programa_especial' => request('n_programa_especial')
+            ]
+        ];
+        
+        if(empty(request('n_programa_especial'))){
+            $this->message = 'Verifique los parámetros';
+            $this->status = 'fail';
+            $this->count = 0;
+            array_push($this->errors, 'Parámetros incompletos o incorrectos');
+            $this->code = -5;
+            return $this->get_response();
+        }
+        $this->params = [
+            'n_programa_especial' => request('n_programa_especial'),
+            'id_patologia' => request('id_patologia'),
+            'baja' => request('baja') !== NULL ? request('baja') : 0,
+        ];
+        $this->params_sp = [
+            'p_n_programa_especial' => $this->params['n_programa_especial'],
+            'p_id_patologia' => $this->params['id_patologia'],
+            'p_baja' => $this->params['baja']
+        ];
+        return $this->ejecutar_sp_simple();
+    }
+
+    /**
+     * Actualiza los datos de un programa especial existente
+     */
+    public function actualizar_programa_especial(Request $request)
+    {
+        date_default_timezone_set('America/Argentina/Cordoba');
+        $this->user_id = $request->user()->id;
+        $this->controlador = explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1];
+        $this->funcion = __FUNCTION__;
+        $this->metodo_http = 'get';  //get, post
+        $this->url = 'int/programas-especiales/actualizar-programa-especial';
+        $this->permiso_requerido = '';
+        $this->db = 'afiliacion'; // afiliacion, validacion, admin, alfabeta
+        $this->sp = 'sp_programa_especial_update';
+        $this->verificado = [
+            $this->sp => [
+                'id_programa_especial' => request('id_programa_especial'),
+                'n_programa_especial' => request('n_programa_especial')
+            ]
+        ];
+        if(empty(request('n_programa_especial')) || empty(request('id_programa_especial'))){
+            $this->message = 'Verifique los parámetros';
+            $this->status = 'fail';
+            $this->count = 0;
+            array_push($this->errors, 'Parámetros incompletos o incorrectos');
+            $this->code = -5;
+            return $this->get_response();
+        }
+        $this->params = [
+            'id_programa_especial' => request('id_programa_especial'),
+            'n_programa_especial' => request('n_programa_especial'),
+            'id_patologia' => request('id_patologia'),
+            'baja' => request('baja') !== NULL ? request('baja') : 0,
+        ];
+        $this->params_sp = [
+            'p_id_programa_especial' => $this->params['id_programa_especial'],
+            'p_n_programa_especial' => $this->params['n_programa_especial'],
+            'p_id_patologia' => $this->params['id_patologia'],
+            'p_baja' => $this->params['baja']
+        ];
+        return $this->ejecutar_sp_simple();
+    }
 }
