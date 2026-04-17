@@ -35,6 +35,7 @@ use App\Http\Controllers\Mobile\MobileExportarFormulariosCronicosController;
 use App\Http\Controllers\Mobile\MobileFileController;
 use App\Http\Controllers\Mobile\MobileGrupoFamiliarController;
 use App\Http\Controllers\Mobile\MobilePreautorizacionesController;
+use App\Http\Controllers\Mobile\MobileProgramasEspecialesController;
 use App\Http\Controllers\Mobile\MobileReintegroController;
 use App\Http\Controllers\Mobile\Recetas\MobileExportarRecetaController;
 use App\Http\Controllers\Mobile\Recetas\MobilePrescripcionController;
@@ -405,6 +406,11 @@ Route::group(['prefix' => 'mobile'],
                     function(){
                         Route::post('exportar-formulario-cronicos', [MobileExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // mobile/formularios/exportar-formulario-310-vacio  1.1.713-20260309
                         Route::post('exportar-recetario-tratamientos-cronicos', [MobileExportarFormulariosCronicosController::class, 'exportar_recetario_tratamientos_cronicos']); // mobile/formularios/exportar-recetario-tratamientos-cronicos-vacio  1.1.702-20260227
+                    }
+                );
+                Route::group(['prefix' => 'programas-especiales'],
+                    function(){
+                        Route::get('listar-programas-especiales', [MobileProgramasEspecialesController::class, 'listar_programas_especiales']); // mobile/programas-especiales/listar-programas-especiales  1.1.762-20260417
                     }
                 );
             }
