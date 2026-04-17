@@ -2168,6 +2168,50 @@
 										"description": "retorna un listado de versiones de software delimitado entre fechas y ordenado ascendente o descendente"
 									},
 									"response": []
+								},
+								{
+									"name": "Actualizar Versión",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id\": 7,\n    \"destino\": \"back\",\n    \"software_version\": {\n        \"version_number\": \"1.1.752-20260413\",\n        \"external_version_number\": null,\n        \"tarea\": \"cambio en la manera de pasar el parametro medicamento en sp AWEB_TraerPracticas\",\n        \"acciones\": \"se modifica para que siempre pase el parámetro medicamento en 1 o 0\",\n        \"observaciones\": \"prueba de edición\",\n        \"version_notes\": null,\n        \"ambientes\": \"casa, lealmedica, sanos, osceara\",\n        \"desarrollador\": \"Iván Gustavo Fischer\",\n        \"tiempo\": null,\n        \"publicar\": true,\n        \"fecha\": \"2026-04-13\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/admin/sistema/software-versions/actualizar-version",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"sistema",
+												"software-versions",
+												"actualizar-version"
+											]
+										},
+										"description": "Modifica los datos de una versión de software registrada. Utilizado para corregir errores de ortografía y cosas así"
+									},
+									"response": []
 								}
 							]
 						},
@@ -15267,6 +15311,131 @@
 							]
 						},
 						{
+							"name": "ABM Programas Especiales",
+							"item": [
+								{
+									"name": "Listar Programas Especiales",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/programas-especiales/listar-programas-especiales",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"programas-especiales",
+												"listar-programas-especiales"
+											]
+										},
+										"description": "retorna un llistado de programas especiales para su configuración"
+									},
+									"response": []
+								},
+								{
+									"name": "Agregar Programa Especial",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"n_programa_especial\": \"DIABETES\",\n    \"id_patologia\": 2,\n    \"baja\": 0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/programas-especiales/agregar-programa-especial",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"programas-especiales",
+												"agregar-programa-especial"
+											]
+										},
+										"description": "Añade un nuevo programa especial"
+									},
+									"response": []
+								},
+								{
+									"name": "Actualizar Programa Especial",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"id_programa_especial\": 3,\n    \"n_programa_especial\": \"DIABETES\",\n    \"baja\": 0,\n    \"id_patologia\": null\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/programas-especiales/actualizar-programa-especial",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"programas-especiales",
+												"actualizar-programa-especial"
+											]
+										},
+										"description": "actualiza los datos de un programa especial"
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Buscar Programas Especiales",
 							"request": {
 								"method": "GET",
@@ -18038,6 +18207,49 @@
 									]
 								},
 								"description": "El metodo http puede ser GET o POST.\n\nLos parámetros pueden variar según el código a probar.\n\nSirve para probar porciones específicas de codigo sin tener que ejecutar todo el método, especial para cuando la parte que puede tener el error depende de muchas variables anteriores que se obtienen después de muchas ejecuciones o para partes sencibles, donde el error surge después de insertar campos en la base de datos, por ejemplo en el envío de email, notificaciones pusher o cosas así. El código en esta sección cambia para cada ocación de prueba."
+							},
+							"response": []
+						},
+						{
+							"name": "Prueba Firebase",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{intAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"device_token\": \"d2_pAXQQ8U9ime4CjbP47x:APA91bHX6OPTKsE3A07oHThKUskMDxpA8vPZ5cVJo0Kx67gSfvmmVY2mTRvZxA8tvyHe_MpV0IDVnh44iiBllEbSmyGhUJl17FYAob4nFc7imjeVuM1gA2M\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/int/pruebas/prueba-firebase",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"int",
+										"pruebas",
+										"prueba-firebase"
+									]
+								},
+								"description": "prueba enviar mensajes y notificaciones a través del servicio de firebase"
 							},
 							"response": []
 						}

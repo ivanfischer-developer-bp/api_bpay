@@ -162,7 +162,7 @@ class ProgramasEspecialesController extends ConexionSpController
         $this->funcion = __FUNCTION__;
         $this->metodo_http = 'get';  //get, post
         $this->url = 'int/programas-especiales/listar-programas-especiales';
-        $this->permiso_requerido = 'realizar configuraciones';
+        $this->permiso_requerido = '';
         $this->db = 'afiliacion'; // afiliacion, validacion, admin, alfabeta
         $this->sp = 'sp_programa_especial_select';
         return $this->ejecutar_sp_simple();
@@ -179,7 +179,7 @@ class ProgramasEspecialesController extends ConexionSpController
         $this->funcion = __FUNCTION__;
         $this->metodo_http = 'post';  //get, post
         $this->url = 'int/programas-especiales/agregar-programa-especial';
-        $this->permiso_requerido = '';
+        $this->permiso_requerido = 'realizar configuraciones';
         $this->db = 'afiliacion'; // afiliacion, validacion, admin, alfabeta
         $this->sp = 'sp_programa_especial_insert';
         $this->verificado = [
@@ -218,9 +218,9 @@ class ProgramasEspecialesController extends ConexionSpController
         $this->user_id = $request->user()->id;
         $this->controlador = explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1];
         $this->funcion = __FUNCTION__;
-        $this->metodo_http = 'get';  //get, post
+        $this->metodo_http = 'post';  //get, post
         $this->url = 'int/programas-especiales/actualizar-programa-especial';
-        $this->permiso_requerido = '';
+        $this->permiso_requerido = 'realizar configuraciones';
         $this->db = 'afiliacion'; // afiliacion, validacion, admin, alfabeta
         $this->sp = 'sp_programa_especial_update';
         $this->verificado = [
