@@ -18346,7 +18346,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"usuario\": \"eduardo.rocco\",\n    \"password\": \"\"\n}",
+									"raw": "{\n    \"usuario\": \"24040639\",\n    \"password\": \"soncini\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -19499,6 +19499,45 @@
 					]
 				},
 				{
+					"name": "Programas Especiales",
+					"item": [
+						{
+							"name": "Listar Programase especiales",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{mobileAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/mobile/programas-especiales/listar-programas-especiales",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"mobile",
+										"programas-especiales",
+										"listar-programas-especiales"
+									]
+								},
+								"description": "Retorna un listado de todos los programas especiales del sistema"
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Recetas",
 					"item": [
 						{
@@ -20408,6 +20447,55 @@
 									]
 								},
 								"description": "resetea la contraseña de un usuario en sqlserver y api_bpay si tiene usuario en ambas sincronizndo las bases o solo en sqlserver si no tiene usuario en api_bpay\n\nid_usuario_sqlserver: 12 solo sqlserver lcastro@cajaabogados.org.ar\n\nid_usuario_sqlserver: 36 en ambas iguadix@cajaabogados.org.ar"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Emision Pusher",
+					"item": [
+						{
+							"name": "Emitir Aviso Cotización",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{portalAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/portal/emision-pusher/emitir-aviso-cotizacion?codigo_interno=EEEB753C-2DA1-4D54-A3DB-09BF2C792BA8&mensaje=cotización recibida para la autorizacion n° 12354",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"portal",
+										"emision-pusher",
+										"emitir-aviso-cotizacion"
+									],
+									"query": [
+										{
+											"key": "codigo_interno",
+											"value": "EEEB753C-2DA1-4D54-A3DB-09BF2C792BA8"
+										},
+										{
+											"key": "mensaje",
+											"value": "cotización recibida para la autorizacion n° 12354"
+										}
+									]
+								},
+								"description": "Emite un aviso de cotizacion por pusher al canal aviso-cotizacion-channel en el evento AvisoCotizacionEvent"
 							},
 							"response": []
 						}

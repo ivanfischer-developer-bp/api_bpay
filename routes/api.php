@@ -45,6 +45,7 @@ use App\Http\Controllers\Mobile\Recetas\MobileRecetasController;
 // portal
 use App\Http\Controllers\Portal\PortalAuthController;
 use App\Http\Controllers\Portal\PortalController;
+use App\Http\Controllers\Portal\PortalPusherController;
 
 // externos
 use App\Http\Controllers\Externos\ExternalListadosController;
@@ -434,6 +435,11 @@ Route::group(['prefix' => 'portal'],
             }
         );
         // logueado
+        Route::group(['prefix' => 'emision-pusher', 'middleware' => 'auth:api'], 
+            function() {
+                Route::get('emitir-aviso-cotizacion', [PortalPusherController::class, 'emitir_aviso_cotizacion']); // portal/emision-pusher/emitir_aviso_cotizacion  // 1.1.764-20260420
+            }
+        );
     }
 );
 
