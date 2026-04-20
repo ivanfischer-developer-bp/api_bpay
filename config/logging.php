@@ -69,6 +69,13 @@ return [
             'level' => 'debug'
         ],
 
+        'registro_mobile' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/registro_mobile.log'),
+            'ignore_exceptions' => false,
+            'level' => 'debug'
+        ],
+
         'siaf' => [
             'driver' => 'single',
             'path' => storage_path('logs/siaf.log'),

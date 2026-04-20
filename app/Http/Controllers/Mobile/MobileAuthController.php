@@ -297,6 +297,7 @@ class MobileAuthController extends ConexionSpController {
                 array_push($errors, 'El DNI ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -4;
+                Log::channel('registro_mobile')->error('ERROR -4 dni existente '.$params_sp['n_usuario'].' nro_doc: '.$params_sp['nro_doc'].'. Response: '.json_encode($response));
             }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -2){ // email existente
                 // significa que el email ya existe
                 $id_usuario_sqlserver = null;
@@ -305,6 +306,7 @@ class MobileAuthController extends ConexionSpController {
                 array_push($errors, 'El email ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -5;
+                Log::channel('registro_mobile')->error('ERROR -5 email existente '.$params_sp['n_usuario'].' nro_doc: '.$params_sp['nro_doc'].'. Response: '.json_encode($response));
             }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -3){ // usuario existente
                 // significa que el usuario no se pudo registrar
                 $id_usuario_sqlserver = null;
@@ -313,6 +315,7 @@ class MobileAuthController extends ConexionSpController {
                 array_push($errors, 'El nombre de usuario ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -6;
+                Log::channel('registro_mobile')->error('ERROR -6 usuario existente '.$params_sp['n_usuario'].' nro_doc: '.$params_sp['nro_doc'].'. Response: '.json_encode($response));
             }else if(isset($response) && !empty($response) && is_array($response) && $response[0]->id_usuario == -4){ // numero celular existente
                 // significa que el usuario no se pudo registrar
                 $id_usuario_sqlserver = null;
@@ -321,6 +324,7 @@ class MobileAuthController extends ConexionSpController {
                 array_push($errors, 'El número de celular ya existe en el sistema, por favor elija otro');
                 $count = 0;
                 $code = -7;
+                Log::channel('registro_mobile')->error('ERROR -7 nro_celular existente '.$params_sp['n_usuario'].' nro_doc: '.$params_sp['nro_doc'].'. Response: '.json_encode($response));
             }else{ // otro error
                 // significa que dio error el sp
                 $id_usuario_sqlserver = null;
@@ -329,6 +333,7 @@ class MobileAuthController extends ConexionSpController {
                 array_push($errors, 'Error en el registro del usuario');
                 $count = 0;
                 $code = -3;
+                Log::channel('registro_mobile')->error('ERROR -3 registrando usuario '.$params_sp['n_usuario'].' nro_doc: '.$params_sp['nro_doc'].'. Response: '.json_encode($response)); // buscar canales en config/loggin.php
             }
             
             return response()->json([
@@ -1007,7 +1012,7 @@ class MobileAuthController extends ConexionSpController {
                     'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString(),
                     'extras' => $extras
                 ]);
-            }else{ // si NO es un usuario afiliado ni médico
+            }else{ // si NO es un usuario afiliado ni médico ni Prestador
                 return response()->json([
                     'status' => 'fail',
                     'access_token' => null,
@@ -1016,7 +1021,7 @@ class MobileAuthController extends ConexionSpController {
                     'afiliado' => null,
                     'logged_user' => null,
                     'errors' => $errors,
-                    'message' => 'El usuario no es un afiliado ni médico',
+                    'message' => 'El usuario no es un afiliado, médico ni Prestador',
                     'line' => null,
                     'code' => -2,
                     'expires_at' => null,
@@ -2415,7 +2420,7 @@ class MobileAuthController extends ConexionSpController {
     }
 
     /**
-     * Actualiza lso campos token_fcm y devic_type
+     * Actualiza los campos token_fcm y devic_type
      */
     public function actualizar_fcm_token(Request $request)
     {
@@ -2452,13 +2457,15 @@ class MobileAuthController extends ConexionSpController {
                     'fcm_token' => request('fcm_token'),
                     'device_type' => request('device_type')
                 ];
+                $sp = 'sp_persona_fcm_update';
+                $db = 'afiliacion';
                 $params_sp = [
                     'p_id_persona' => request('id_persona'),
                     'p_fcm_token' => request('fcm_token'),
                     'p_device_type' => request('device_type')
                 ];
                 array_push($extras['verificado'], [
-                    'sp_persona_fcm_update' => [
+                    $sp => [
                             'id_persona' => request('id_persona')
                         ]
                     ]
@@ -2471,8 +2478,6 @@ class MobileAuthController extends ConexionSpController {
                     $data = null;
                     $code = -5;
                 }else{
-                    $sp = 'sp_persona_fcm_update';
-                    $db = 'afiliacion';
                     array_push($extras['sps'], [$sp => $params_sp]);
                     array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
                     $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
