@@ -4679,6 +4679,82 @@
 										"description": "Crea un pdf de una factura a partir de su id_factura"
 									},
 									"response": []
+								},
+								{
+									"name": "Listar Períodos Pendientes",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/afiliaciones/facturacion-mensual/listar-periodos-pendientes",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"afiliaciones",
+												"facturacion-mensual",
+												"listar-periodos-pendientes"
+											]
+										},
+										"description": "retorna un listado de períodos pendienest de facturar"
+									},
+									"response": []
+								},
+								{
+									"name": "Buscar Detalle Período Pendiente",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/afiliaciones/facturacion-mensual/buscar-detalle-periodo-pendiente?periodo=2024-08",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"afiliaciones",
+												"facturacion-mensual",
+												"buscar-detalle-periodo-pendiente"
+											],
+											"query": [
+												{
+													"key": "periodo",
+													"value": "2024-08"
+												}
+											]
+										},
+										"description": "retorna un detalle de período especificado en los parámetros"
+									},
+									"response": []
 								}
 							]
 						},
