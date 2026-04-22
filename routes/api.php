@@ -719,6 +719,7 @@ Route::group(['prefix' => 'int'],
                             function() {
                                 Route::get('listar-periodos-pendientes', [FacturacionMensualController::class, 'listar_periodos_pendientes']); // int/afiliaciones/facturacion-mensual/listar-periodos-pendientes  1.1.767-20260422  
                                 Route::get('buscar-detalle-periodo-pendiente', [FacturacionMensualController::class, 'buscar_detalle_periodo_pendiente']); // int/afiliaciones/facturacion-mensual/buscar-detalle-periodo-pendiente  1.1.768-20260422  
+                                Route::post('generar-facturacion-mensual', [FacturacionMensualController::class, 'generar_facturacion_mensual']); // int/afiliaciones/facturacion-mensual/generar-facturacion-mensual  1.1.769-20260422  
                             }
                         );  
                     }

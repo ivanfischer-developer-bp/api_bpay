@@ -4755,6 +4755,50 @@
 										"description": "retorna un detalle de período especificado en los parámetros"
 									},
 									"response": []
+								},
+								{
+									"name": "Generar Facturación Mensual",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"periodo\": \"2024-08\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/int/afiliaciones/facturacion-mensual/generar-facturacion-mensual",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"afiliaciones",
+												"facturacion-mensual",
+												"generar-facturacion-mensual"
+											]
+										},
+										"description": "genera la facturación de un período"
+									},
+									"response": []
 								}
 							]
 						},
