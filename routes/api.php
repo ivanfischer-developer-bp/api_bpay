@@ -65,6 +65,7 @@ use App\Http\Controllers\Internos\Afiliaciones\AfiliadoController;
 use App\Http\Controllers\Internos\Afiliaciones\CredencialController;
 use App\Http\Controllers\Internos\Afiliaciones\CuentaCorrienteController;
 use App\Http\Controllers\Internos\Afiliaciones\FacturacionController;
+use App\Http\Controllers\Internos\Afiliaciones\FacturacionMensualController;
 use App\Http\Controllers\Internos\Afiliaciones\GrupoFamiliarController;
 use App\Http\Controllers\Internos\Afiliaciones\HistoriaClinicaController;
 use App\Http\Controllers\Internos\Afiliaciones\PersonaContactoController;
@@ -713,6 +714,12 @@ Route::group(['prefix' => 'int'],
                                 Route::get('simular-facturacion', [FacturacionController::class, 'simular_facturacion']); // int/afiliaciones/facturacion/simular-facturacion  AB-123   
                             }
                         );
+                        // facturacion-mensual
+                        Route::group(['prefix' => 'facturacion-mensual'],
+                            function() {
+                                Route::get('listar-periodos-pendientes', [FacturacionMensualController::class, 'listar_periodos_pendientes']); // int/afiliaciones/facturacion-mensual/listar-periodos-pendientes  1.1.767-20260422  
+                            }
+                        );  
                     }
                 );
                 // archivos
