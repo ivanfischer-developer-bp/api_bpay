@@ -15,7 +15,7 @@ return [
 
     'external_software_version' => '1.1.60-20251203',
     
-    'software_version' => '1.1.765-20260420',
+    'software_version' => '1.1.766-20260422',
 
 ];
 

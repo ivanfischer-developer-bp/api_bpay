@@ -40,7 +40,7 @@ class FacturaOscearaGeneratorPdf
         $pdf->SetDrawColor(...$negro); // restablece a negro para el resto
         // datos
         // logo
-        $pdf->Image(storage_path('app/public/images/logo_osceara.png'), 12, 10, 40, 0, 'PNG');
+        $pdf->Image(storage_path('app/public/images/logo_osceara_plus.png'), 12, 10, 40, 0, 'PNG');
         // tipo
         $pdf->SetFont($font, '', 8);
         $pdf->SetY(15);
@@ -272,7 +272,7 @@ class FacturaOscearaGeneratorPdf
         $pdf->SetX(13);
         $pdf->Cell(185, 3, utf8_decode('TALÓN DE PAGO'), 0, 2, 'L');
         // logo
-        $pdf->Image(storage_path('app/public/images/logo_osceara.png'), 12, 216, 40, 0, 'PNG');
+        $pdf->Image(storage_path('app/public/images/logo_factura_osceara.png'), 12, 216, 40, 0, 'PNG');
 
         $pdf->SetFont($font, '', 6);
         $pdf->SetY(217);
