@@ -127,28 +127,75 @@ class PortalPusherController extends ConexionSpController
                 'ambito' => env('ENVIRONMENT')
             ];
 
-            try {
-                $clientePusher->trigger($channel, $event, $msg);
-                $status = 'ok';
-                $count = count($id_usuarios);
-                $message = 'Notificación enviada a ' . count($id_usuarios) . ' usuarios.';
-                $code = 1;
-                $data = [
-                    'message' => $message,
-                    'usuarios_notificados' => $usuarios_notificar,
-                    'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
-                    'codigo_interno' => $params['codigo_interno'],
-                    'channel' => $channel,
-                    'event' => $event,
-                    'msg' => $msg
-                ];
-            } catch (PusherException $e) {
-                Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion->Error al desencadenar evento pusher: " . $e->getMessage());
-                array_push($errors, 'Error al desencadenar evento pusher: ' . $e->getMessage());
-                $status = 'fail';
-                $count = count($id_usuarios);
-                $message = 'Error al desencadenar evento pusher';
-                $code = -4;
+            if (count($usuarios_notificar) > 0) {
+                try {
+                    $clientePusher->trigger($channel, $event, $msg);
+                    $status = 'ok';
+                    $count = count($id_usuarios);
+                    $message = 'Notificación enviada a ' . count($id_usuarios) . ' usuarios.';
+                    $code = 1;
+                    $data = [
+                        'message' => $message,
+                        'usuarios_notificados' => $usuarios_notificar,
+                        'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
+                        'codigo_interno' => $params['codigo_interno'],
+                        'channel' => $channel,
+                        'event' => $event,
+                        'msg' => $msg
+                    ];
+                } catch (PusherException $e) {
+                    Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion->Error al desencadenar evento pusher: " . $e->getMessage());
+                    array_push($errors, 'Error al desencadenar evento pusher: ' . $e->getMessage());
+                    $status = 'fail';
+                    $count = count($id_usuarios);
+                    $message = 'Error al desencadenar evento pusher';
+                    $code = -4;
+                    $data = [
+                        'message' => $params['mensaje'],
+                        'usuarios_notificados' => null,
+                        'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
+                        'codigo_interno' => $params['codigo_interno'],
+                        'channel' => $channel,
+                        'event' => $event,
+                        'msg' => $msg
+                    ];
+                } catch (GuzzleException $e) {
+                    Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion->Error al desencadenar evento guzzle: " . $e->getMessage());
+                    array_push($errors, 'Error guzzle al desencadenar evento guzzle: ' . $e->getMessage());
+                    $status = 'fail';
+                    $count = count($id_usuarios);
+                    $message = 'Error guzzle al desencadenar evento pusher';
+                    $code = -3;
+                    $data = [
+                        'message' => $params['mensaje'],
+                        'usuarios_notificados' => null,
+                        'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
+                        'codigo_interno' => $params['codigo_interno'],
+                        'channel' => $channel,
+                        'event' => $event,
+                        'msg' => $msg
+                    ];
+                } catch (\Exception $e) {
+                    array_push($errors, 'Error general al desencadenar evento pusher: ' . $e->getMessage());
+                    $status = 'fail';
+                    $count = count($id_usuarios);
+                    $message = 'Error general al desencadenar evento pusher';
+                    $code = -2;
+                    $data = [
+                        'message' => $params['mensaje'],
+                        'usuarios_notificados' => null,
+                        'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
+                        'codigo_interno' => $params['codigo_interno'],
+                        'channel' => $channel,
+                        'event' => $event,
+                        'msg' => $msg
+                    ];
+                }
+            }else{
+                $status = 'empty';
+                $message = 'No se encontraron usuarios para notificar';
+                $count = 0;
+                $code = -6;
                 $data = [
                     'message' => $params['mensaje'],
                     'usuarios_notificados' => null,
@@ -158,37 +205,7 @@ class PortalPusherController extends ConexionSpController
                     'event' => $event,
                     'msg' => $msg
                 ];
-            } catch (GuzzleException $e) {
-                Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion->Error al desencadenar evento guzzle: " . $e->getMessage());
-                array_push($errors, 'Error guzzle al desencadenar evento guzzle: ' . $e->getMessage());
-                $status = 'fail';
-                $count = count($id_usuarios);
-                $message = 'Error guzzle al desencadenar evento pusher';
-                $code = -3;
-                $data = [
-                    'message' => $params['mensaje'],
-                    'usuarios_notificados' => null,
-                    'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
-                    'codigo_interno' => $params['codigo_interno'],
-                    'channel' => $channel,
-                    'event' => $event,
-                    'msg' => $msg
-                ];
-            } catch (\Exception $e) {
-                array_push($errors, 'Error general al desencadenar evento pusher: ' . $e->getMessage());
-                $status = 'fail';
-                $count = count($id_usuarios);
-                $message = 'Error general al desencadenar evento pusher';
-                $code = -2;
-                $data = [
-                    'message' => $params['mensaje'],
-                    'usuarios_notificados' => null,
-                    'id_contrato' => 3, // validaciones es el id_contrato 3.      Contratos: 1.-Afiliaciones, 2.-Expedientes, 3.-Validaciones
-                    'codigo_interno' => $params['codigo_interno'],
-                    'channel' => $channel,
-                    'event' => $event,
-                    'msg' => $msg
-                ];
+
             }
 
             return [
