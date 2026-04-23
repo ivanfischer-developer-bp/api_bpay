@@ -5711,6 +5711,46 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "Períodos",
+							"item": [
+								{
+									"name": "Listar Períodos",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/afiliaciones/periodos/listar-periodos",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"afiliaciones",
+												"periodos",
+												"listar-periodos"
+											]
+										},
+										"description": "retorna un listado de los períodos registrados en el sistema"
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},

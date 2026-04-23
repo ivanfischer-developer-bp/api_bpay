@@ -68,6 +68,7 @@ use App\Http\Controllers\Internos\Afiliaciones\FacturacionController;
 use App\Http\Controllers\Internos\Afiliaciones\FacturacionMensualController;
 use App\Http\Controllers\Internos\Afiliaciones\GrupoFamiliarController;
 use App\Http\Controllers\Internos\Afiliaciones\HistoriaClinicaController;
+use App\Http\Controllers\Internos\Afiliaciones\PeriodoController;
 use App\Http\Controllers\Internos\Afiliaciones\PersonaContactoController;
 use App\Http\Controllers\Internos\Afiliaciones\PersonaController;
 use App\Http\Controllers\Internos\Afiliaciones\PersonaDomicilioController;
@@ -721,7 +722,12 @@ Route::group(['prefix' => 'int'],
                                 Route::get('buscar-detalle-periodo-pendiente', [FacturacionMensualController::class, 'buscar_detalle_periodo_pendiente']); // int/afiliaciones/facturacion-mensual/buscar-detalle-periodo-pendiente  1.1.768-20260422  
                                 Route::post('generar-facturacion-mensual', [FacturacionMensualController::class, 'generar_facturacion_mensual']); // int/afiliaciones/facturacion-mensual/generar-facturacion-mensual  1.1.769-20260422  
                             }
-                        );  
+                        ); 
+                        Route::group(['prefix' => 'periodos'],
+                            function() {
+                                Route::get('listar-periodos', [PeriodoController::class, 'listar_periodos']); // int/afiliaciones/periodos/listar-periodos  1.1.771-20260423  
+                            }
+                        );
                     }
                 );
                 // archivos
