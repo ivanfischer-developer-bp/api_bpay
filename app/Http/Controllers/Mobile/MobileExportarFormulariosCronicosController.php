@@ -393,11 +393,6 @@ class MobileExportarFormulariosCronicosController extends ConexionSpController
                 $pdf->SetFont($font, 'I', 8);
                 $texto2 = 'El titular de los datos personales tiene la facultad de ejercer el derecho a acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo de efecto conforme a lo establecido en el artículo 14, inciso 3 de la Ley N° 25.326. la DIRECCIÓN NACIONAL DE PROTECCIÓN DE DATOS PERSONALES, Órgano de Control de la Ley N° 25.326, tiene la atribución de atender las denuncias y reclamos que se interpongan con relación al incumplimiento de Las normas sobre protección de datos personales.';
                 $pdf->MultiCell(180, 3, utf8_decode($texto2), 0, 'L'); 
-                
-
-
-
-
 
                 //  -------------------
                 $pdf->AddPage('portrait');
@@ -479,13 +474,13 @@ class MobileExportarFormulariosCronicosController extends ConexionSpController
                         File::makeDirectory($file_path);
                     }
                     $filename = 'formulario-310.pdf';
-                    $file = $file_path.$filename;
-                    $pdf->Output($file, "F");
-                    $extas['path'] = $file;
+                    $archivo = $file_path.$filename;
+                    $pdf->Output($archivo, "F");
+                    $extas['path'] = $archivo;
                     return response()->json([
                         'status' => 'ok',
                         'count' => 1,
-                        'data' =>$filename,
+                        'data' =>$archivo,
                         'errors' => $errors,
                         'message' => 'Archivo generado satisfactoriamente',
                         'line' => null,
