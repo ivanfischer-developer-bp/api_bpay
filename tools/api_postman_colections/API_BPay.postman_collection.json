@@ -4799,6 +4799,55 @@
 										"description": "genera la facturación de un período"
 									},
 									"response": []
+								},
+								{
+									"name": "Listar Facturas Globales",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/afiliaciones/facturacion/listar-facturas-globales?id_periodo=77&nombre_carpeta=2025-02_77&nombre_periodo=BAS FEBRERO 2025",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"afiliaciones",
+												"facturacion",
+												"listar-facturas-globales"
+											],
+											"query": [
+												{
+													"key": "id_periodo",
+													"value": "77"
+												},
+												{
+													"key": "nombre_carpeta",
+													"value": "2025-02_77"
+												},
+												{
+													"key": "nombre_periodo",
+													"value": "BAS FEBRERO 2025"
+												}
+											]
+										},
+										"description": "retorna un listado de todas las facturas para imprimir"
+									},
+									"response": []
 								}
 							]
 						},

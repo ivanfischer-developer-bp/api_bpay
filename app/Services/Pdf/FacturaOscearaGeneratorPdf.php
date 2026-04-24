@@ -15,6 +15,7 @@ class FacturaOscearaGeneratorPdf
     public function generar(Fpdi $pdf, array $params): Fpdi
     {
         $data = $params;
+        // return $data;
         // Estructura base para factura OSCEARA (sin plantilla)
         $font = 'Arial';
         $pdf->SetMargins(13, 15);

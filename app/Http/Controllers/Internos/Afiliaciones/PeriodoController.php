@@ -29,4 +29,5 @@ class PeriodoController extends ConexionSpController
         
         return $this->ejecutar_sp_simple();
     }
+
 }

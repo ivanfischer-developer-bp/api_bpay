@@ -713,6 +713,7 @@ Route::group(['prefix' => 'int'],
                                 Route::get('generar-ejemplo-factura', [FacturacionController::class, 'generar_ejemplo_factura']); // int/afiliaciones/facturacion/generar-ejemplo-factura  AB-124      
                                 Route::get('generar-factura-pdf', [FacturacionController::class, 'generar_factura_pdf']); // int/afiliaciones/facturacion/generar-pdf-factura  1.1.404-20250321
                                 Route::get('simular-facturacion', [FacturacionController::class, 'simular_facturacion']); // int/afiliaciones/facturacion/simular-facturacion  AB-123   
+                                Route::get('listar-facturas-globales', [FacturacionController::class, 'listar_facturas_globales']); // int/afiliaciones/facturacion/listar-facturas-globales  1.1.772-20260424
                             }
                         );
                         // facturacion-mensual

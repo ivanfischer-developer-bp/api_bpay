@@ -19,6 +19,166 @@ use App\Services\Pdf\FacturaOscearaGeneratorPdf;
 
 class FacturacionController extends ConexionSpController
 {
+
+    /**
+     * Obtiene un listado de facturas
+     */
+    public function listar_facturas_globales(Request $request)
+    {
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => 'int/afiliaciones/facturacion/listar-facturas-globales  1.1.772-20260424',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'queries' => [],
+            'responses' => [],
+            'sps' => [],
+            'verificado' => []
+        ];
+        $status = 'fail'; // 'ok', 'fail', 'empty', unauthorized', 'warning'  
+        $message = '';
+        $count = 0;
+        $code = 0;
+        $data = [
+            'facturas' => null,
+            'nombre_periodo' => null,
+            'nombre_carpeta' => null,
+            'cantidad_archivos' => null,
+            'enviadas' => null
+        ];
+        $errors = [];
+        $params = [];
+        $params_sp = [];
+        
+        // obtenemos el usuario de la petición y sus permisos
+        $user = User::with('roles', 'permissions')->find($request->user()->id);
+        $logged_user = $this->get_logged_user($user);
+        $usuario_sqlserver_default = 1;
+        $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
+        try {
+            date_default_timezone_set('America/Argentina/Cordoba');
+            $permiso_requerido = 'ver facturacion';
+            if($permiso_requerido == 'ver facturacion' || $user->hasPermissionTo($permiso_requerido)){
+                $id_periodo = request('id_periodo');
+                $nombre_periodo = trim(request('nombre_periodo'), '"'); //'JUBILADOS SEPTIEMBRE 2022';
+                $nombre_carpeta = request('nombre_carpeta'); // '2022-09_29'
+                $cantidad_archivos = 0; // cantidad de archivos en el directorio
+
+                $params = [
+                    'id_periodo' => $id_periodo,
+                    'nombre_periodo' => $nombre_periodo,
+                    'nombre_carpeta' => $nombre_carpeta
+                ];
+                
+                $sp = 'sp_factura_select';
+                $db = 'afiliacion';
+                $params_sp = [
+                    'p_id_periodo' => $id_periodo
+                ];
+                $files = glob(env('STORAGE_PATH').'/reportes/facturacion_global/'.$nombre_carpeta.'/*.pdf');
+                $enviadas = 0;
+                
+                array_push($extras['verificado'], [$sp => ['id_periodo' => request('id_periodo')]]);
+                if ( empty(request('id_periodo')) ){
+                    array_push($errors, 'Parámetros incompletos o incorrectos');
+                    $status = 'fail';
+                    $message = 'Verifique los parámetros';
+                    $count = 0;
+                    $data = null;
+                    $code = -5;
+                }else{
+                    array_push($extras['sps'], [$sp => $params_sp]);
+                    array_push($extras['queries'], $this->get_query($db, $sp, $params_sp));
+                    $response = $this->ejecutar_sp_directo($db, $sp, $params_sp);
+                    array_push($extras['responses'], [$sp => $response]);
+                    if(is_array($response) && array_key_exists('error', $response)){
+                        array_push($errors, $response['error']);
+                        $status = 'fail';
+                        $message = 'Se produjo un error al realizar la petición';
+                        $count = 0;
+                        $data = null;
+                        $code = -3;
+                        // Log::channel('')->error(''); // buscar canales en config/loggin.php
+                    }else if(empty($response)){
+                        $status = 'empty';
+                        $message = 'No se encontraron registros que coincidan con los parámetros de búsqueda';
+                        $count = 0;
+                        $data = $response;
+                        $code = -4;
+                        // Log::channel('')->info(''); // buscar canales en config/loggin.php
+                    }else{
+                        $status = 'ok';
+                        $message = 'Transacción realizada con éxito.';
+                        $count = sizeof($response);
+                        $code = 1;
+                        foreach($response as $factura){
+                            if($factura->envia == 1){
+                                $enviadas++;
+                            }
+                        }
+                        // dd($facturas);
+                        if(sizeof($files)>0){
+                            $cantidad_archivos = count($files);
+                        }
+                        $data = [
+                            'facturas' => $response,
+                            'nombre_periodo' => $nombre_periodo,
+                            'nombre_carpeta' => $nombre_carpeta,
+                            'cantidad_archivos' => $cantidad_archivos,
+                            'enviadas' => $enviadas
+                        ];
+                    }
+                }
+                return response()->json([
+                    'status' => $status,
+                    'count' => $count,
+                    'errors' => $errors,
+                    'message' => $message,
+                    'line' => null,
+                    'code' => $code,
+                    'data' => $data,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]); 
+            }else{
+                $status = 'unauthorized';
+                $message = 'No puede acceder a esta ruta, el usuario con rol '.strtoupper($user->roles[0]->name).' no tiene permiso. Se requiere permiso para '.strtoupper($permiso_requerido);
+                $count  = -1;
+                $data = null;
+                array_push($errors, 'Error de permisos. '.$message);
+                // retorna el response
+                return response()->json([
+                    'status' => $status,
+                    'count' => $count,
+                    'errors' => $errors,
+                    'message' => $message,
+                    'line' => null,
+                    'code' => -2,
+                    'data' => $data,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]); 
+            }
+        } catch (\Throwable $th) {
+            array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => $logged_user,
+            ]);
+        }   
+    }
+
     /**
      * Simula una factura
      * @param \Illuminate\Http\Request
