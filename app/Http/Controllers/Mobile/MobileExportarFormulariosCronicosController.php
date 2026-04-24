@@ -469,18 +469,18 @@ class MobileExportarFormulariosCronicosController extends ConexionSpController
                     if(!File::exists(env('STORAGE_PATH').'reportes/formularios/')){
                         File::makeDirectory(env('STORAGE_PATH').'reportes/formularios/');
                     }
-                    $file_path = env('STORAGE_PATH').'reportes/formularios/';
+                    $file_path =  env('STORAGE_PATH').'reportes/formularios/';
                     if(!File::exists($file_path)){
                         File::makeDirectory($file_path);
                     }
                     $filename = 'formulario-310.pdf';
                     $archivo = $file_path.$filename;
                     $pdf->Output($archivo, "F");
-                    $extas['path'] = $archivo;
+                    $extas['path'] = 'api-bpay/api_bpay/storage/app/public/reportes/formularios/';
                     return response()->json([
                         'status' => 'ok',
                         'count' => 1,
-                        'data' =>$archivo,
+                        'data' => 'api-bpay/api_bpay/storage/app/public/reportes/formularios/'.$filename,
                         'errors' => $errors,
                         'message' => 'Archivo generado satisfactoriamente',
                         'line' => null,
