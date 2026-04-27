@@ -476,7 +476,7 @@ class MobileExportarFormulariosCronicosController extends ConexionSpController
                     $filename = 'formulario-310.pdf';
                     $archivo = $file_path.$filename;
                     $pdf->Output($archivo, "F");
-                    $extas['path'] = 'api-bpay/api_bpay/storage/app/public/reportes/formularios/';
+                    $extras['path'] = 'api-bpay/api_bpay/storage/app/public/reportes/formularios/'.$filename;
                     return response()->json([
                         'status' => 'ok',
                         'count' => 1,

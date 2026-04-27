@@ -5793,9 +5793,66 @@
 												"afiliaciones",
 												"periodos",
 												"listar-periodos"
+											],
+											"query": [
+												{
+													"key": "id_periodo",
+													"value": "77",
+													"disabled": true
+												},
+												{
+													"key": "estado",
+													"value": "finalizada",
+													"disabled": true
+												}
 											]
 										},
 										"description": "retorna un listado de los períodos registrados en el sistema"
+									},
+									"response": []
+								},
+								{
+									"name": "Generar Informe de Período",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest"
+											},
+											{
+												"key": "Authorization",
+												"value": "{{intAccessToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{url}}/api/int/afiliaciones/periodos/generar-informe-periodo?id_periodo=77&estado=Confirmada",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"int",
+												"afiliaciones",
+												"periodos",
+												"generar-informe-periodo"
+											],
+											"query": [
+												{
+													"key": "id_periodo",
+													"value": "77"
+												},
+												{
+													"key": "estado",
+													"value": "Confirmada"
+												}
+											]
+										},
+										"description": "retorna un listado de informe de periodo"
 									},
 									"response": []
 								}
@@ -15815,7 +15872,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{url}}/api/int/recetas/buscar-receta?nro_receta=1020000004994&dni=31743589",
+											"raw": "{{url}}/api/int/recetas/buscar-receta?nro_receta=0156018782249&dni=17529339&ambiente=production",
 											"host": [
 												"{{url}}"
 											],
@@ -15828,12 +15885,12 @@
 											"query": [
 												{
 													"key": "nro_receta",
-													"value": "1020000004994",
+													"value": "0156018782249",
 													"description": "1020000421531 produccion, 1020000004994 texting"
 												},
 												{
 													"key": "dni",
-													"value": "31743589",
+													"value": "17529339",
 													"description": "31073637 pertovt, 31743589 rocco guillermina"
 												},
 												{
@@ -15844,9 +15901,8 @@
 												},
 												{
 													"key": "ambiente",
-													"value": "staging",
-													"description": "staging o production o null",
-													"disabled": true
+													"value": "production",
+													"description": "staging o production o null"
 												},
 												{
 													"key": "debug",
@@ -20453,7 +20509,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"accion\": \"mostrar\",\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"ROCCO, EDUARDO GUILLERMO\",\n        \"cuadro_justificativo\": null,\n        \"diagnosticos\": [],\n        \"domicilio\": \"Las rosas 1354\",\n        \"edad\": 81,\n        \"email\": \"ser.vega@eme.com\",\n        \"fecha_emision\": \"03/03/2026\",\n        \"institucion\": null,\n        \"medicamentos\": [],\n        \"medico_prescriptor\": null,\n        \"nro_afiliado\": \"105378200\",\n        \"resumen_historia_clinica\": null,\n        \"telefono\": \"123-456-7895\",\n        \"user_id\": 91,\n        \"tipo_doc\": \"DNI\",\n        \"nro_doc\": \"31743589\"\n    }\n}",
+									"raw": "{\n    \"accion\": \"enviar\",\n    \"paciente_cronico\": {\n        \"apellido_y_nombre\": \"ROCCO, EDUARDO GUILLERMO\",\n        \"cuadro_justificativo\": null,\n        \"diagnosticos\": [],\n        \"domicilio\": \"Las rosas 1354\",\n        \"edad\": 81,\n        \"email\": \"ser.vega@eme.com\",\n        \"fecha_emision\": \"03/03/2026\",\n        \"institucion\": null,\n        \"medicamentos\": [],\n        \"medico_prescriptor\": null,\n        \"nro_afiliado\": \"105378200\",\n        \"resumen_historia_clinica\": null,\n        \"telefono\": \"123-456-7895\",\n        \"user_id\": 91,\n        \"tipo_doc\": \"DNI\",\n        \"nro_doc\": \"31743589\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"

@@ -727,6 +727,7 @@ Route::group(['prefix' => 'int'],
                         Route::group(['prefix' => 'periodos'],
                             function() {
                                 Route::get('listar-periodos', [PeriodoController::class, 'listar_periodos']); // int/afiliaciones/periodos/listar-periodos  1.1.771-20260423  
+                                Route::get('generar-informe-periodo', [PeriodoController::class, 'generar_informe_periodo']); // int/afiliaciones/periodos/generar-informe-periodo  1.1.775-20260427  
                             }
                         );
                     }
