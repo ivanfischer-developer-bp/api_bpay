@@ -19799,6 +19799,46 @@
 								"description": "Retorna un listado de todos los programas especiales del sistema"
 							},
 							"response": []
+						},
+						{
+							"name": "Descargar Formulario Programa Especial",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRquest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{mobileAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/mobile/programas-especiales/descargar-formulario-programa-especial?archivo=programa_especial_anticoncepcion.pdf",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"mobile",
+										"programas-especiales",
+										"descargar-formulario-programa-especial"
+									],
+									"query": [
+										{
+											"key": "archivo",
+											"value": "programa_especial_anticoncepcion.pdf"
+										}
+									]
+								},
+								"description": "descarga un formulario de programa especial"
+							},
+							"response": []
 						}
 					]
 				},

@@ -414,6 +414,7 @@ Route::group(['prefix' => 'mobile'],
                 Route::group(['prefix' => 'programas-especiales'],
                     function(){
                         Route::get('listar-programas-especiales', [MobileProgramasEspecialesController::class, 'listar_programas_especiales']); // mobile/programas-especiales/listar-programas-especiales  1.1.762-20260417
+                        Route::get('descargar-formulario-programa-especial', [MobileProgramasEspecialesController::class, 'descargar_formulario_programa_especial']); // mobile/programas-especiales/descargar-formulario-programa-especial  1.1.777-20260429
                     }
                 );
             }

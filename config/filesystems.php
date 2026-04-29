@@ -162,6 +162,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'programas_especiales' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/reportes/programas_especiales'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
         'recetas_afiliados' => [
             'driver' => 'local',
             'root' => storage_path('app/public/reportes/recetas_afiliados'),
