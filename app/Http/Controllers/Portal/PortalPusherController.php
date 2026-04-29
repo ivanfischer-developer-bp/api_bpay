@@ -72,7 +72,7 @@ class PortalPusherController extends ConexionSpController
                 try {
                     $clientePusher = new Pusher(env('PUSHER_APP_KEY', ''), env('PUSHER_APP_SECRET', ''), env('PUSHER_APP_ID', ''), array('cluster' => env('PUSHER_APP_CLUSTER', 'us2')));
                 } catch (PusherException $e) {
-                    Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion-> Error al instanciar pusher: " . $e->getMessage());
+                    Log::channel('pusher')->error("Portal::emitir-aviso-cotizacion-> Error al instanciar pusher: " . $e->getMessage());
                     $status = 'fail';
                     $count = count($id_usuarios);
                     $message = 'Error al instanciar pusher';
@@ -108,7 +108,7 @@ class PortalPusherController extends ConexionSpController
                     
                     // Validar que el objeto usuario tenga las propiedades necesarias
                     if (!is_object($usuario) || !isset($usuario->id_usuario)) {
-                        Log::channel('pusher')->warning('Usuario sin propiedades válidas en notificación: ' . json_encode($usuario));
+                        Log::channel('pusher')->error('Usuario sin propiedades válidas en notificación: ' . json_encode($usuario));
                         continue;
                     }
                     
@@ -144,7 +144,7 @@ class PortalPusherController extends ConexionSpController
                         'msg' => $msg
                     ];
                 } catch (PusherException $e) {
-                    Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion->Error al desencadenar evento pusher: " . $e->getMessage());
+                    Log::channel('pusher')->error("Portal::emitir-aviso-cotizacion->Error al desencadenar evento pusher: " . $e->getMessage());
                     array_push($errors, 'Error al desencadenar evento pusher: ' . $e->getMessage());
                     $status = 'fail';
                     $count = count($id_usuarios);
@@ -160,7 +160,7 @@ class PortalPusherController extends ConexionSpController
                         'msg' => $msg
                     ];
                 } catch (GuzzleException $e) {
-                    Log::channel('pusher')->warning("Portal::emitir-aviso-cotizacion->Error al desencadenar evento guzzle: " . $e->getMessage());
+                    Log::channel('pusher')->error("Portal::emitir-aviso-cotizacion->Error al desencadenar evento guzzle: " . $e->getMessage());
                     array_push($errors, 'Error guzzle al desencadenar evento guzzle: ' . $e->getMessage());
                     $status = 'fail';
                     $count = count($id_usuarios);
@@ -176,6 +176,7 @@ class PortalPusherController extends ConexionSpController
                         'msg' => $msg
                     ];
                 } catch (\Exception $e) {
+                    Log::channel('pusher')->error("Portal::emitir-aviso-cotizacion->Error general al desencadenar evento pusher: " . $e->getMessage());
                     array_push($errors, 'Error general al desencadenar evento pusher: ' . $e->getMessage());
                     $status = 'fail';
                     $count = count($id_usuarios);
@@ -221,6 +222,7 @@ class PortalPusherController extends ConexionSpController
                 'logged_user' => $logged_user,
             ]; 
         } catch (\Throwable $th) {
+            Log::channel('pusher')->error("Portal::emitir-aviso-cotizacion->Error no identificado al desencadenar evento pusher: " . $th->getMessage());
             array_push($errors, 'Line: '.$th->getLine().' - Error: '.$th->getMessage());
             return response()->json([
                 'status' => 'fail',
