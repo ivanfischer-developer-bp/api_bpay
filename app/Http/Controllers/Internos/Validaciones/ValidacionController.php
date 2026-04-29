@@ -13,6 +13,12 @@ use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
 
+// firebase
+use Kreait\Firebase\Factory;
+use Kreait\Laravel\Firebase\Facades\Firebase;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Exception\MessagingException;
+
 use App\Models\User;
 use App\Http\Controllers\TachController;
 
@@ -150,9 +156,10 @@ class ValidacionController extends ConexionSpController
                 $guardia = $validacion['tipo'] == 'guardia' ? 1 : 0;
                 $internacion = $validacion['tipo'] == 'internacion' ? 1 : 0;
                 $medicamento = $validacion['tipo'] == 'medicamento' ? 1 : 0;
-                if($validacion['tipo'] == 'medicamento'){
-                    $ambulatorio = 1;
-                }
+                // quitado por pedido de Pablo el 29/04/2026 por osceara
+                // if($validacion['tipo'] == 'medicamento'){
+                //     $ambulatorio = 1;
+                // }
                 $tiene_pic = 0;
                 if(isset($validacion['generarPIC'])){
                     if($validacion['generarPIC']){
@@ -873,6 +880,81 @@ class ValidacionController extends ConexionSpController
                 } 
 
                 // incorporar mensaje firebase
+                // try {
+                //     // confeccionar los mensajes con algunas de las siguientes maneras
+                //     $message = CloudMessage::new()
+                //         ->withNotification(Notification::create('Title', 'Body'))
+                //         ->withData(['key' => 'value'])
+                //         ->withToken('...')
+                //         // ->withTopic('...')
+                //         // ->withCondition('...')
+                //     ;
+
+                //     $message = CloudMessage::new()
+                //         ->withNotification($notification) // optional
+                //         ->withData($data) // optional
+                //         ->withTopic($topic)
+                //     ;
+
+                //     $message = CloudMessage::fromArray([
+                //         'topic' => $topic,
+                //         'notification' => [/* Notification data as array */], // optional
+                //         'data' => [/* data array */], // optional
+                //     ]);
+
+                //     // enviar mensajes a dispositivos específicos
+                //     $deviceToken = '...';
+                //     $message = CloudMessage::new()
+                //         ->withNotification($notification) // optional
+                //         ->withData($data) // optional
+                //         ->withToken($deviceToken)
+                //     ;
+
+                //     $message = CloudMessage::fromArray([
+                //         'token' => $deviceToken,
+                //         'notification' => [/* Notification data as array */], // optional
+                //         'data' => [/* data array */], // optional
+                //     ]);
+
+                //     $result = $messaging->send($message);
+                //     // $result = ['name' => 'projects/<project-id>/messages/<message-id>']
+
+                //     // enviar una notificacion
+                //     $title = 'My Notification Title';
+                //     $body = 'My Notification Body';
+                //     $imageUrl = 'https://example.com/image.jpg';
+
+                //     $notification = Notification::fromArray([
+                //         'title' => $title,
+                //         'body' => $body,
+                //         'image' => $imageUrl,
+                //     ]);
+
+                //     $notification = Notification::create($title, $body);
+
+                //     $changedNotification = $notification
+                //         ->withTitle('Changed title')
+                //         ->withBody('Changed body')
+                //         ->withImageUrl('https://example.com/image.jpg');
+
+                //     $message = $message->withNotification($notification);
+
+                //     // agregar datos
+                //     // Los datos adjuntos a un mensaje deben ser una matriz de pares clave-valor donde todas las claves y valores sean cadenas de texto.
+                //     // Una vez que haya creado un mensaje con uno de los métodos que se describen a continuación, podrá adjuntarle datos:
+
+                //     $data = [
+                //         'first_key' => 'First Value',
+                //         'second_key' => 'Second Value',
+                //     ];
+
+                //     $message = $message->withData($data);
+
+                // } catch (\Exception $ex) {
+                //     //throw $th;
+                // } catch (MessagingException $e) {
+                //     // ...
+                // }
             }
             $data = [
                 'id' => $response[0]->codigo_interno,
