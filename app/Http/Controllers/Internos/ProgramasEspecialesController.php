@@ -200,11 +200,13 @@ class ProgramasEspecialesController extends ConexionSpController
             'n_programa_especial' => request('n_programa_especial'),
             'id_patologia' => request('id_patologia'),
             'baja' => request('baja') !== NULL ? request('baja') : 0,
+            'archivo' => request('archivo')
         ];
         $this->params_sp = [
             'p_n_programa_especial' => $this->params['n_programa_especial'],
             'p_id_patologia' => $this->params['id_patologia'],
-            'p_baja' => $this->params['baja']
+            'p_baja' => $this->params['baja'],
+            'p_archivo' => $this->params['archivo']
         ];
         return $this->ejecutar_sp_simple();
     }
@@ -242,12 +244,14 @@ class ProgramasEspecialesController extends ConexionSpController
             'n_programa_especial' => request('n_programa_especial'),
             'id_patologia' => request('id_patologia'),
             'baja' => request('baja') !== NULL ? request('baja') : 0,
+            'archivo' => request('archivo')
         ];
         $this->params_sp = [
             'p_id_programa_especial' => $this->params['id_programa_especial'],
             'p_n_programa_especial' => $this->params['n_programa_especial'],
             'p_id_patologia' => $this->params['id_patologia'],
-            'p_baja' => $this->params['baja']
+            'p_baja' => $this->params['baja'],
+            'p_archivo' => $this->params['archivo']
         ];
         return $this->ejecutar_sp_simple();
     }
