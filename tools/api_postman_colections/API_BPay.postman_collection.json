@@ -9713,6 +9713,50 @@
 								"description": "Envía por email un formulario de pacientes crónicos o un recetario de tratamientos crónicos"
 							},
 							"response": []
+						},
+						{
+							"name": "Enviar Formulario de Programa Especial",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{intAccessToken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"notificacion\": {\n        \"asunto\": \"Formulario Programa Especial Anticoncepción\",\n        \"adjunto\": \"programa_especial_anticoncepcion.pdf\",\n        \"emails\": \"ivanfischer76@gmail.com\",\n        \"nro_afiliado\": 80676900,\n        \"n_persona\": 19800,\n        \"nro_doc\": 31743589,\n        \"observaciones\": \"prueba de observaciones\",\n        \"options\": {\n            \"tipo\": \"formulario-programa-especial\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/int/enviar-email/formularios/enviar-formulario-programa-especial",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"int",
+										"enviar-email",
+										"formularios",
+										"enviar-formulario-programa-especial"
+									]
+								},
+								"description": "envía el formulario de programa especial solicitado pasado por parámetro."
+							},
+							"response": []
 						}
 					]
 				},
@@ -15750,6 +15794,46 @@
 									]
 								},
 								"description": "Retorna un listado de programas especiales de una persona o por fechas"
+							},
+							"response": []
+						},
+						{
+							"name": "Descargar Formulario Programa Especial",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "XMLHttpRequest"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{intAccessToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/int/programas-especiales/descargar-formulario-programa-especial?archivo=programa_especial_anticoncepcion.pdf",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"int",
+										"programas-especiales",
+										"descargar-formulario-programa-especial"
+									],
+									"query": [
+										{
+											"key": "archivo",
+											"value": "programa_especial_anticoncepcion.pdf"
+										}
+									]
+								},
+								"description": "Descarga un pdf de un formulario de programa especial desde el servidor"
 							},
 							"response": []
 						}

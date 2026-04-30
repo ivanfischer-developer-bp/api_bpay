@@ -117,7 +117,7 @@
                         </tbody>
                     </table>
                 </div>
-                @if($observaciones != null || $observaciones != '')
+                @if($observaciones != null && $observaciones != '')
                     <div class="content">
                         <hr>
                         <strong>

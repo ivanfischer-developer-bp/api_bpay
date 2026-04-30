@@ -885,7 +885,8 @@ Route::group(['prefix' => 'int'],
                         );
                         Route::group(['prefix' => 'formularios'], 
                             function() {
-                                Route::post('enviar-formulario-cronicos', [EmailsFormulariosController::class, 'enviar_email_formularios_cronicos']); // int/enviar-email/formularios/enviar-formularios-cronicos   11.1.722-20260316
+                                Route::post('enviar-formulario-cronicos', [EmailsFormulariosController::class, 'enviar_email_formularios_cronicos']); // int/enviar-email/formularios/enviar-formularios-cronicos   1.1.722-20260316
+                                Route::post('enviar-formulario-programa-especial', [EmailsFormulariosController::class, 'enviar_email_formulario_programa_especial']); // int/enviar-email/formularios/enviar-formulario-programa-especial   1.1.782-20260430
                             }
                         );
                         Route::group(['prefix' => 'recetas'], 

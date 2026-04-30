@@ -35,6 +35,7 @@ app/Models/Modelo.php
 /resources/views/emails/notificacion_expediente.blade.php
 /resources/views/emails/notificacion_factura.blade.php
 /resources/views/emails/notificacion_formulario_cronicos.blade.php
+/resources/views/emails/notificacion_formulario_programa_especial.blade.php
 /resources/views/emails/notificacion_historia_clinica.blade.php
 /resources/views/emails/notificacion_informacion_afiliado.blade.php
 /resources/views/emails/notificacion_listado_turnos_medicos.blade.php
@@ -49,5 +50,5 @@ app/Models/Modelo.php
 /resources/views/emails/notificacion_reseteo_clave.blade.php
 /resources/views/emails/notificacion.blade.php
 /resources/views/emails/solicitud_encuesta_atencion.blade.php
-/resources/views/emails/solicitud_pedido_presupuesto_expediente.blade.php
 /resources/views/emails/solicitud_informacion_preautorizacion.blade.php
+/resources/views/emails/solicitud_pedido_presupuesto_expediente.blade.php
