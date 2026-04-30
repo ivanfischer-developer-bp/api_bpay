@@ -1189,6 +1189,7 @@ Route::group(['prefix' => 'int'],
                         Route::get('listar-programas-especiales', [ProgramasEspecialesController::class, 'listar_programas_especiales']); // int/programas-especiales/listar-programas-especiales  1.1.760-20260417
                         Route::post('agregar-programa-especial', [ProgramasEspecialesController::class, 'agregar_programa_especial']); // int/programas-especiales/agregar-programa-especial  1.1.760-20260417
                         Route::post('actualizar-programa-especial', [ProgramasEspecialesController::class, 'actualizar_programa_especial']); // int/programas-especiales/actualizar-programa-especial  1.1.760-20260417
+                        Route::get('descargar-formulario-programa-especial', [ProgramasEspecialesController::class, 'descargar_formulario_programa_especial']); // int/programas-especiales/descargar-formulario-programa-especial  1.1.780-20260429
                         Route::group(['prefix' => 'formularios'],
                             function(){
                                 Route::post('exportar-formulario-cronicos', [ExportarFormulariosCronicosController::class, 'exportar_formulario_cronicos']); // int/programas-especiales/formularios/exportar-formulario-cronicos  1.1.701-20260226

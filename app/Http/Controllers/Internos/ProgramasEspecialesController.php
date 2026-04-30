@@ -255,4 +255,126 @@ class ProgramasEspecialesController extends ConexionSpController
         ];
         return $this->ejecutar_sp_simple();
     }
+
+    /**
+     * Descarga un formulario de programa especial para su llenado
+     */
+    public function descargar_formulario_programa_especial(Request $request)
+    {
+        $extras = [
+            'api_software_version' => config('site.software_version'),
+            'ambiente' => config('site.ambiente'),
+            'url' => 'int/programas-especiales/descargar-formulario-programa-especial',
+            'controller' => explode('\\', __CLASS__)[sizeof(explode('\\', __CLASS__))-1],
+            'function' => __FUNCTION__,
+            'queries' => [],
+            'responses' => [],
+            'sps' => [],
+            'verificado' => []
+        ];
+        $status = 'fail'; // 'ok', 'fail', 'empty', unauthorized', 'warning'  
+        $message = '';
+        $count = 0;
+        $code = 0;
+        $data = null;
+        $errors = [];
+        $params = [];
+        $params_sp = [];
+        
+        // obtenemos el usuario de la petición y sus permisos
+        $user = User::with('roles', 'permissions')->find($request->user()->id);
+        $logged_user = $this->get_logged_user($user);
+        $usuario_sqlserver_default = 1;
+        $id_usuario = $logged_user['id_usuario_sqlserver'] != null ? $logged_user['id_usuario_sqlserver'] : $usuario_sqlserver_default;
+        
+        try {
+            date_default_timezone_set('America/Argentina/Cordoba');
+            $permiso_requerido = '';
+            if($permiso_requerido == '' || $user->hasPermissionTo($permiso_requerido)){
+                // Validar que venga el nombre del archivo
+                // $request->validate([
+                //     'archivo' => 'required|string',
+                // ]);
+
+                if ( empty(request('archivo')) ){
+                    array_push($errors, 'Parámetros incompletos o incorrectos');
+                    $status = 'fail';
+                    $message = 'Verifique los parámetros. El parámetro archivo es obligatorio.';
+                    $count = 0;
+                    $data = null;
+                    $code = -5;
+                    return response()->json([
+                        'status' => $status,
+                        'count' => $count,
+                        'errors' => $errors,
+                        'message' => $message,
+                        'line' => null,
+                        'code' => $code,
+                        'data' => $data,
+                        'params' => $params,
+                        'extras' => $extras,
+                        'logged_user' => $logged_user,
+                    ]); 
+                }else{
+                    $archivo = $request->input('archivo');
+                    $ruta = storage_path('app/public/reportes/programas_especiales/' . $archivo);
+
+                    if (!file_exists($ruta)) {
+                        return response()->json([
+                            'status' => 'fail',
+                            'count' => 0,
+                            'errors' => ['Archivo no encontrado'],
+                            'message' => 'No Existe un archivo con el nombre '.$archivo,
+                            'line' => null,
+                            'code' => -1,
+                            'data' => [
+                                'archivo' => $archivo,
+                                'ruta' => $ruta,
+                            ],
+                            'params' => [
+                                'archivo' => $archivo,
+                            ],
+                            'extras' => $extras,
+                            'logged_user' => $logged_user,
+                        ], 200);
+                    }
+
+                    return response()->download($ruta);
+                }
+            }else{
+                $status = 'unauthorized';
+                $message = 'No puede acceder a esta ruta, el usuario con rol '.strtoupper($user->roles[0]->name).' no tiene permiso. Se requiere permiso para '.strtoupper($permiso_requerido);
+                $count  = -1;
+                $data = null;
+                array_push($errors, 'Error de permisos. '.$message);
+                // retorna el response
+                return response()->json([
+                    'status' => $status,
+                    'count' => $count,
+                    'errors' => $errors,
+                    'message' => $message,
+                    'line' => null,
+                    'code' => -2,
+                    'data' => $data,
+                    'params' => $params,
+                    'extras' => $extras,
+                    'logged_user' => $logged_user,
+                ]); 
+            }
+        } catch (\Throwable $th) {
+            array_push($errors, 'Line: '.$th->getLine().' Error: '.$th->getMessage());
+            return response()->json([
+                'status' => 'fail',
+                'count' => -1,
+                'errors' => $errors,
+                'message' => $th->getMessage(),
+                'line' => $th->getLine(),
+                'code' => -1,
+                'data' => null,
+                'params' => $params,
+                'extras' => $extras,
+                'logged_user' => $logged_user,
+            ]);
+        }
+    }
 }
