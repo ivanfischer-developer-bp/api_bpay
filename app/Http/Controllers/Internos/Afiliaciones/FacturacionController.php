@@ -323,6 +323,7 @@ class FacturacionController extends ConexionSpController
                         'imp_recargo' => $cabecera[0]->imp_recargo,
                         'imp_saldo' => $cabecera[0]->imp_saldo,
                         'ingresos_brutos' => $empresa_propia[0]->ingresos_brutos ?? '',
+                        'inicio_actividad' => '',
                         'legal_cp' => $empresa_propia[0]->legal_cp ?? '',
                         'legal_direccion' => $empresa_propia[0]->legal_direccion ?? '',
                         'legal_direccion' => $empresa_propia[0]->legal_direccion ?? '',
@@ -368,9 +369,10 @@ class FacturacionController extends ConexionSpController
                     'conceptos' => $options['params']['conceptos'],
                     'condicion_iva' => $options['params']['condicion_iva'],
                     'cuit_empresa' => $options['params']['cuit_empresa'],
+                    'cuil_afiliado' => $cabecera[0]->cuit,
                     'domicilio' => $cabecera[0]->domicilio,
                     'email' => $options['params']['email'],
-                    'fecha_factura' => $options['params']['fec_factura'],
+                    'fec_factura' => $options['params']['fec_factura'],
                     'fondo' => $options['params']['bg_image'],
                     'ganancias' => $options['params']['ganancias'],
                     'id_factura' => $cabecera[0]->id_factura,
@@ -399,8 +401,9 @@ class FacturacionController extends ConexionSpController
                     'nro_afiliado' => $cabecera[0]->n_afiliado,
                     'numero_factura' => $options['params']['nro_factura'],
                     'numero_link_pagos' => $options['params']['numero_link_pagos'], 
-                    'periodo_image' => $options['params']['periodo_image'],
                     'n_periodo' => $options['params']['n_periodo'],
+                    'n_plan' => $cabecera[0]->n_plan,
+                    'periodo_image' => $options['params']['periodo_image'],
                     'periodo' => $options['params']['periodo'],
                     'resolucion_iva' => $options['params']['resolucion_iva'],
                     'telefono' => $options['params']['telefono'],
@@ -510,8 +513,8 @@ class FacturacionController extends ConexionSpController
                 'code' => $th->getCode(),
                 'data' => $data,
                 'params' => $params,
-                'logged_user' => $logged_user != null ? $logged_user : null,
-                'extras' => $extras
+                'extras' => $extras,
+                'logged_user' => $logged_user != null ? $logged_user : null
             ]);
         }
     }

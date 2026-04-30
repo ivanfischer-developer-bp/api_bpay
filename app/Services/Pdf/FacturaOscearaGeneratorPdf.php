@@ -68,16 +68,17 @@ class FacturaOscearaGeneratorPdf
         $pdf->SetX(143);
         $pdf->Cell(25, 3, utf8_decode('FC'), 0, 2, 'L');
         $pdf->Cell(25, 3, utf8_decode('Fecha'), 0, 2, 'L');
-        $pdf->Cell(25, 3, utf8_decode('VencimientoFactura'), 0, 2, 'L');
+        $pdf->Cell(25, 3, utf8_decode('Vencimiento Factura'), 0, 2, 'L');
         $pdf->SetFont($font, '', 6);
         $pdf->SetTextColor(...$negro); // negro
         $pdf->SetY(15);
         $pdf->SetX(168);
         $numero_factura = $data['fe_cbte_nro'] != null ? $data['fe_cbte_nro'] : $data['numero_factura'];
         $pdf->Cell(20, 3, utf8_decode($numero_factura), 0, 2, 'R');
-        $fecha_factura = $data['fe_cbte_fecha'] != null ? $data['fe_cbte_fecha'] : $data['fecha_factura'];
+        $fecha_factura = $data['fec_factura'] != null ? $data['fec_factura'] : Carbon::now()->format('d/M/Y');
         $pdf->Cell(20, 3, utf8_decode($fecha_factura), 0, 2, 'R');
-        $pdf->Cell(20, 3, utf8_decode(''), 0, 2, 'L'); // VencimientoFactura no se muestra
+        $vto_factura = $data['vto1'] != null ? $data['vto1'] : '';
+        $pdf->Cell(20, 3, utf8_decode($vto_factura), 0, 2, 'R'); // Vencimiento Factura no se muestra
 
         $pdf->SetFont($font, '', 6);
         $pdf->SetTextColor(...$verde); // verde
@@ -118,7 +119,7 @@ class FacturaOscearaGeneratorPdf
         $pdf->SetTextColor(...$negro);
         $pdf->Cell(60, 3, utf8_decode($data['nro_afiliado']), 0, 2, 'L');
         $pdf->Cell(60, 3, utf8_decode(isset($data['n_plan']) ? $data['n_plan'] : ''), 0, 2, 'L');
-        $pdf->Cell(60, 3, utf8_decode(isset($data['cuit_cuil']) ? $data['cuit_cuil'] : ''), 0, 2, 'L');
+        $pdf->Cell(60, 3, utf8_decode(isset($data['cuil_afiliado']) ? $data['cuil_afiliado'] : ''), 0, 2, 'L');
         $pdf->Cell(60, 3, utf8_decode(isset($data['condicion_iva']) ? $data['condicion_iva'] : ''), 0, 2, 'L');
         $pdf->Cell(60, 3, utf8_decode(isset($data['condicion_venta']) ? $data['condicion_venta'] : 'Contado'), 0, 2, 'L');
         $pdf->Cell(60, 3, utf8_decode(isset($data['composicion_familiar']) ? $data['composicion_familiar'] : ''), 0, 2, 'L');
@@ -221,14 +222,14 @@ class FacturaOscearaGeneratorPdf
         $pdf->SetY(165);
         $pdf->SetX(13);
         $pdf->Cell(34, 6, utf8_decode('NETO GRAVADO'), 1, 0, 'C');
-        $pdf->Cell(30, 6, utf8_decode('EXCENTO'), 1, 0, 'C');
+        $pdf->Cell(30, 6, utf8_decode('EXENTO'), 1, 0, 'C');
         $pdf->Cell(36, 6, utf8_decode('OTROS IMPUESTOS'), 1, 0, 'C');
         $pdf->Cell(38, 6, utf8_decode('IVA'), 1, 0, 'C');
         $pdf->SetFont($font, 'B', 8);
         $pdf->Cell(48, 6, utf8_decode('TOTAL'), 1, 1, 'R');
         $pdf->SetFont($font, '', 6);
         $pdf->Cell(34, 6, utf8_decode(isset( $data['neto_gravado']) ?  $data['neto_gravado'] : '-'), 1, 0, 'C');
-        $pdf->Cell(30, 6, utf8_decode(isset( $data['excento']) ?  $data['excento'] : '-'), 1, 0, 'C');
+        $pdf->Cell(30, 6, utf8_decode(isset( $data['exento']) ?  $data['exento'] : '-'), 1, 0, 'C');
         $pdf->Cell(36, 6, utf8_decode(isset( $data['otros_impuestos']) ?  $data['otros_impuestos'] : '-'), 1, 0, 'C');
         $pdf->Cell(38, 6, utf8_decode(isset( $data['iva']) ?  $data['iva'] : '-'), 1, 0, 'C');
         $pdf->SetFont($font, 'B', 8);
